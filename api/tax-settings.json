@@ -1,0 +1,17 @@
+{
+  "_note": "Approximate-net assumptions (BIWEEKLY, 26 checks/yr; 401(k) 10% pre-tax; $50 after-tax stock purchase per check). Edit and the widget picks them up on next launch.",
+  "PayPeriodsPerYear": 26,
+  "Pretax401kPct": 10.0,
+  "FedFilingStatus": "HeadOfHousehold",
+  "FedStep2Checked": false,
+  "FedStep3Credits": 0,
+  "FedStep4aOther": 0,
+  "FedStep4bDeduct": 0,
+  "FedStep4cExtra": 0,
+  "SocialSecurityPct": 6.2,
+  "MedicarePct": 1.45,
+  "OkFilingStatus": "Single",
+  "OkAllowances": 1,
+  "OkExtraPerCheck": 0,
+  "AfterTaxStockPerCheck": 50.0
+}

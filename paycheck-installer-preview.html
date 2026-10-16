@@ -1,0 +1,1600 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#0B0B0B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="application-name" content="Paycheck Live Installer Preview">
+<title>Paycheck Live Installer Preview</title>
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAA20lEQVR42u3dsQ3AIAwAQXq3HoD9q2xIFkgKFCSjcMUv4KuwELSIGKqrGQIAAAIAQAAACAAAbQqQmZoIAAAAAAAAAABgfePqjwEAAAAAAAAAAAAAAGBvgLchVgUAAAAAAAAAAAAAAIB6AAcxAAAAAAAAAAAAAAAAAAAAAAAAyzjLOAAAAAAAAAAAAAAAXM79engDAAAAAAAAAAAAAAAAAAAAAAAAYBkHAAAAAAAAAAAAAAAADzYBAAAAAAAAAAAAAABAAAAIAAABOAVAflMFIAAABACAAAAQgF90A4433E90q6z3AAAAAElFTkSuQmCC">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAA20lEQVR42u3dsQ3AIAwAQXq3HoD9q2xIFkgKFCSjcMUv4KuwELSIGKqrGQIAAAIAQAAACAAAbQqQmZoIAAAAAAAAAABgfePqjwEAAAAAAAAAAAAAAGBvgLchVgUAAAAAAAAAAAAAAIB6AAcxAAAAAAAAAAAAAAAAAAAAAAAAyzjLOAAAAAAAAAAAAAAAXM79engDAAAAAAAAAAAAAAAAAAAAAAAAYBkHAAAAAAAAAAAAAAAADzYBAAAAAAAAAAAAAABAAAAIAAABOAVAflMFIAAABACAAAAQgF90A4433E90q6z3AAAAAElFTkSuQmCC">
+<style>
+  :root { --bg:#0B0B0B; --bar:#141414; --line:#2A2A2A; --red:#E82127; --green:#34C759; --amber:#FFB020;
+          --t1:#FFFFFF; --t2:#CCCCCC; --t3:#AAAAAA; --t4:#888888; --t5:#666666; --t6:#555555; --t7:#444444; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { background:#000; color:var(--t1); font-family:"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; -webkit-tap-highlight-color:transparent; }
+  body { min-height:100vh; display:flex; justify-content:center; padding:env(safe-area-inset-top) 8px env(safe-area-inset-bottom); }
+  .card { width:100%; max-width:440px; background:var(--bg); border:1px solid #333; border-radius:14px; margin:8px 0; overflow:hidden; }
+  .bar { background:var(--bar); height:40px; display:flex; align-items:center; justify-content:space-between; padding:0 10px 0 14px; }
+  .title { color:var(--red); font-weight:700; font-size:14px; letter-spacing:.3px; }
+  .tag { font-size:11px; font-weight:700; }
+  .body { padding:10px 18px 14px; transition:filter .25s; }
+  .row { display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+  .muted { color:var(--t4); } .sm { font-size:11px; } .xs { font-size:10.5px; } .xxs { font-size:10px; }
+  .date { color:var(--t4); font-size:13px; } .sim { font-size:14px; font-weight:700; color:var(--t1); }
+  .btns { display:flex; gap:8px; }
+  .btn { border:0; border-radius:8px; color:#fff; font-weight:800; font-size:13px; padding:9px 16px; font-family:inherit; }
+  .btn:active { opacity:.65; } .start { background:#1F9D45; } .stop { background:#D0282E; }
+  .herolabel { text-align:center; color:#777; font-size:12px; font-weight:600; margin-top:8px; letter-spacing:.2px; }
+  .hero { text-align:center; font-size:50px; font-weight:800; line-height:1.08; white-space:nowrap; }
+  .herosub { text-align:center; color:#777; font-size:12px; }
+  .herosub.dayoff { color:var(--red); font-size:20px; font-weight:800; letter-spacing:.5px; }
+  .pill { margin-top:10px; background:#141414; border:1px solid #262626; border-radius:16px; padding:6px 12px; display:flex; justify-content:space-between; align-items:center; }
+  .dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:8px; }
+  .status { font-weight:800; font-size:13px; display:flex; align-items:center; }
+  .prog { height:5px; background:#222; border-radius:3px; margin-top:8px; overflow:hidden; }
+  .prog > div { height:100%; background:var(--red); border-radius:3px; width:0; }
+  .sec { color:var(--red); font-size:12px; font-weight:800; letter-spacing:.2px; }
+  .hr { height:1px; background:var(--line); margin:9px 0; }
+  .ln { display:flex; justify-content:space-between; font-size:13.5px; line-height:1.45; }
+  .ln .l { color:var(--t4); } .ln .v { font-weight:600; color:#bbb; }
+  .ln.b .l { color:var(--t2); font-weight:600; } .ln.b .v { color:#fff; }
+  .ln.net .l { color:#fff; font-weight:800; } .ln.net .v { color:var(--green); font-weight:800; font-size:15px; }
+  .day { display:grid; grid-template-columns:78px 1fr auto; font-size:13px; line-height:1.5; }
+  .day .n { color:var(--t3); } .day .note { color:var(--t6); font-size:11px; align-self:center; } .day .a { font-weight:600; text-align:right; }
+  .big { font-size:19px; font-weight:800; } .pd { color:var(--red); font-size:19px; font-weight:600; }
+  .tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:4px; }
+  .tile { background:#141414; border:1px solid #222; border-radius:8px; padding:5px 7px; }
+  .tile .l { color:var(--t4); font-size:10.5px; } .tile .v { font-weight:600; font-size:14px; color:var(--t6); } .tile .s { color:var(--t6); font-size:9.5px; }
+  .foot { text-align:center; color:var(--t6); font-size:10px; margin-top:10px; line-height:1.4; }
+  /* schedule timeline (v1.10.0) */
+  .sched { margin-top:10px; background:#101010; border:1px solid #232323; border-radius:10px; padding:8px 10px 6px; }
+  .nextline { font-size:13px; color:#ddd; font-weight:700; margin:2px 0 6px; } .nextline b { color:var(--amber); }
+  .tl { position:relative; }
+  .ev { display:grid; grid-template-columns:16px 92px 1fr auto; align-items:center; font-size:13px; line-height:1.9; color:#777; }
+  .ev .b { width:9px; height:9px; border-radius:50%; background:#333; border:1px solid #555; justify-self:center; }
+  .ev .t { font-weight:600; } .ev .x { font-size:10.5px; color:#555; }
+  .ev.done { color:#5a5a5a; } .ev.done .b { background:#2c5e3a; border-color:#2c5e3a; }
+  .ev.cur { color:#fff; background:linear-gradient(90deg,rgba(52,199,89,.16),rgba(52,199,89,0)); border-radius:6px; }
+  .ev.cur .b { background:var(--green); border-color:var(--green); box-shadow:0 0 0 3px rgba(52,199,89,.25); }
+  .ev.cur.brk { background:linear-gradient(90deg,rgba(255,176,32,.16),rgba(255,176,32,0)); } .ev.cur.brk .b { background:var(--amber); border-color:var(--amber); box-shadow:0 0 0 3px rgba(255,176,32,.25); }
+  .ev.nxt .t, .ev.nxt .lab { color:#ddd; }
+  /* display ON/OFF + DESIGN BY VAN footer */
+  @font-face { font-family:"Bebas Neue"; src:url("BebasNeue.woff2") format("woff2"); font-weight:400; font-display:swap; }
+  .barR { display:flex; align-items:center; gap:8px; }
+  .tog { border:1px solid #444; border-radius:14px; background:#1d1d1d; color:#fff; font-weight:800; font-size:12px; font-family:inherit; padding:6px 12px; min-width:54px; }
+  .tog.on { background:var(--red); border-color:var(--red); }
+  .gear { border:0; background:none; color:#aaa; font-size:20px; line-height:1; padding:4px 4px; }
+  .card.off .body { filter:blur(20px); pointer-events:none; user-select:none; }
+  .wkhead { font-size:10px; font-weight:800; color:#777; letter-spacing:.5px; margin:6px 0 1px; }
+  .brandbox { text-align:center; padding:6px 0 12px; }
+  .brand { display:inline-block; font-family:"Bebas Neue", Impact, "Arial Narrow Bold", sans-serif; font-size:24px; letter-spacing:5px; line-height:1;
+           background:linear-gradient(180deg,#FFFFFF 0%,#C9C9C9 38%,#7C7C7C 52%,#E6E6E6 70%,#9A9A9A 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+           padding:0 14px 3px; border-bottom:2px solid #D0282E; }
+  .brand::before, .brand::after { content:"\25C6"; font-size:9px; color:#D0282E; -webkit-text-fill-color:#D0282E; vertical-align:middle; margin:0 8px; letter-spacing:0; }
+  .verrow { display:flex; justify-content:center; align-items:center; gap:8px; margin-top:6px; }
+  .ver { background:none; border:0; color:#A8A8A8; font:700 12.5px "Segoe UI",Roboto,sans-serif; letter-spacing:.5px; text-decoration:underline dotted #444; padding:4px 6px; }
+  .upd { border:1px solid #3a3a3a; background:#1a1a1a; color:#777; font:800 10.5px "Segoe UI",Roboto,sans-serif; letter-spacing:.6px; border-radius:10px; padding:4px 10px; }
+  .upd.lit { color:#fff; background:#1F9D45; border-color:#34C759; animation:glow 1.6s ease-in-out infinite; }
+  @keyframes glow { 0%,100% { box-shadow:0 0 4px 1px rgba(52,199,89,.55); } 50% { box-shadow:0 0 16px 5px rgba(52,199,89,.95); } }
+  .donate { display:flex; justify-content:center; gap:6px; margin-top:8px; flex-wrap:wrap; }
+  .donate a { color:#999; font-size:10.5px; font-weight:700; text-decoration:none; border:1px solid #2c2c2c; border-radius:9px; padding:3px 9px; }
+  .modalbg { position:fixed; inset:0; background:rgba(0,0,0,.75); display:none; align-items:center; justify-content:center; z-index:20; padding:12px; }
+  .modalbg.show { display:flex; }
+  .modal { width:100%; max-width:430px; max-height:90vh; overflow:auto; background:#151515; border:1px solid #333; border-radius:14px; padding:16px 18px; }
+  .modal h3 { color:var(--red); font-size:16px; margin-bottom:8px; } .modal h4 { color:#ddd; font-size:13px; margin:10px 0 3px; } .modal li { color:#aaa; font-size:12.5px; margin:2px 0 2px 16px; line-height:1.4; }
+  .mbtn { display:block; width:100%; border:0; border-radius:10px; padding:12px; margin-top:8px; font-weight:800; font-size:15px; font-family:inherit; background:#2a2a2a; color:#fff; }
+  .mbtn.go { background:#1F9D45; } .mbtn.red { background:#5a1a1c; }
+  /* v1.14.2 EDIT PUNCHES */
+  .edopen { display:block; width:100%; margin-top:8px; padding:12px; border-radius:10px; border:1px solid #3a3a3a; background:#1b1b1b; color:#fff; font:800 15px inherit; letter-spacing:.4px; }
+  .edwarn { display:block; width:100%; margin-top:8px; padding:12px; border-radius:10px; border:1px solid #FFB020; background:#2a2108; color:#FFCE6B; font:800 14.5px inherit; text-align:left; line-height:1.35; }
+  .ed { padding:14px 14px 16px; } .edhead { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; }
+  .edhead h3 { margin:0; } .edhead .dt { color:#ccc; font-size:14px; font-weight:700; margin-top:2px; }
+  .edn { min-width:48px; height:48px; border-radius:10px; border:1px solid #333; background:#222; color:#fff; font:800 22px inherit; } .edn:disabled { opacity:.3; }
+  .edrow { display:grid; grid-template-columns:92px 1fr auto; align-items:center; gap:6px; width:100%; min-height:54px; margin:5px 0; padding:8px 10px; border-radius:10px; border:1px solid #2c2c2c; background:#1a1a1a; color:#eee; font:600 15px inherit; text-align:left; }
+  .edrow .k { font-size:12px; font-weight:800; letter-spacing:.4px; color:#aaa; } .edrow .k.br { color:#FFB020; } .edrow .k.lu { color:#FFB020; } .edrow .k.cl { color:#34C759; } .edrow .k.of { color:#888; }
+  .edrow .d { color:#999; font-size:13px; } .edrow .w { grid-column:1 / span 3; color:#FFCE6B; font-size:13px; font-weight:700; }
+  .edrow.warn { border-color:#FFB020; background:#231c08; } .edrow.sel { border-color:#E82127; background:#221416; } .edrow .au { color:#666; font-size:12px; font-weight:600; }
+  .edf { border:1px solid #E82127; border-radius:12px; padding:10px; margin:4px 0 8px; background:#121212; }
+  .edf label { display:block; color:#aaa; font-size:12px; font-weight:800; letter-spacing:.4px; margin:6px 0 3px; }
+  .edf input[type=time] { width:100%; height:52px; font:700 22px inherit; padding:0 10px; border-radius:10px; border:1px solid #444; background:#0c0c0c; color:#fff; color-scheme:dark; }
+  .edq { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:6px; }
+  .edq button, .edq2 button { min-height:50px; border-radius:10px; border:0; font:800 15px inherit; color:#fff; background:#2a2a2a; }
+  .edq .go, .edq2 .go { background:#1F9D45; } .edq .hl { background:#B37400; } .edq2 .red { background:#5a1a1c; }
+  .edq6 { grid-template-columns:repeat(3,1fr) !important; }   /* v2.0.8: -15 -5 -1 / +1 +5 +15 */
+  .edq4 { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:8px; } .edq4 button { min-height:50px; border-radius:10px; border:0; font:800 15px inherit; color:#fff; background:#2a2a2a; }
+  .edq2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:6px; margin-top:8px; }
+  /* v2.0.1 sticky SAVE / CANCEL footer (stays above the Android keyboard) */
+  .modal.ed { position:relative; max-height:calc(var(--vvh, 100dvh) - 24px); padding-bottom:0; scroll-padding-bottom:96px; scroll-padding-top:8px; }
+  .edfoot { position:sticky; bottom:0; z-index:3; display:none; grid-template-columns:1fr 2fr; gap:8px; margin:8px -14px 0; padding:10px 14px calc(12px + env(safe-area-inset-bottom)); background:#151515; border-top:1px solid #333; box-shadow:0 -8px 16px rgba(0,0,0,.55); }
+  .edfoot.show { display:grid; }
+  .edfoot button { min-height:58px; border-radius:12px; border:0; font:900 18px inherit; letter-spacing:.6px; color:#fff; background:#2f2f2f; }
+  .edfoot .save { background:#1F9D45; font-size:20px; box-shadow:0 0 0 2px #34C759 inset; } .edfoot .save:active { background:#178a3b; }
+  .edpad { height:14px; }
+  .edf input.tfb { width:100%; height:52px; font:700 22px inherit; padding:0 10px; border-radius:10px; border:1px solid #444; background:#0c0c0c; color:#fff; }
+  .edtoast { position:fixed; left:50%; top:calc(14px + env(safe-area-inset-top)); transform:translate(-50%,-30px); opacity:0; z-index:40; pointer-events:none; background:#1F9D45; color:#fff; font:900 17px inherit; padding:10px 22px; border-radius:24px; box-shadow:0 6px 18px rgba(0,0,0,.5); transition:opacity .18s, transform .18s; }
+  .edtoast.show { opacity:1; transform:translate(-50%,0); }
+  .ederr { color:#ff6b6b; font-weight:800; font-size:14px; margin:6px 0; } .edok { color:#34C759; font-weight:800; font-size:14px; margin:6px 0; }
+  .edsum { color:#ccc; font-size:13.5px; margin:8px 0 2px; line-height:1.45; } .edsum b { color:#fff; }
+  .edadd { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .dl.ed-t { cursor:pointer; }
+  /* setup wizard / settings */
+  .f { margin:8px 0; } .f label { display:block; color:#aaa; font-size:12px; font-weight:700; margin-bottom:3px; }
+  .f input, .f select { width:100%; background:#0d0d0d; color:#fff; border:1px solid #333; border-radius:8px; padding:9px 10px; font-size:15px; font-family:inherit; }
+  .f .hint { color:#666; font-size:11px; margin-top:3px; }
+  .g2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; } .g3 { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:6px; }
+  .chips { display:flex; gap:5px; flex-wrap:wrap; } .chip { border:1px solid #3a3a3a; background:#111; color:#888; border-radius:14px; padding:6px 10px; font-weight:800; font-size:12.5px; }
+  .chip.on { background:var(--red); border-color:var(--red); color:#fff; }
+  .lst .it { background:#0f0f0f; border:1px solid #262626; border-radius:9px; padding:6px 8px; margin:5px 0; }
+  .lst .it input, .lst .it select { padding:7px 8px; font-size:14px; }
+  .lnk { background:none; border:0; color:#E82127; font-weight:800; font-size:12.5px; padding:4px 0; }
+  .chk { display:flex; align-items:center; gap:6px; color:#aaa; font-size:12px; margin-top:4px; } .chk input { width:auto; }
+  .wsec { color:var(--red); font-weight:800; font-size:12px; letter-spacing:.4px; margin:14px 0 2px; border-top:1px solid #262626; padding-top:10px; }
+  .dbtns { display:flex; gap:8px; margin:8px 0 2px; }
+  .dbtn { flex:1; text-align:center; text-decoration:none; color:#fff; font-weight:800; font-size:15px; border-radius:10px; padding:10px 6px 8px; }
+  .dbtn span { display:block; font-size:11px; font-weight:600; opacity:.85; margin-top:1px; }
+  .dbtn.venmo { background:#008CFF; } .dbtn.paypal { background:#003087; } .dbtn.cash { background:#00C244; }
+  .tipl { color:#555; font-size:10.5px; align-self:center; }
+  #updLog li { color:#ccc; }
+  .err { color:#ff6b6b; font-size:12.5px; font-weight:700; margin-top:6px; }
+  /* v1.12: manual punch panel + daily money list */
+  .titlewrap { display:flex; align-items:center; gap:2px; }
+  .gear.tg { font-size:19px; color:#bbb; padding:6px 6px 6px 4px; margin-left:2px; }
+  .gear.share { padding:6px 4px; margin-left:0; vertical-align:middle; }
+  .updbanner { display:flex; flex-direction:column; align-items:center; width:100%; margin:4px 0 8px; padding:9px 12px; border-radius:14px; border:1.5px solid #49df93; background:#49df93; color:#06210f; cursor:pointer; font:inherit; touch-action:manipulation; }
+  .updbanner b { font-size:15px; font-weight:800; letter-spacing:.03em; } .updbanner small { font-size:11px; font-weight:700; opacity:.8; }
+  .updbanner:active { transform:scale(.98); }
+  .gear.share svg { display:block; margin-top:1px; }
+  .shgrid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+  .shbtn { display:flex; flex-direction:column; align-items:center; gap:4px; border:1px solid #333; background:#151515; color:#fff; border-radius:12px; padding:12px 6px; font-weight:700; font-size:13px; text-decoration:none; }
+  .shbtn span { font-size:20px; line-height:1; }
+  .shqr { display:block; margin:10px auto 4px; width:200px; height:200px; background:#fff; border-radius:12px; padding:8px; }
+  .shlink { text-align:center; font-weight:800; color:#fff; font-size:15px; word-break:break-all; }
+  .punch { margin-top:8px; background:#101010; border:1px solid #232323; border-radius:10px; padding:6px 6px 4px; }
+  .pgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:4px; } .pgrid2 { display:grid; grid-template-columns:1fr 1fr; gap:4px; margin-top:4px; }
+  .pgrid2 .pb { min-height:0; padding:6px 2px; } .pgrid2 .pb b, .pgrid2 .pb i { display:inline; } .pgrid2 .pb i { margin-left:6px; }
+  .pb { border:1px solid #333; background:#1a1a1a; color:#ddd; border-radius:7px; padding:5px 2px 4px; font-family:inherit; line-height:1.1; min-height:38px; }
+  .pb b { display:block; font-size:9.5px; font-weight:800; letter-spacing:.2px; } .pb i { display:block; font-style:normal; font-size:10px; color:#777; margin-top:2px; font-weight:600; }
+  .pb:active { opacity:.6; } .pb:disabled { opacity:.35; }
+  .pb.in { border-color:#1F6B37; } .pb.out { border-color:#6b1f22; } .pb.lo, .pb.li, .pb.bs, .pb.be { border-color:#6b5017; }
+  .pb.set i { color:#fff; } .pb.in.set { background:#14301d; } .pb.out.set { background:#301416; } .pb.lo.set, .pb.li.set { background:#2e2410; }
+  .pb.live { background:#3a2a08; border-color:var(--amber); } .pb.live i { color:var(--amber); }
+  /* v1.12.2 large BREAK / LUNCH timers (~3x), amber + glow while running */
+  .ptim { display:grid; grid-template-columns:1fr 1fr; gap:4px; margin-top:4px; }
+  .tbox { background:#141414; border:1px solid #2a2a2a; border-radius:8px; padding:3px 7px 2px; }
+  .tbox .th { display:flex; justify-content:space-between; align-items:baseline; font-size:10.5px; font-weight:800; color:#aaa; letter-spacing:.4px; }
+  .tbox .th span { font-size:10px; font-weight:600; color:#777; letter-spacing:0; }
+  .tbox .tv { text-align:center; font-size:32px; font-weight:800; color:#fff; line-height:1.05; font-variant-numeric:tabular-nums; }
+  /* v1.13 BE BACK BY banner: flashes (amber/red) in the last 5 min of a break / 15 min of lunch; solid red LATE when overdue */
+  .away { margin-top:4px; border:2px solid var(--amber); background:#2a1f08; border-radius:10px; padding:4px 10px 5px; }
+  .away .ah { display:flex; justify-content:space-between; align-items:baseline; font-size:13px; font-weight:900; color:#fff; letter-spacing:.5px; }
+  .away .ah span:last-child { font-size:12px; font-weight:700; color:#ccc; letter-spacing:0; }
+  .away .av { text-align:center; font-size:46px; font-weight:800; line-height:1.05; color:var(--amber); font-variant-numeric:tabular-nums; text-shadow:0 0 12px rgba(255,176,32,.7); }
+  .away .av small { font-size:20px; margin-left:4px; }
+  .away .as { text-align:center; font-size:11.5px; color:#bbb; font-weight:600; }
+  .away.warn.ph { background:#c2410c; border-color:#ff3b30; } .away.warn.ph .av { color:#fff; text-shadow:0 0 14px rgba(255,59,48,.95); }
+  .away.warn:not(.ph) { background:#ffb020; border-color:#ffd27a; } .away.warn:not(.ph) .av, .away.warn:not(.ph) .ah, .away.warn:not(.ph) .ah span:last-child, .away.warn:not(.ph) .as { color:#1a1a1a; text-shadow:none; }
+  .away.late { background:#b3121b; border-color:#ff3b30; } .away.late .av { color:#fff; text-shadow:0 0 14px rgba(255,59,48,.95); } .away.late .as, .away.late .ah span:last-child { color:#ffd6d6; }
+  .tbox.warn.ph { background:#4a0e0e; border-color:#ff3b30; } .tbox.warn.ph .tv { color:#ff453a; text-shadow:0 0 12px rgba(255,59,48,.95); }
+  .tbox.on.late { background:#3a0c0e; border-color:#ff3b30; } .tbox.on.late .tv { color:#ff453a; text-shadow:0 0 12px rgba(255,59,48,.9); } .tbox.on.late .th span { color:#ff453a; }
+  .tbox.on { background:#2a1f08; border-color:var(--amber); } .tbox.on .tv { color:var(--amber); text-shadow:0 0 10px rgba(255,176,32,.75); } .tbox.on .th span { color:var(--amber); }
+  .prow { display:flex; justify-content:space-between; align-items:center; margin-top:3px; }
+  .prow .lnk { font-size:11px; padding:2px 0; } .pnote { color:#666; font-size:10px; }
+  .dl { display:grid; grid-template-columns:72px 64px 1fr 82px; font-size:13px; line-height:1.55; align-items:baseline; column-gap:4px; }
+  .dl .df { color:#FFB020; font-size:11.5px; text-align:right; } .dl .ot { color:#FF7A45; font-size:11.5px; text-align:right; } .dl .z { color:#4a4a4a; }
+  .dl .note.sp { grid-column:2 / span 2; } .dl .a.sp3 { grid-column:2 / span 3; } .dl .ot { padding-right:8px; } .dl.hd span { white-space:nowrap; } .dl.fut .df { color:#7a6230; } .dl.fut .ot { color:#7a4a35; } .dl.fut .z { color:#4a4a4a; }
+  .dl.hd { font-size:9.5px; font-weight:800; letter-spacing:.3px; line-height:1.3; } .dl.hd span { color:#5a5a5a; } .dl.hd .df { color:#7a6230; } .dl.hd .ot { color:#7a4a35; } .dl.hd .a { color:#5a5a5a; font-weight:800; }
+  .wsub.g { display:grid; grid-template-columns:72px 64px 1fr 82px; column-gap:4px; } .wsub.g .ot { padding-right:8px; } .wsub .df { color:#FFB020; text-align:right; } .wsub .ot { color:#FF7A45; text-align:right; } .wsub .z { color:#4a4a4a; } .wsub .a { text-align:right; }
+  /* v1.14 today's GROSS breakdown */
+  .hb { background:#101010; border:1px solid #262626; border-radius:10px; padding:4px 6px 5px; margin:6px 0 2px; }
+  .hb .g { display:grid; grid-template-columns:repeat(4,1fr); text-align:center; }
+  .hb .k { color:#777; font-size:9.5px; font-weight:800; letter-spacing:.3px; } .hb .k.t { color:#999; }
+  .hb .v { font-size:16px; font-weight:700; color:#e6e6e6; line-height:1.2; } .hb .v.df { color:#FFB020; } .hb .v.ot { color:#FF7A45; } .hb .v.tot { color:var(--green); font-weight:800; } .hb .v.dim { opacity:.55; }
+  .hb .ptol { color:#5AC8FA; font-size:11px; font-weight:800; text-align:center; margin-top:3px; }
+  .pto { background:#0d1418; border:1px solid #1f3d4d; border-radius:10px; padding:7px 8px 8px; margin:8px 0 4px; }
+  .ptog { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:6px; margin-top:6px; } .ptog label { display:flex; flex-direction:column; font-size:10px; font-weight:800; color:#9ab; gap:3px; }
+  .ptog input { background:#111; color:#fff; border:1px solid #3a5566; border-radius:8px; padding:8px 6px; font:600 15px inherit; min-width:0; width:100%; box-sizing:border-box; color-scheme:dark; }
+  .ptoadd { width:100%; margin-top:8px; min-height:46px; border-radius:10px; border:2px solid #5AC8FA; background:#0A5A8A; color:#fff; font:900 16px inherit; }
+  .ptomsg { font-size:12px; font-weight:700; margin-top:6px; min-height:14px; } .ptosum { color:#ddd; font-size:12px; font-weight:700; margin-top:4px; }
+  .ptor { display:flex; align-items:center; justify-content:space-between; gap:6px; border-top:1px solid #1d2a31; padding:6px 0 2px; color:#5AC8FA; font-size:12.5px; font-weight:700; }
+  .ptor button { background:#2a1012; color:#ff6b6b; border:1px solid #5a2024; border-radius:8px; padding:7px 10px; font:800 12px inherit; }
+  .hb .h { color:#666; font-size:9.5px; } .hb .nt { color:#808080; font-size:10px; text-align:center; margin-top:2px; }
+  .dl .n { color:var(--t3); } .dl .note { color:#555; font-size:10.5px; } .dl .a { font-weight:700; text-align:right; color:#fff; }
+  .dl.off .n, .dl.off .a { color:#4a4a4a; font-weight:600; } .dl.fut .a { color:#666; font-weight:600; } .dl.fut .n { color:#777; }
+  .dl.today { background:linear-gradient(90deg,rgba(52,199,89,.14),rgba(52,199,89,0)); border-radius:5px; } .dl.today .n { color:#fff; font-weight:700; } .dl.today .a { color:var(--green); }
+  .wsub { display:flex; justify-content:space-between; font-size:12px; color:#aaa; font-weight:700; border-top:1px dashed #2a2a2a; margin:2px 0 4px; padding-top:2px; }
+  .ptot { display:flex; justify-content:space-between; align-items:baseline; border-top:1px solid #333; margin-top:4px; padding-top:5px; }
+  .ptot .l { color:#ddd; font-weight:800; font-size:13.5px; } .ptot .v { color:var(--green); font-weight:800; font-size:20px; }
+  .pv { background:#2a0f10; border:1px solid #5a1a1c; color:#ffb4b6; font-size:11.5px; border-radius:8px; padding:6px 9px; margin:8px 0 0; display:flex; justify-content:space-between; align-items:center; gap:6px; }
+  .pv button { border:0; background:#E82127; color:#fff; font-weight:800; border-radius:7px; padding:5px 9px; font-size:11px; font-family:inherit; }
+  .wkg { display:grid; grid-template-columns:62px 1fr 1fr; gap:5px; align-items:center; margin:3px 0; }
+  .wkg .chip { text-align:center; } .wkg input { padding:7px 6px !important; font-size:14px !important; } .wkg .offl { grid-column:span 2; color:#555; font-size:12px; font-weight:700; }
+  /* ===== v1.15.0 FOCUS LAYOUT: bigger status, punch buttons, LEFT / BE BACK BY and stopwatches (~1.5x) ===== */
+  .focus { margin-top:8px; }
+  .pill.fz { display:block; padding:9px 12px 8px; border-radius:12px; border:1px solid #333; background:#151515; }
+  .pill.fz .frow { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .pill.fz .status { font-size:21px; font-weight:900; letter-spacing:.5px; }
+  .pill.fz .dot { width:14px; height:14px; margin-right:9px; }
+  .pill.fz .sin { font-size:15px; font-weight:800; color:#fff; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .pill.fz .sdet { font-size:14.5px; font-weight:700; color:#bbb; margin-top:3px; }
+  .focus .punch { margin-top:8px; padding:8px; border-color:#2e2e2e; }
+  .focus .pgrid { grid-template-columns:1fr 1fr; gap:7px; } .focus .pgrid2 { gap:7px; margin-top:7px; }
+  .focus .pb { min-height:64px; padding:8px 4px 7px; border-width:2px; border-radius:11px; color:#fff; }
+  .focus .pb b { font-size:15.5px; font-weight:900; letter-spacing:.4px; } .focus .pb i { font-size:15px; color:#cfcfcf; margin-top:4px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .focus .pgrid2 .pb { min-height:58px; padding:8px 4px; } .focus .pgrid2 .pb b, .focus .pgrid2 .pb i { display:block; } .focus .pgrid2 .pb i { margin-left:0; }
+  .focus .pb.in { background:#0f3b1d; border-color:#2fbf5a; } .focus .pb.out { background:#3b0f12; border-color:#ff4d55; }
+  .focus .pb.lo, .focus .pb.li, .focus .pb.bs, .focus .pb.be { background:#33270a; border-color:#ffb020; }
+  .focus .pb.set i { color:#fff; } .focus .pb.in.set { background:#17592b; } .focus .pb.out.set { background:#5c161b; } .focus .pb.lo.set, .focus .pb.li.set { background:#4d3a0e; }
+  .focus .pb.live { background:#6b4a06; border-color:#ffd27a; box-shadow:0 0 12px rgba(255,176,32,.55); } .focus .pb.live i { color:#ffe2a3; }
+  .focus .pb:disabled { opacity:.32; }
+  .focus .away { margin-top:8px; padding:7px 12px 8px; border-width:3px; border-radius:12px; }
+  .focus .away .ah { font-size:19.5px; } .focus .away .ah span:last-child { font-size:18px; font-weight:800; color:#fff; }
+  .focus .away .av { font-size:69px; } .focus .away .av small { font-size:30px; } .focus .away .as { font-size:16px; margin-top:2px; }
+  .focus .ptim { gap:7px; margin-top:8px; }
+  .focus .tbox { padding:6px 9px 5px; border-radius:11px; border-width:2px; }
+  .focus .tbox .th { font-size:15.5px; } .focus .tbox .th span { font-size:14px; font-weight:700; color:#999; }
+  .focus .tbox .tv { font-size:48px; line-height:1.1; }
+  .focus .prow { margin-top:6px; } .focus .prow .lnk { font-size:13px; } .focus .pnote { font-size:12.5px; color:#999; }
+  .tlist { margin-top:8px; border:1px solid #2a2a2a; border-radius:11px; background:#121212; overflow:hidden; }
+  .tlist .th2 { font-size:12px; font-weight:800; color:#888; letter-spacing:.6px; padding:7px 12px 3px; }
+  .tlist button { display:flex; width:100%; justify-content:space-between; align-items:center; gap:8px; border:0; border-top:1px solid #222; background:transparent; color:#fff; padding:10px 12px; font:inherit; text-align:left; min-height:48px; }
+  .tlist button:first-of-type { border-top:0; } .tlist button:active { background:#222; }
+  .tlist .k { font-size:15px; font-weight:900; letter-spacing:.4px; min-width:98px; } .tlist .k.in { color:#34C759; } .tlist .k.out { color:#ff6b70; } .tlist .k.br, .tlist .k.lu { color:#FFB020; } .tlist .k.off { color:#aaa; }
+  .tlist .t { font-size:18px; font-weight:800; flex:1; font-variant-numeric:tabular-nums; } .tlist .t small { font-size:12px; color:#888; font-weight:700; margin-left:4px; }
+  .tlist .d { font-size:14px; font-weight:800; color:#ccc; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums; } .tlist .d.ok { color:#34C759; } .tlist .d.late { color:#ff6b70; } .tlist .d.run { color:#FFB020; }
+  .tlist .auto .t, .tlist .auto .k { opacity:.55; } .tlist .warn { background:#2a2108; } .tlist .warn .d { color:#FFCE6B; }
+  .focus .edopen { font-size:16px; padding:14px; margin-top:8px; } .focus .edwarn { font-size:15.5px; }
+  .focus .pb.live:disabled { opacity:1; }
+  .focus .pb.act { background:#FFB020; border-color:#ffe2a3; color:#111; box-shadow:0 0 16px rgba(255,176,32,.7); } .focus .pb.act i { color:#111; }
+  .focus .tbox .th { gap:6px; white-space:nowrap; } .focus .tbox .th span { text-align:right; }
+  .focus .prow { flex-wrap:wrap; gap:2px 10px; }
+  .sec2 { margin:14px 2px 0; font-size:11px; font-weight:800; color:#666; letter-spacing:.6px; }
+  /* ===== v1.15.0 polish (Van 5:03 PM): narrower, evenly spaced buttons; card-style timers with tabular digits ===== */
+  .focus .punch { padding:10px 12px 8px; background:linear-gradient(#121212,#0e0e0e); border-radius:14px; }
+  .focus .pgrid, .focus .pgrid2 { gap:8px 10px; } .focus .pgrid2 { margin-top:8px; }
+  .focus .pb { min-height:56px; padding:7px 6px 6px; border-radius:12px; box-sizing:border-box; min-width:0; overflow:hidden; }
+  .focus .pgrid2 .pb { min-height:52px; }
+  .focus .pb b { font-size:14.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .focus .pb i { font-size:14px; white-space:nowrap; }
+  .focus .ptim { gap:10px; margin-top:10px; }
+  .focus .tbox { position:relative; padding:8px 10px 6px; border-radius:14px; border:1px solid #2c2c2c; background:linear-gradient(180deg,#191919,#111); box-shadow:inset 0 1px 0 rgba(255,255,255,.05); min-width:0; }
+  .focus .tbox .th { font-size:12px; font-weight:800; letter-spacing:1.2px; color:#9a9a9a; text-transform:uppercase; }
+  .focus .tbox .th span { font-size:12.5px; letter-spacing:0; text-transform:none; color:#8a8a8a; overflow:hidden; text-overflow:ellipsis; }
+  .focus .tbox .tv, .focus .away .av { font-family:"Roboto Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace; font-variant-numeric:tabular-nums; letter-spacing:-1.5px; font-weight:700; }
+  .focus .tbox .tv { font-size:44px; line-height:1.12; margin-top:2px; }
+  .focus .tbox.on { border-color:var(--amber); background:linear-gradient(180deg,#33260a,#1f1706); box-shadow:0 0 0 1px rgba(255,176,32,.35), 0 0 18px rgba(255,176,32,.28); }
+  .focus .tbox.on::before { content:""; position:absolute; top:11px; right:10px; width:8px; height:8px; border-radius:50%; background:var(--amber); box-shadow:0 0 8px var(--amber); }
+  .focus .tbox.on .th span { margin-right:14px; }
+  .focus .tbox.warn.ph { background:linear-gradient(180deg,#5a1010,#3a0a0a); box-shadow:0 0 18px rgba(255,59,48,.5); }
+  .focus .tbox.on.late { background:linear-gradient(180deg,#4a0d10,#2a0709); box-shadow:0 0 18px rgba(255,59,48,.45); } .focus .tbox.on.late::before { background:#ff453a; box-shadow:0 0 8px #ff453a; }
+  .focus .away { margin-top:10px; padding:9px 14px 10px; border-width:2px; border-radius:16px; background:linear-gradient(180deg,#33260a,#1f1706); box-shadow:0 0 22px rgba(255,176,32,.25); }
+  .focus .away .ah { align-items:center; font-size:13px; letter-spacing:1.4px; color:#f2d9a6; }
+  .focus .away .ah span:last-child { font-size:15px; letter-spacing:.2px; color:#fff; background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.14); border-radius:999px; padding:3px 10px; font-variant-numeric:tabular-nums; }
+  .focus .away .av { font-size:64px; line-height:1.08; margin:2px 0 0; } .focus .away .av small { font-family:inherit; font-size:24px; letter-spacing:0; margin-left:6px; }
+  .focus .away .as { font-size:14.5px; font-weight:700; color:#d8c8a8; font-variant-numeric:tabular-nums; }
+  .focus .away.warn.ph { background:linear-gradient(180deg,#d4501a,#a8320a); } .focus .away.warn:not(.ph) { background:linear-gradient(180deg,#ffc04d,#f0a010); }
+  .focus .away.late { background:linear-gradient(180deg,#c4161f,#8f0d14); box-shadow:0 0 24px rgba(255,59,48,.5); } .focus .away.late .ah { color:#fff; }
+  .focus .tbox .tv.long { font-size:34px; line-height:1.45; }
+  @media (max-width:380px){ .focus .punch { padding:8px 8px 7px; } .focus .pgrid, .focus .pgrid2 { gap:7px 8px; } .focus .pb { padding-left:3px; padding-right:3px; } .focus .pb b { font-size:12.5px; letter-spacing:0; } .focus .tbox .tv.long { font-size:30px; } .focus .pb i { font-size:13px; }
+    .focus .tbox .tv { font-size:38px; } .focus .away .av { font-size:56px; } .pill.fz .status { font-size:19px; } .tlist .k { min-width:86px; font-size:14px; } .tlist .t { font-size:16.5px; } }
+  /* v1.15.0 BREAK 1 / BREAK 2 cards + lunch card (full width) */
+  .focus .pgrid2.brk2 { grid-template-columns:1fr 1fr; }
+  .focus .ptim { grid-template-columns:1fr 1fr; } .focus .ptim .tbox.lu { grid-column:1 / -1; }
+  .focus .tbox .tv { text-align:center; }
+  .focus .tbox .tf { text-align:center; font-size:12.5px; font-weight:700; color:#9a9a9a; margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-variant-numeric:tabular-nums; }
+  .focus .tbox .tf b { color:#fff; font-weight:800; } .focus .tbox.on .tf { color:#f2d9a6; }
+  .focus .tbox.idle .tv { color:#4a4a4a; text-shadow:none; }
+  .focus .tbox .th span.ok { color:#34C759; } .focus .tbox .th span.late { color:#ff6b70; }
+  .focus .tbox.lu .tv { font-size:44px; }
+  .focus .dtot { display:grid; grid-template-columns:1fr 1fr 1.15fr; gap:6px; margin-top:8px; }
+  .focus .dtot > div { background:#141414; border:1px solid #2c2c2c; border-radius:10px; padding:5px 4px 6px; text-align:center; min-width:0; }
+  .focus .dtot span { display:block; font-size:10.5px; font-weight:800; letter-spacing:.6px; color:#9a9a9a; }
+  .focus .dtot b { display:block; font-family:"Cascadia Mono",ui-monospace,Menlo,Consolas,monospace; font-size:22px; font-weight:800; color:#fff; font-variant-numeric:tabular-nums; line-height:1.15; white-space:nowrap; }
+  .focus .dtot .all { border-color:#5a4410; background:#1d1606; } .focus .dtot .all b { color:#ffb020; }
+  .focus .dtot > div.on { border-color:#ffb020; background:#2a1f08; } .focus .dtot > div.on b { color:#ffb020; text-shadow:0 0 10px rgba(255,176,32,.6); }
+  .focus .btot { text-align:center; margin-top:5px; font-size:13px; font-weight:700; color:#8a8a8a; letter-spacing:.3px; font-variant-numeric:tabular-nums; } .focus .btot b { color:#fff; font-size:15px; }
+  @media (max-width:380px){ .focus .tbox .tf { font-size:11.5px; } .focus .tbox { padding:7px 7px 5px; } }
+  /* v1.15.0 final polish */
+  .focus .pb.set:disabled { opacity:.6; }
+  .focus .tbox.on::before { display:none; } .focus .tbox.on .th span { margin-right:0; }
+  .focus .away .ah { white-space:nowrap; gap:8px; } .focus .away .ah span:first-child { overflow:hidden; text-overflow:ellipsis; } .focus .away .ah span:last-child { white-space:nowrap; flex:none; }
+  .focus .away .as { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  @media (max-width:380px){ .focus .away .ah { font-size:11.5px; letter-spacing:.6px; } .focus .away .ah span:last-child { font-size:13px; padding:2px 8px; } .focus .away .as { font-size:13px; }
+    .focus .tbox .th { letter-spacing:.6px; font-size:11px; } .focus .tbox .th span { font-size:11.5px; } }
+  /* v2.0.10 punch grid: 2 columns, CLOCK IN / CLOCK OUT full width, CLOCK OUT red */
+  .pgrid.pgrid5, .focus .pgrid.pgrid5 { grid-template-columns:1fr 1fr; } .pgrid5 .pb.full { grid-column:1 / -1; }
+  .focus .pgrid5 .pb.out { background:#b3141c; border-color:#ff4d55; color:#fff; } .focus .pgrid5 .pb.out.set { background:#d0282e; } .focus .pgrid5 .pb.out i { color:#ffe0e0; }
+  .focus .pgrid5 .pb.out:disabled { opacity:.55; }
+  /* v2.0.12: running break / lunch countdown is the largest text on screen */
+  .focus .away .av, #awTime { font-size:80px !important; line-height:1.05; }
+  @media (max-width:380px){ .focus .away .av, #awTime { font-size:68px !important; } }
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <div class="bar"><span class="titlewrap"><span class="title">PAYCHECK LIVE</span><button class="gear tg" id="gearBtn" aria-label="Settings" title="Settings">&#9881;</button><button class="gear tg share" id="shareBtn" aria-label="Share" title="Share"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg></button></span><span class="barR"><span class="tag" id="tag"></span>
+    <button class="tog on" id="togBtn" aria-label="Display on/off">ON</button></span></div>
+  <div class="body" id="body">
+  <button class="updbanner" id="updBanner" type="button" style="display:none"><b>New version, tap to refresh</b><small id="updBannerSub"></small></button>
+    <div class="row" style="align-items:center;min-height:34px">
+      <span id="dateLabel" class="date">-</span>
+      <span class="btns" id="btns" style="display:none"><button class="btn start" id="startBtn">START</button><button class="btn stop" id="stopBtn">STOP</button><button class="btn" id="ffwdBtn" style="background:#3a3a3a" title="Fast-forward the simulated clock 5 minutes">+5m</button><button class="btn" id="ffwdH" style="background:#3a3a3a" title="Fast-forward 1 hour">+1h</button><button class="btn" id="ffwdD" style="background:#3a3a3a" title="Fast-forward 1 day (same time) - e.g. to Saturday, then a late CLOCK OUT pushes the week past 40 hrs">+1d</button></span>
+    </div>
+    <div class="herolabel" id="heroLabel"></div>
+    <div class="hero" id="hero">-</div>
+    <div class="herosub" id="heroSub"></div>
+    <!-- v1.15.0 FOCUS: status + clock-in time, big punch buttons, LEFT / BE BACK BY, stopwatches, today's punch times -->
+    <div class="focus" id="focus">
+    <div class="pill fz"><div class="frow"><span class="status"><span class="dot" id="dot"></span><span id="status">-</span></span><span class="sin" id="statusIn"></span></div><div class="sdet" id="statusDetail"></div></div>
+    <div class="prog"><div id="prog"></div></div>
+    <div class="punch" id="punch">
+      <!-- v2.0.10: CLOCK IN (full) / BREAK 1 | BREAK 1 BACK / LUNCH START | LUNCH BACK / BREAK 2 | BREAK 2 BACK / CLOCK OUT (full, red) -->
+      <div class="pgrid pgrid5">
+        <button class="pb in full" data-p="in"><b>CLOCK IN</b><i id="pt-in"></i></button>
+        <button class="pb bs b1" data-p="bs1"><b>BREAK 1</b><i id="pt-bs1"></i></button>
+        <button class="pb be b1" data-p="be1"><b>BREAK 1 BACK</b><i id="pt-be1"></i></button>
+        <button class="pb lo" data-p="lo"><b>LUNCH START</b><i id="pt-lo"></i></button>
+        <button class="pb li" data-p="li"><b>LUNCH BACK</b><i id="pt-li"></i></button>
+        <button class="pb bs b2" data-p="bs2"><b>BREAK 2</b><i id="pt-bs2"></i></button>
+        <button class="pb be b2" data-p="be2"><b>BREAK 2 BACK</b><i id="pt-be2"></i></button>
+        <button class="pb out full" data-p="out"><b>CLOCK OUT</b><i id="pt-out"></i></button>
+      </div>
+      <div class="away" id="awayBox" style="display:none"><div class="ah"><span id="awLab">BE BACK BY</span><span id="awLeft"></span></div><div class="av" id="awTime"></div><div class="as" id="awSub"></div></div>
+      <div class="ptim">
+        <div class="tbox bk" id="brkBox"><div class="th">BREAK 1 <span id="brkSub"></span></div><div class="tv" id="brkLive">--:--</div><div class="tf" id="brkFoot"></div></div>
+        <div class="tbox bk" id="brk2Box"><div class="th">BREAK 2 <span id="brk2Sub"></span></div><div class="tv" id="brk2Live">--:--</div><div class="tf" id="brk2Foot"></div></div>
+        <div class="tbox lu" id="lunBox"><div class="th">LUNCH <span id="lunSub"></span></div><div class="tv" id="lunLive">--:--</div><div class="tf" id="lunFoot"></div></div>
+      </div>
+      <!-- v2.0.4: today's time away (from the day's punches, incl. editor fixes; live while a break / lunch runs) -->
+      <div class="dtot" id="dayTot"><div id="dtB"><span>BREAKS</span><b id="dtBrk">00:00</b></div><div id="dtL"><span>LUNCH</span><b id="dtLun">00:00</b></div><div id="dtA" class="all"><span>TOTAL TODAY</span><b id="dtAll">00:00</b></div></div>
+      <div class="btot" id="brkTotal"></div>
+      <div class="prow"><span class="pnote" id="punchNote"></span><span><button class="lnk" id="pUndo">Undo</button><span class="pnote"> &middot; </span><button class="lnk" id="pReset">Reset to auto</button></span></div>
+      <div class="tlist" id="todayList"></div>
+      <button class="edwarn" id="edWarn" style="display:none"></button>
+      <button class="edopen" id="edOpen">&#9998; EDIT PUNCHES</button>
+    </div>
+
+    </div>
+
+    <div class="sec2">TODAY GROSS &amp; SCHEDULE</div>
+    <div class="hb" id="hb"><div class="g">
+      <div class="k">REGULAR</div><div class="k">SHIFT DIFF</div><div class="k">OVERTIME</div><div class="k t">TOTAL GROSS</div>
+      <div class="v" id="hbReg">-</div><div class="v df" id="hbDiff">-</div><div class="v ot" id="hbOT">-</div><div class="v tot" id="hbTot">-</div>
+      <div class="h" id="hbRegH"></div><div class="h" id="hbDiffH"></div><div class="h" id="hbOTH"></div><div class="h" id="hbTotH"></div>
+    </div><div class="ptol" id="hbPto" style="display:none"></div><div class="nt" id="hbNote"></div></div>
+    <div class="sched" id="sched">
+      <div class="row"><span class="sec" id="schedHead">TODAY'S SCHEDULE</span><span class="xs" style="color:#888;font-weight:600" id="schedHours"></span></div>
+      <div class="nextline" id="nextLine"></div>
+      <div class="tl" id="tl"></div>
+    </div>
+    <!-- v2.0.11 PTO: pick a day + the hours missed, paid at base rate (no differentials) -->
+    <div class="pto" id="ptoBox">
+      <div class="row"><span class="sec" style="color:#5AC8FA">PTO &middot; PAID TIME OFF</span><span class="xs" style="color:#888" id="ptoRate"></span></div>
+      <div class="ptog"><label>DAY<input type="date" id="ptoDay"></label><label>FROM<input id="ptoFrom" enterkeyhint="done"></label><label>TO<input id="ptoTo" enterkeyhint="done"></label></div>
+      <button class="ptoadd" id="ptoAdd">+ ADD PTO</button>
+      <div class="ptomsg" id="ptoMsg"></div><div class="ptosum" id="ptoSum"></div><div id="ptoList"></div>
+    </div>
+
+    <!-- v2.0.8: DAILY MONEY MADE (2-week daily list + period total) removed at Van's request; earlier days are still editable with the < > arrows in EDIT PUNCHES -->
+  </div>
+  <div class="brandbox"><div class="brand">DESIGN BY VAN</div>
+    <div class="verrow"><button class="ver" id="verBtn" title="Paycheck Live v2.0.14 - version history">v2.0.14 &middot; UPDATED OCT 16, 2026 2:25 PM</button><button class="upd" id="updBtn" title="Check for updates">UPDATE</button></div>
+    <div class="donate" id="donate"></div>
+  </div>
+</div>
+
+<div class="modalbg" id="edBg"><div class="modal ed">
+  <div class="edhead"><button class="edn" id="edPrev" aria-label="previous day">&#8249;</button><div style="text-align:center;flex:1"><h3>EDIT PUNCHES</h3><div class="dt" id="edDate"></div></div><button class="edn" id="edNext" aria-label="next day">&#8250;</button></div>
+  <div class="pnote" style="font-size:12px;color:#888">Tap a line to fix it, set the time, then tap the green SAVE (or Enter).</div>
+  <div id="edList"></div>
+  <div class="ederr" id="edErr"></div><div class="edok" id="edOk"></div>
+  <div class="edadd"><button class="mbtn" id="edAddB">+ ADD BREAK</button><button class="mbtn" id="edAddL">+ ADD LUNCH</button></div>
+  <div class="edsum" id="edSum"></div>
+  <button class="mbtn go" id="edClose">DONE</button>
+  <div class="edpad"></div>
+  <div class="edfoot" id="edFoot"><button id="edFootCancel" type="button">CANCEL</button><button class="save" id="edFootSave" type="button">&#10003; SAVE</button></div>
+</div></div>
+<div class="edtoast" id="edToast">SAVED &#10003;</div>
+<div class="modalbg" id="logBg"><div class="modal"><h3>Paycheck Live &middot; version history</h3><div id="logBody"><h4>v2.0.14 <span style="color:#777;font-weight:400">2026-10-16 14:25 CT</span></h4><ul>
+<li>Paycheck Live now lives at a permanent address (vanwidick.github.io/paycheck-live): the phone app and PC updates never change address again.</li>
+<li>Phones move over automatically with their profile, punches and PTO; the UPDATE button keeps working.</li>
+</ul>
+<h4>v2.0.13 <span style="color:#777;font-weight:400">2026-10-16 10:55 CT</span></h4><ul>
+<li>Shared copies (Share link / installer) now start blank: no pay rate, hours, punches, PTO or personal settings prefilled.</li>
+<li>New UPDATE button: shows only when a newer version is out; tap it to install/refresh right away. Hidden when up to date.</li>
+</ul>
+<h4>v2.0.12 <span style="color:#777;font-weight:400">2026-10-15 23:29 CT</span></h4><ul>
+<li>While a break or lunch is running, the countdown (time left) is now the biggest number on screen; &#x27;be back by&#x27; time is shown under it.</li>
+</ul>
+<h4>v2.0.11 <span style="color:#777;font-weight:400">2026-10-15 12:15 CT</span></h4><ul>
+<li>PTO: pick a day and the hours you missed (e.g. 11:30 AM to 4 PM); paid at base rate with no differentials, added to that day and the pay period, shown as its own PTO line (PC: PTO link next to Edit; phone: PTO section under the schedule).</li>
+<li>TOTAL TODAY under the timers now counts breaks only (Break 1 + Break 2 + extras); lunch keeps its own box.</li>
+</ul>
+<h4>v2.0.10 <span style="color:#777;font-weight:400">2026-10-10 21:38 CT</span></h4><ul>
+<li>Punch buttons in a 2-column grid: CLOCK IN (full width) / BREAK 1 | BREAK 1 BACK / LUNCH START | LUNCH BACK / BREAK 2 | BREAK 2 BACK / CLOCK OUT (full width, red). Same punch logic.</li>
+</ul>
+<h4>v2.0.9 <span style="color:#777;font-weight:400">2026-10-10 21:23 CT</span></h4><ul>
+<li>DESIGN BY VAN footer back at the bottom: the window is full height again (the v2.0.8 fit-to-content height cap moved the footer up). The 2-week DAILY MONEY MADE section stays removed.</li>
+</ul>
+<h4>v2.0.8 <span style="color:#777;font-weight:400">2026-10-10 20:04 CT</span></h4><ul>
+<li>Removed the DAILY MONEY MADE 2-week daily list and period total (everything from that heading down to the DESIGN BY VAN footer); the PC window now fits its content. Edit punches: new -1 / +1 minute buttons next to -15 / -5 / +5 / +15 (each saves right away).</li>
+</ul>
+<h4>v2.0.7 <span style="color:#777;font-weight:400">2026-10-08 16:22 CT</span></h4><ul>
+<li>Edit punches: a late clock in (or early clock out) now saves even when the schedule lunch/break falls outside the shift: that line is dropped and the day is marked No lunch (late start = no lunch). Typed times like 4, 4pm, 4:00 PM or 1600 pick the sensible AM/PM; -15/-5/+5/+15 save in one tap; Enter / Go / Done saves; SAVED check shows; NO LUNCH button on the lunch line.</li>
+</ul>
+<h4>v2.0.6 <span style="color:#777;font-weight:400">2026-10-08 16:18 CT</span></h4><ul>
+<li>Edit punches: type times the easy way (4, 4pm, 4:00 PM, 1600 — picks AM/PM for you), -15 / -5 / +5 / +15 buttons that save in one tap (clock in too), big green SAVE stays visible, Enter / Done saves, &#x27;SAVED ✓&#x27; confirmation, and a NO LUNCH button.</li>
+</ul>
+<h4>v2.0.5 <span style="color:#777;font-weight:400">2026-10-08 13:55 CT</span></h4><ul>
+<li>Today&#x27;s break + lunch totals next to the timers: BREAKS (Break 1 + Break 2), LUNCH and TOTAL TODAY, from your punches (including fixes in Edit punches), counting up live while a break or lunch runs. Includes the v2.0.4 X (close) on the OFF card.</li>
+</ul>
+<h4>v2.0.4 <span style="color:#777;font-weight:400">2026-10-08 13:52 CT</span></h4><ul>
+<li>Today&#x27;s break + lunch totals next to the timers: BREAKS (Break 1 + Break 2), LUNCH and TOTAL TODAY, from your punches (including fixes in Edit punches), counting up live while a break or lunch runs.</li>
+</ul>
+<h4>v2.0.3 <span style="color:#777;font-weight:400">2026-10-04 00:56 CT</span></h4><ul>
+<li>PC: only the gray Restore / Remember pair (top right, fades in on hover) — the green pills under the footer are gone; the OFF card snapshot no longer shows the Restore / Remember buttons.</li>
+</ul>
+<h4>v2.0.2 <span style="color:#777;font-weight:400">2026-10-04 00:27 CT</span></h4><ul>
+<li>PC: OFF button (hover, top-left) shrinks the window to a small card like TessDesk; ON brings it back, Restore moves it to its saved place. REMEMBER / RESTORE pills under the DESIGN BY VAN footer (same as TessDesk).</li>
+</ul>
+<h4>v2.0.1 <span style="color:#777;font-weight:400">2026-10-03 11:54 CT</span></h4><ul>
+<li>Edit punches: big green SAVE + CANCEL pinned at the bottom (stays above the phone keyboard); Enter saves; &#x27;Saved&#x27; confirmation; -5/+5/END = NOW save in one tap; typed times like 3:05 PM work everywhere; fixed the PC punch editor not opening</li>
+</ul>
+<h4>v2.0.0 <span style="color:#777;font-weight:400">2026-10-03 03:14 CT</span></h4><ul>
+<li>Paycheck Live is now a real Windows app: PaycheckLive.exe with its own icon, Setup installer (no admin), Start menu + Desktop shortcuts, optional start with Windows, listed in Settings &gt; Apps</li>
+<li>Your data now lives in %APPDATA%\PaycheckLive (copied from the old widget folder, nothing removed)</li>
+<li>Update now downloads, replaces and relaunches the app by itself</li>
+<li>New Share button (by the gear and in Settings): Messenger, Text, Email, Copy link, Send to a phone (QR)</li>
+<li>Restore / Remember buttons (top right, show on hover) save and restore the window&#x27;s place and size</li>
+<li>Phone: Share button + installable app (add to home screen)</li>
+</ul>
+<h4>v1.15.0 <span style="color:#777;font-weight:400">2026-10-02 17:08 CT</span></h4><ul>
+<li>New layout: today&#x27;s clock in/out, breaks and lunch are the focus. Smaller net amount on top; bigger status, buttons, LEFT / BE BACK BY and stopwatches.</li>
+<li>BREAK 1 and BREAK 2: separate START / END buttons, each with its own stopwatch, LEFT / BACK BY time and on-time/late. Total break time kept.</li>
+<li>Today&#x27;s punch list (tap a line to edit). Gross breakdown + schedule below; DAILY MONEY MADE at the bottom.</li>
+</ul>
+<h4>v1.14.2 <span style="color:#777;font-weight:400">2026-10-02 16:30 CT</span></h4><ul>
+<li>EDIT PUNCHES: fix a forgotten END BREAK with one tap (15 MIN), change/add/delete breaks and lunch, edit clock in/out, today or earlier days this pay period.</li>
+<li>A break whose END BREAK was not pressed now shows an orange warning; tap it to fix.</li>
+</ul>
+<h4>v1.14.1 <span style="color:#777;font-weight:400">2026-10-02 16:07 CT</span></h4><ul>
+<li>Fix: today&#x27;s money no longer resets after lunch. CLOCK IN after lunch (or CLOCK OUT / CLOCK IN used for lunch) now resumes from the pre-lunch amount instead of restarting the day; the 11:30 start always counts.</li>
+<li>A forgotten END BREAK now closes itself at the next lunch / break / clock punch.</li>
+</ul>
+<h4>v1.14.0 <span style="color:#777;font-weight:400">2026-10-02 11:06 CT</span></h4><ul>
+<li>Today&#x27;s GROSS pay breakdown under the big total: Regular, Shift diff (after 6 PM + weekend, stacking), Overtime (with hours) and Total gross - live.</li>
+<li>DAILY MONEY MADE now shows each day&#x27;s shift diff and OT (hours + $), and week / period totals of shift diff, OT and gross.</li>
+<li>Overtime: hours over 40 in the Sat-Fri workweek pay 1.5x (base + diff); taxes and net include it. Settings: Overtime after [40] hrs/week at [1.5]x.</li>
+<li>TEST: right-click +5m for +15 min / +1 hour / +1 day (phone: +1h, +1d) to check overtime.</li>
+</ul>
+<h4>v1.13.0 <span style="color:#777;font-weight:400">2026-10-02 10:40 CT</span></h4><ul>
+<li>BE BACK BY: when you press START BREAK or OUT TO LUNCH the widget shows the time you LEFT and a big BE BACK BY time (break = your break length, default 15 min; lunch = your profile lunch length, 60 min for Van). It&#x27;s the most prominent thing on the panel and also shows in the status line.</li>
+<li>Flashing warning: the break timer and BE BACK BY flash amber/red during the last 5 minutes of a break and the last 15 minutes of lunch. Once you&#x27;re overdue it turns solid red: LATE +m:ss.</li>
+<li>After a break or lunch ends, a small note keeps the left -&gt; back times and whether you were on time or late; the break and lunch totals stay as before.</li>
+<li>New Break length (min) setting (default 15) in Settings and the first-run setup.</li>
+<li>PAYCHECK TEST: new +5m fast-forward button next to START / STOP to check BE BACK BY, the flashing and LATE.</li>
+</ul>
+<h4>v1.12.2 <span style="color:#777;font-weight:400">2026-10-02 10:22 CT</span></h4><ul>
+<li>Clock panel: START BREAK and END BREAK now sit side by side on one line, with two large BREAK and LUNCH timers underneath (about 3x bigger). The running timer glows amber; when idle, BREAK shows today&#x27;s total and LUNCH shows the final lunch length. Spacing elsewhere tightened slightly so everything still fits in 288x720.</li>
+</ul>
+<h4>v1.12.1 <span style="color:#777;font-weight:400">2026-10-01 15:29 CT</span></h4><ul>
+<li>The first-time setup wizard (and the INSTALLER PREVIEW setup) now opens on the widget display instead of wherever the mouse is; the preview wizard opens right at the preview window.</li>
+</ul>
+<h4>v1.12.0 <span style="color:#777;font-weight:400">2026-10-01 15:24 CT</span></h4><ul>
+<li>DAILY MONEY MADE replaces the pay period / next paycheck / pay history section: every day of the current pay period (days off show Day off - $0.00), today marked, future days projected, Sat-Fri week subtotals and the period total = approx. paycheck (net, gross small).</li>
+<li>Manual clock buttons: CLOCK IN, OUT TO LUNCH, BACK FROM LUNCH, CLOCK OUT record your actual times for today and override the automatic schedule; Undo and Reset to auto.</li>
+<li>START BREAK / END BREAK with a live mm:ss break timer and today&#x27;s break total; OUT TO LUNCH starts a live lunch stopwatch that shows the final lunch length after BACK FROM LUNCH. Breaks are paid or unpaid per your profile (default paid).</li>
+<li>Pay, the live total, the schedule timeline and the daily list all use your punches; break and lunch lengths show in the timeline and are saved per date.</li>
+<li>Settings gear now sits right next to the PAYCHECK LIVE heading; setup and settings ask for the full weekly schedule (per-day times, days off) and whether extra breaks are paid.</li>
+<li>New Paycheck Live INSTALLER PREVIEW (PC window + phone page) runs the full first-time setup fresh every time it opens without touching your real profile.</li>
+<li>Release channel is now LIVE; PAYCHECK TEST is built from LIVE and is identical except the START/STOP simulator.</li>
+</ul>
+<h4>v1.11.0 <span style="color:#777;font-weight:400">2026-09-29 16:12 CT</span></h4><ul>
+<li>First-run SETUP WIZARD: name, hourly rate, work days and shift times, lunch/breaks (paid or unpaid), differentials, weekly or every-2-weeks pay, pay-week start, next payday, filing status, state, pre-tax (e.g. 401(k) %) and after-tax (e.g. stock purchase) deductions. Your setup name is what shows in the Users list.</li>
+<li>Gear-icon SETTINGS / PROFILE page to edit everything after install.</li>
+<li>TODAY&#x27;S SCHEDULE timeline replaces the shift breakdown under the big net amount: clock in, breaks, lunch, differential start and clock out, with the current segment highlighted and a countdown to the next event.</li>
+<li>Full paycheck lines: every pre-tax and after-tax deduction plus federal, state, Social Security and Medicare.</li>
+<li>Support the creator (optional, suggested $1): Venmo and PayPal in Settings, plus a small link by the footer.</li>
+<li>Profile-driven pay and tax engine (no hardcoded pay); Van&#x27;s profile is the default on his copies.</li>
+</ul>
+<h4>v1.10.2 <span style="color:#777;font-weight:400">2026-09-29 15:45 CT</span></h4><ul>
+<li>Release-channel test of the phone update flow (no pay changes).</li>
+</ul>
+<h4>v1.10.1 <span style="color:#777;font-weight:400">2026-09-29 15:42 CT</span></h4><ul>
+<li>Fix: first-run install registration now reaches the Users list on the first try (PC).</li>
+<li>Update diagnostics log (update-log.txt) next to the PC widget.</li>
+</ul>
+<h4>v1.10.0 <span style="color:#777;font-weight:400">2026-09-29 ~16:00 CT</span></h4><ul>
+<li>Pay corrected from Van&#x27;s real paystub: base rate $26.46/hr (was $26.75); differentials unchanged (+$2 after 6 PM, +$2 weekends, stacking).</li>
+<li>401(k) pre-tax is 10% of gross (was 7%); paystub check: $245.81 on $2,458.07.</li>
+<li>New $50.00 AFTER-TAX stock purchase per biweekly check, on its own line and spread across shifts.</li>
+<li>UPDATE button next to the version: lights up when a newer version is published; pop-up with the changelog (Update now / Later).</li>
+<li>First-open name prompt + install registration in Van&#x27;s Users sheet.</li>
+</ul>
+<h4>v1.9.0 <span style="color:#777;font-weight:400">2026-09-29 ~04:15 CT</span></h4><ul>
+<li>BIWEEKLY pay: Wednesday paydays every 2 weeks (9/30, 10/14, 10/28, ...); each check covers the two Sat-Fri weeks ending the Friday before payday (9/30 check = 9/12-9/25).</li>
+<li>Pay period shows both weeks day by day; countdown and expected paycheck are the 2-week amount.</li>
+<li>Withholding from the Pub 15-T 2026 BIWEEKLY percentage table (HOH) and Oklahoma OW-2 Table 2 (bi-weekly); 401(k) 7% pre-tax.</li>
+<li>TEST pages/widget: simulated paydays follow the same biweekly pattern.</li>
+</ul>
+<h4>v1.8.0 <span style="color:#777;font-weight:400">2026-09-29 ~04:00 CT</span></h4><ul>
+<li>Desktop widgets pinned to Van&#x27;s left-screen lineup on DISPLAY1 (TEST 939,42 · LIVE 1239,42 · Tesla 1539,42), survives restarts.</li>
+<li>Desktop widgets back to 288x720 with the DESIGN BY VAN footer (layout tightened, nothing clipped).</li>
+</ul>
+<h4>v1.7.0 <span style="color:#777;font-weight:400">2026-09-29 ~03:45 CT</span></h4><ul>
+<li>Dani edition: first-run setup wizard (rate, pay frequency + next payday, work days, start/end, lunch, hours/week, federal filing status, Oklahoma yes/no + allowances, optional 401(k)); nothing personal built in.</li>
+<li>Tap any day to enter start/end time, lunch, or extra overtime hours; live counter follows the entered times.</li>
+<li>Overtime: shift hours over 40 in the work week and manually entered extra hours are paid at 1.5x (each hour counted once).</li>
+<li>Settings: re-run setup, or reset everything and start over. &quot;Private by design&quot; note; all data stays on the device.</li>
+</ul>
+<h4>v1.6.0 <span style="color:#777;font-weight:400">2026-09-29 ~03:40 CT</span></h4><ul>
+<li>Display ON/OFF toggle: OFF applies a heavy blur over the numbers (toggle stays sharp); state is remembered.</li>
+<li>&quot;DESIGN BY VAN&quot; footer with version + date; tap the version to see this changelog.</li>
+</ul>
+<h4>v1.5.0 <span style="color:#777;font-weight:400">2026-09-29 02:32 CT</span></h4><ul>
+<li>Hosted phone pages (public-safe build): home-screen install (web app manifest + icons), offline service worker, tax profile carried in the link fragment instead of the file.</li>
+</ul>
+<h4>v1.4.0 <span style="color:#777;font-weight:400">2026-09-29 02:27 CT</span></h4><ul>
+<li>Android phone pages: LIVE (real Central clock) and TEST (START/STOP simulated clock).</li>
+</ul>
+<h4>v1.3.0 <span style="color:#777;font-weight:400">2026-09-29 02:21 CT</span></h4><ul>
+<li>TEST clock runs continuously across days and weeks; days before START count $0.</li>
+<li>Day-off hero: on days off the headline shows the day name with &quot;DAY OFF&quot;.</li>
+</ul>
+<h4>v1.2.0 <span style="color:#777;font-weight:400">2026-09-29 02:17 CT</span></h4><ul>
+<li>TEST widget with START (reset) / STOP (freeze) simulated clock and its own desktop shortcut.</li>
+</ul>
+<h4>v1.1.0 <span style="color:#777;font-weight:400">2026-09-29 02:08 CT</span></h4><ul>
+<li>Headline switched to approximate NET pay: IRS Pub 15-T 2026 federal withholding, Social Security, Medicare, Oklahoma OW-2 withholding, pre-tax deductions; editable tax-settings file. (Gross-only build kept as a .bak.)</li>
+</ul>
+<h4>v1.0.0 <span style="color:#777;font-weight:400">2026-09-29 01:49 CT</span></h4><ul>
+<li>First release: desktop Paycheck Live widget (WPF) — live shift earnings from the schedule, shift differentials, pay week, next paycheck, pay-history tiles; desktop + startup shortcut installer.</li>
+</ul></div><button class="mbtn" id="logClose">Close</button></div></div>
+<div class="modalbg" id="updBg"><div class="modal" style="border-color:#E82127"><div class="sec">UPDATE AVAILABLE</div><h3 id="updTitle" style="color:#fff;margin:4px 0 2px">Update available</h3><div class="xs" style="color:#888" id="updSub"></div><ul id="updLog" style="margin-top:8px"></ul>
+  <button class="mbtn go" id="updNow">Update now</button><button class="mbtn" id="updLater">Later</button></div></div>
+<div class="modalbg" id="wizBg"><div class="modal" id="wiz"></div></div>
+<div class="modalbg" id="shBg"><div class="modal" style="border-color:#E82127"><div class="sec">SHARE Paycheck Live</div>
+  <div class="xs" style="color:#aaa;margin-top:2px">Send a friend the free app: PC download + phone version.</div>
+  <div class="shgrid">
+    <a class="shbtn" id="shMsg" href="#" target="_blank" rel="noopener"><span>&#128172;</span>Messenger</a>
+    <a class="shbtn" id="shSms" href="#"><span>&#128241;</span>Text</a>
+    <a class="shbtn" id="shMail" href="#"><span>&#9993;&#65039;</span>Email</a>
+    <button class="shbtn" id="shCopy"><span>&#128279;</span>Copy link</button>
+  </div>
+  <img class="shqr" id="shQr" alt="QR code for the share link">
+  <div class="shlink" id="shLink"></div>
+  <div class="xs" style="color:#888;text-align:center;margin-top:4px">Scan with a phone camera to open it.</div>
+  <button class="mbtn go" id="shInstall" style="display:none">Install on this phone</button>
+  <button class="mbtn" id="shClose">Close</button></div></div>
+
+<script>/*__PCL_INJECT__*/</script>
+<script>
+"use strict";
+const MODE = "live";                 // "live" | "test"
+const APP_VERSION = "2.0.14", APP_DATE = "2026-10-16";
+const UPDATE_API = window.__PCL_EXEC__ || "https://vanwidick.github.io/paycheck-live/api/";   // version manifest + install log endpoint (Apps Script web app or box server)
+const ON_GAS = !!window.__PCL_EXEC__;
+const DONATE = {"venmo": "https://venmo.com/u/VanWidick", "paypal": "https://paypal.me/VanWidick/1", "cashapp": ""};               // tip jar (Venmo / PayPal; Cash App hidden until a cashtag exists; never an email)
+const PREVIEW = true;             // v1.12 installer preview page: runs the install/setup from scratch on every open, saves nothing real
+const KP = PREVIEW ? "preview." : "";
+const STORE_KEY = KP+"paycheckTestState.v1", PROFILE_KEY = KP+"paycheckProfile.v2", LEGACY_KEY = KP+"paycheckTaxProfile.v1";
+const PUNCH_KEY = KP+"paycheckPunches."+MODE+".v1";   // v1.12 manual clock punches per date {iso:[[kind,secOfDay],...]}
+const Q = new URLSearchParams(location.search);
+const INJ = window.__PCL_PARAMS__ || {};
+// ================================================================ Paycheck Live engine (profile-driven, integer cents)
+// Shared by the phone pages (inlined at build time) and the node self-tests.
+const DAY = 86400000;
+const div = (n,d) => Math.floor((2*n + d) / (2*d));          // round half up for n>=0 (integers)
+const rnd = (n,d) => n<0 ? -div(-n,d) : div(n,d);
+const hm = s => { const m=/^(\d{1,2}):(\d\d)$/.exec(String(s||"")); return m ? (+m[1])*60+(+m[2]) : null; };
+const toCents = x => Math.round((+x||0)*100);
+// Van's own profile (prefill for his copies). Nothing in the engine depends on it.
+const VAN_PRESET = { name:"Van", rate:26.46, days:[2,3,4,5,6], start:"11:30", end:"20:30",
+  breaks:[{label:"Lunch", start:"15:00", end:"16:00", paid:false}],
+  diffs:[{label:"Evening", amount:2, after:"18:00"}], wkndDiff:2, wkndDays:[6,0],
+  freq:"biweekly", weekStart:6, nextPayday:"2026-09-30", breakPaid:true,
+  fs:"hoh", st:"ok", oka:1, stPct:0,
+  pretax:[{label:"401(k)", type:"pct", value:10, fica:false}],
+  aftertax:[{label:"Stock purchase", type:"amt", value:50}] };
+const BLANK_PROFILE = { name:"", rate:20, days:[1,2,3,4,5], start:"09:00", end:"17:30",
+  breaks:[{label:"Lunch", start:"12:00", end:"12:30", paid:false}], diffs:[], wkndDiff:0, wkndDays:[6,0],
+  freq:"biweekly", weekStart:0, nextPayday:"", breakPaid:true, fs:"single", st:"none", oka:1, stPct:0, pretax:[], aftertax:[] };
+
+// IRS Pub 15-T 2026 percentage method. BIWEEKLY manual tables (Worksheet 4, STANDARD, Step 2 unchecked):
+// [atLeastCents, tentativeCents, pct] (excess over atLeast)
+const FED_BW = {
+  hoh:    [[0,0,0],[92900,0,10],[161000,6810,12],[352300,29766,22],[499400,62128,24],[868800,150784,32],[1078300,217824,35],[2556700,735264,37]],
+  single: [[0,0,0],[61900,0,10],[109600,4770,12],[255800,22314,22],[468500,69108,24],[838000,157788,32],[1047400,224796,35],[2525800,742236,37]],
+  mfj:    [[0,0,0],[123800,0,10],[219200,9540,12],[511500,44616,22],[936900,138204,24],[1676000,315588,32],[2094800,449604,35],[3080400,794564,37]] };
+// ANNUAL automated tables (Worksheet 1A) for other frequencies; Step-2-unchecked adjustment 8,600 (12,900 MFJ)
+const FED_AN = {
+  hoh:    [[0,0,0],[1555000,0,10],[3325000,177000,12],[8300000,774000,22],[12125000,1615500,24],[21730000,3920700,32],[27175000,5663100,35],[65615000,19117100,37]],
+  single: [[0,0,0],[750000,0,10],[1990000,124000,12],[5790000,580000,22],[11320000,1796600,24],[20927500,4102400,32],[26372500,5844800,35],[64810000,19297925,37]],
+  mfj:    [[0,0,0],[1930000,0,10],[4410000,248000,12],[12010000,1160000,22],[23070000,3593200,24],[42285000,8204800,32],[53175000,11689600,35],[78800000,20658350,37]] };
+// Oklahoma OW-2 2026: Table 2 BI-WEEKLY and Table 1 WEEKLY, [overCents, baseCents, permille]; allowance per period
+const OK_TBL = { 26:{ s:[[0,0,0],[38800,0,25],[43300,111,35],[52100,420,45]], m:[[0,0,0],[77700,0,25],[86500,221,35],[104200,840,45]], allow:3846 },
+                 52:{ s:[[0,0,0],[19400,0,25],[21600,55,35],[26100,210,45]],  m:[[0,0,0],[38800,0,25],[43300,111,35],[52100,420,45]], allow:1923 } };
+const FREQ = { weekly:{ n:52, days:7 }, biweekly:{ n:26, days:14 } };
+
+function normProfile(p){
+  p = Object.assign({}, BLANK_PROFILE, p||{});
+  p.days=(p.days||[]).map(Number); p.wkndDays=(p.wkndDays||[]).map(Number);
+  p.breaks=(p.breaks||[]).filter(b=>hm(b.start)!=null && hm(b.end)!=null && hm(b.end)>hm(b.start));
+  p.diffs=(p.diffs||[]).filter(d=>hm(d.after)!=null && +d.amount);
+  p.pretax=(p.pretax||[]).filter(d=>+d.value>0); p.aftertax=(p.aftertax||[]).filter(d=>+d.value>0);
+  if (!FREQ[p.freq]) p.freq="biweekly";
+  if (p.breakPaid==null) p.breakPaid=true; p.breakPaid=!!p.breakPaid;
+  p.breakLen = (+p.breakLen>=1 && +p.breakLen<=240) ? Math.round(+p.breakLen) : 15;   // v1.13: minutes per START BREAK (BE BACK BY)
+  // v1.14: overtime (FLSA default) = paid hours over otAfter in the workweek (starts on weekStart) at otMult x (base + diffs)
+  p.otOn = (p.otOn==null) ? true : !!p.otOn;
+  p.otMult = (+p.otMult>=1 && +p.otMult<=4) ? +p.otMult : 1.5;
+  p.otAfter = (+p.otAfter>0 && +p.otAfter<=168) ? +p.otAfter : 40;
+  const pd={}; if (p.perDay) for (const k of Object.keys(p.perDay)){ const x=p.perDay[k]; if (x && hm(x.start)!=null && hm(x.end)!=null && hm(x.end)>hm(x.start)) pd[+k]={start:x.start,end:x.end}; }
+  p.perDay=pd;
+  return p;
+}
+function isoToUTC(s){ const m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(s||""); return m ? Date.UTC(+m[1],+m[2]-1,+m[3]) : null; }
+function utcToIso(d){ return new Date(d).toISOString().slice(0,10); }
+
+// Builds a calculator bound to one profile.
+function makeEngine(prof){
+  const P = normProfile(prof);
+  const R = { base:toCents(P.rate), start:hm(P.start), end:hm(P.end), wknd:toCents(P.wkndDiff),
+              breaks:P.breaks.map(b=>({label:b.label||"Break", s:hm(b.start), e:hm(b.end), paid:!!b.paid})),
+              diffs:P.diffs.map(d=>({label:d.label||"Differential", amt:toCents(d.amount), after:hm(d.after)})).sort((a,b)=>a.after-b.after) };
+  const F = FREQ[P.freq], PD = F.days, N = F.n;
+  const WORK = P.days, WKND = P.wkndDays;
+  // pay calendar: period = PD days starting on weekStart; a payday pays the period ending on the last
+  // week-end day strictly before it (e.g. Sat-Fri weeks, Wed payday 9/30 -> 9/12..9/25, lag 5 days)
+  let payAnchor = isoToUTC(P.nextPayday);
+  if (payAnchor==null){ let d=Date.UTC(2026,0,2); payAnchor=d; }
+  const weekEnd = (P.weekStart+6)%7;
+  let pe = payAnchor - DAY; while (new Date(pe).getUTCDay()!==weekEnd) pe -= DAY;
+  const LAG = Math.round((payAnchor-pe)/DAY);                 // days from period end to payday
+  const PERIOD_ANCHOR = pe - (PD-1)*DAY;                      // first day of the period paid on payAnchor
+  const isWork = d => WORK.includes(new Date(d).getUTCDay());
+  const LUNCH = R.breaks.find(b=>/lunch/i.test(b.label)) || R.breaks.find(b=>!b.paid) || null;
+  // ---- manual punches (v1.12): per-date log [[kind, secOfDay], ...]; kinds in|lo|li|out|bs|be. Last press of a kind wins; bs/be pair up.
+  let PUNCH = {}; let PTO = {};   // v2.0.11 PTO {iso:[[fromMin,toMin],...]} paid at base rate, no differentials
+  function punchRec(iso){
+    const log = PUNCH[iso]; if (!log || !log.length) return null;
+    // v1.14.1: read the log in order. CLOCK IN never moves the start once the day is under way: after CLOCK OUT it resumes
+    // (the gap is unpaid), during an open lunch it = BACK FROM LUNCH, during an open break it = END BREAK, otherwise it is ignored.
+    // A forgotten END BREAK closes itself at the next lunch / break / clock punch. A second lunch keeps the first one.
+    const r = { in:null, lo:null, li:null, out:null, inS:null, loS:null, liS:null, outS:null, br:[], gaps:[] };
+    let started=false;
+    const brOpen = () => { const o=r.br.length && r.br[r.br.length-1]; return o && o[1]==null ? o : null; };
+    const closeBr = (mm,t,auto) => { const o=brOpen(); if (o){ o[1]=Math.max(mm,o[0]); o[3]=t; o[4]=!!auto; } };   // o[4] = auto-closed (END BREAK never pressed)
+    const lunchOpen = () => r.lo!=null && r.li==null;
+    const resume = (mm,t) => { r.gaps.push([r.out, Math.max(mm,r.out), r.outS, t, "off"]); r.out=null; r.outS=null; };
+    for (const [k,t] of log){ const mm=Math.floor(t/60);
+      if (k==="in"){
+        if (!started){ r.in=mm; r.inS=t; continue; }                 // first punch(es) of the day: last CLOCK IN wins (correction)
+        if (r.out!=null) resume(mm,t);
+        else if (lunchOpen()){ r.li=Math.max(mm,r.lo); r.liS=t; }
+        else if (brOpen()) closeBr(mm,t,true);
+        continue; }
+      started=true;
+      if (k==="bs"){ closeBr(mm,t,true); r.br.push([mm,null,t,null,false]); }
+      else if (k==="be") closeBr(mm,t,false);
+      else if (k==="lo"){ closeBr(mm,t,true); if (r.lo!=null && r.li!=null) r.gaps.push([r.lo, r.li, r.loS, r.liS, "lunch"]); r.lo=mm; r.loS=t; r.li=null; r.liS=null; }
+      else if (k==="li"){ if (lunchOpen()){ r.li=Math.max(mm,r.lo); r.liS=t; } else if (r.out!=null) resume(mm,t); else if (r.lo!=null){ r.li=Math.max(mm,r.lo); r.liS=t; } }
+      else if (k==="out"){ closeBr(mm,t,true); if (lunchOpen()){ r.li=Math.max(mm,r.lo); r.liS=t; r.liAuto=true; } r.out=mm; r.outS=t; }
+    }
+    return r;
+  }
+  // effective day: schedule (per-weekday) overridden by punches. live=true -> open lunch/break runs until "now"
+  function spec(d, live){
+    const iso=utcToIso(d), dow=new Date(d).getUTCDay(), pr=punchRec(iso), pd=P.perDay[dow];
+    const s0 = pd ? hm(pd.start) : R.start, e0 = pd ? hm(pd.end) : R.end;
+    const work = isWork(d) || !!(pr && pr.in!=null);
+    const s = (pr && pr.in!=null) ? pr.in : s0, e = (pr && pr.out!=null) ? Math.max(pr.out, s) : e0;
+    const brs=[];
+    for (const b of R.breaks){
+      if (b===LUNCH && pr && pr.lo!=null) continue;            // replaced by the actual lunch
+      if (b!==LUNCH && pr && pr.br.length) continue;           // replaced by actual breaks
+      brs.push({ kind:b===LUNCH?"lunch":"break", label:b.label, s:b.s, e:b.e, paid:b.paid, actual:false, open:false });
+    }
+    if (pr && pr.lo!=null){ const open = pr.li==null, plen = LUNCH ? LUNCH.e-LUNCH.s : 60;
+      brs.push({ kind:"lunch", label:LUNCH?LUNCH.label:"Lunch", s:pr.lo, e: open ? (live?Infinity:pr.lo+plen) : Math.max(pr.li,pr.lo), paid: LUNCH?LUNCH.paid:false, actual:true, open, sS:pr.loS, eS:pr.liS }); }
+    if (pr) for (const g of pr.gaps){ const lun = g[4]==="lunch";      // v1.14.1: earlier lunch / time clocked out between segments
+      brs.push({ kind:"off", label: lun ? (LUNCH?LUNCH.label:"Lunch") : "Off the clock", s:g[0], e:g[1], paid: lun ? (LUNCH?LUNCH.paid:false) : false, actual:true, open:false, sS:g[2], eS:g[3] }); }
+    if (pr) for (const x of pr.br){ const open=x[1]==null;
+      brs.push({ kind:"break", label:"Break", s:x[0], e: open ? (live?Infinity:x[0]) : x[1], paid:P.breakPaid, actual:true, open, sS:x[2], eS:x[3] }); }
+    for (let i=brs.length-1;i>=0;i--) if (brs[i].actual && !brs[i].open && brs[i].e===brs[i].s) brs.splice(i,1);   // v1.14.2: zero-length = deleted marker / sub-minute
+    brs.sort((a,b)=>a.s-b.s);
+    return { iso, work, s, e, s0, e0, brs, pr, sIn:!!(pr&&pr.in!=null), sOut:!!(pr&&pr.out!=null) };
+  }
+  const unpaidAt = (sp, m) => sp.brs.some(b=>!b.paid && m>=b.s && m<b.e);
+  const PAID_MIN = (()=>{ let n=0; for (let m=R.start;m<R.end;m++) if(!R.breaks.some(b=>!b.paid && m>=b.s && m<b.e)) n++; return n; })();
+  function rateAt(d, m){ let r=R.base; if (WKND.includes(new Date(d).getUTCDay())) r+=R.wknd; for (const x of R.diffs) if (m>=x.after) r+=x.amt; return r; }
+  // v1.14 overtime: straight paid minutes of earlier days in the workweek (TEST-reset days count 0)
+  const OT = { on:P.otOn, mult:Math.round(P.otMult*100), after:Math.round(P.otAfter*60) };
+  let ZB = null; const STRAIGHT = new Map();
+  function straightPaid(d){
+    if (ZB!=null && d<ZB) return 0;
+    if (STRAIGHT.has(d)) return STRAIGHT.get(d);
+    const sp=spec(d,false); let n=0; if (sp.work) for (let m=Math.max(sp.s,0); m<Math.min(sp.e,1440); m++) if (!unpaidAt(sp,m)) n++;
+    STRAIGHT.set(d,n); return n;
+  }
+  function otWeekStart(d){ let x=d; const w=((+P.weekStart||0)%7+7)%7; for (let i=0;i<7 && new Date(x).getUTCDay()!==w;i++) x-=DAY; return x; }
+  function ptoMinOf(iso, upTo){ let n=0; for (const x of (PTO[iso]||[])) n+=Math.max(0, Math.min(x[1], upTo)-x[0]); return n; }
+  function shiftCalc(d, upTo, live){
+    const sp=spec(d, !!live); let paid=0, dif=0, sum=0, reg=0, otMin=0, otSum=0; const wk=WKND.includes(new Date(d).getUTCDay());
+    let prior=0; if (OT.on && sp.work) for (let x=otWeekStart(d); x<d; x+=DAY) prior+=straightPaid(x);
+    if (sp.work) for (let m=sp.s; m<sp.e; m++){ if (m>=upTo) break; if (unpaidAt(sp,m)) continue;
+      const r=rateAt(d,m);
+      if (OT.on && prior+paid>=OT.after){ otMin++; otSum+=r*OT.mult; }
+      else { reg++; sum+=r; if (R.diffs.some(x=>m>=x.after)) dif++; }
+      paid++; }
+    const ptoMin=ptoMinOf(utcToIso(d), upTo), pto=div(R.base*ptoMin,60);
+    const total=div(sum*100+otSum,6000)+pto, base=div(R.base*reg,60), ot=div(otSum,6000), diff=total-pto-base-ot;
+    const diffWknd=Math.min(diff, (wk && R.wknd) ? div(R.wknd*reg,60) : 0);
+    return { date:d, work:sp.work, wk, paid, eve:dif, wkMin: (wk && R.wknd)?reg:0, base, diff, total, sp,
+             reg:base, regMin:reg, ot, otMin, diffWknd, diffEve: diff-diffWknd, prior, ptoMin, pto };
+  }
+  const fullShift = d => shiftCalc(d, 1440);
+  const effShift = (d, zb) => (zb!=null && d<zb) ? shiftCalc(d,0) : fullShift(d);
+  function periodGross(ps, zb){ let g=0; for (let i=0;i<PD;i++) g+=effShift(ps+i*DAY, zb).total; return g; }
+  const dedAmt = (x, g) => g<=0 ? 0 : x.type==="pct" ? div(g*Math.round(+x.value*100), 10000) : Math.min(g, toCents(x.value));
+  function withholding(g){
+    const pre = P.pretax.map(x=>({ label:x.label||"Pre-tax", amt:dedAmt(x,g), fica:!!x.fica }));
+    const preT = pre.reduce((a,x)=>a+x.amt,0), preF = pre.filter(x=>x.fica).reduce((a,x)=>a+x.amt,0);
+    const fit = Math.max(0, g-preT), fica = Math.max(0, g-preF);
+    let fed;
+    if (N===26){ const T=FED_BW[P.fs]||FED_BW.single; let row=T[0]; for (const r of T) if (fit>=r[0]) row=r;
+      fed = div(row[1]*100 + row[2]*(fit-row[0]), 100); }
+    else { const T=FED_AN[P.fs]||FED_AN.single; const aaw=Math.max(0, fit*N - (P.fs==="mfj"?1290000:860000));
+      let row=T[0]; for (const r of T) if (aaw>=r[0]) row=r; fed = div(row[1]*100 + row[2]*(aaw-row[0]), 100*N); }
+    const ss = div(fica*620,10000), med = div(fica*145,10000);
+    let st = 0;
+    if (P.st==="ok"){ const t=OK_TBL[N]; let okw=fit - t.allow*(+P.oka||0); if (okw<0) okw=0;
+      const tb = P.fs==="mfj" ? t.m : t.s; let o=tb[0]; for (const r of tb) if (okw>r[0]) o=r;
+      st = div(o[1]*1000 + o[2]*(okw-o[0]), 100000)*100; }
+    else if (P.st==="flat") st = div(fit*Math.round((+P.stPct||0)*100), 10000);
+    const aft = P.aftertax.map(x=>({ label:x.label||"After-tax", amt:dedAmt(x,g) }));
+    const aftT = aft.reduce((a,x)=>a+x.amt,0);
+    return { gross:g, pre, preT, k401:preT, fed, ss, med, ok:st, aft, aftT, net: g-preT-fed-ss-med-st-aftT };
+  }
+  function split(g, c){
+    if (c.gross<=0 || g<=0) return { gross:g, k401:0, preT:0, fed:0, ss:0, med:0, ok:0, aftT:0, net:g };
+    const f = x => div(g*x, c.gross);
+    const net=f(c.net), k=f(c.preT), ss=f(c.ss), med=f(c.med), ok=f(c.ok), a=f(c.aftT);
+    return { gross:g, k401:k, preT:k, fed:g-net-k-ss-med-ok-a, ss, med, ok, aftT:a, net };
+  }
+  const prevWork = d => { let p=d-DAY, i=0; while(!isWork(p) && i++<8) p-=DAY; return p; };
+  const nextWork = d => { let p=d+DAY, i=0; while(!isWork(p) && i++<8) p+=DAY; return p; };
+  const mod = (a,b) => ((a%b)+b)%b;
+  const periodStart = d => d - mod(Math.round((d-PERIOD_ANCHOR)/DAY), PD)*DAY;
+  const nextPayday = d => { const m=mod(Math.round((d-payAnchor)/DAY), PD); return m===0 ? d : d+(PD-m)*DAY; };
+  // first work day of the current work streak (TEST clock start: e.g. Tue for a Tue-Sat schedule)
+  function streakStart(d){ let x=d; for (let i=0;i<7 && !isWork(x);i++) x-=DAY; let i=0; while (isWork(x-DAY) && i++<6) x-=DAY; return x; }
+  // today's schedule timeline (events + current segment)
+  function timeline(d, m){
+    const sp=spec(d, true);
+    const ev=[{t:sp.s, kind:"in", label:"Clock in", actual:sp.sIn}];
+    for (const b of sp.brs){ ev.push({t:b.s, kind:"bs", label:b.label, end:b.e, b, actual:b.actual});
+      if (isFinite(b.e)) ev.push({t:b.e, kind:"be", label:"Back from "+b.label.toLowerCase(), b}); }
+    for (const x of R.diffs) if (x.after>sp.s && x.after<sp.e) ev.push({t:x.after, kind:"diff", label:"+"+(x.amt/100).toFixed(2).replace(/\.00$/,"")+"/hr "+x.label.toLowerCase()+" diff starts"});
+    ev.push({t:sp.e, kind:"out", label:"Clock out", actual:sp.sOut});
+    ev.sort((a,b)=>a.t-b.t || (a.kind==="be"?-1:b.kind==="be"?1:0));
+    const work=sp.work; let seg, next=null;
+    const br=sp.brs.find(b=>m>=b.s && m<b.e);
+    if (!work) seg={ kind:"off", label:"Day off" };
+    else if (m<sp.s){ seg={kind:"before", label:"Before shift"}; next=ev[0]; }
+    else if (m>=sp.e){ seg={kind:"done", label:"Shift complete"}; }
+    else { seg = br ? {kind:"break", label:br.label+(br.paid?" (paid)":" (unpaid)"), b:br} : {kind:"work", label:"Working"+(R.diffs.some(x=>m>=x.after)?" + diff":"")};
+      next = ev.find(e=>e.t>m && e.kind!=="be" || e.t>m && br && e.b===br) || ev.find(e=>e.t>m); }
+    return { ev, seg, next, work, sp, curIdx: ev.reduce((a,e,i)=>e.t<=m?i:a,-1) };
+  }
+  function state(now, zb){
+    if ((zb==null?null:zb)!==ZB){ ZB = (zb==null?null:zb); STRAIGHT.clear(); }   // v1.14: OT week context follows the TEST reset
+    const today=now.day, m=now.min, s={ now, dayOff:false };
+    const wd=new Date(today).getUTCDay();
+    const sp=spec(today, true); s.spec=sp; s.pr=sp.pr;
+    const br=sp.brs.find(b=>m>=b.s && m<b.e); s.br=br||null;
+    s.next=nextWork(today); s.nextStart=spec(s.next,false).s;
+    if (!sp.work){ s.status="OFF DAY"; s.color="#888888"; s.detail="Next shift "; s.heroDay=prevWork(today); s.heroToday=false; s.dayOff=true; }
+    else if (m<sp.s){ s.status="CLOCKED OUT"; s.color="#888888"; s.detail="Shift starts "; s.heroDay=prevWork(today); s.heroToday=false; }
+    else if (m>=sp.e){ s.status="CLOCKED OUT"; s.color="#888888"; s.detail="Shift complete"; s.heroDay=today; s.heroToday=true; }
+    else if (br){ s.status="ON "+br.label.toUpperCase(); s.onBreak=true; s.breakPaid=br.paid; s.color="#FFB020"; s.detail="Back at "; s.backAt=isFinite(br.e)?br.e:null; s.heroDay=today; s.heroToday=true; }
+    else { s.status="CLOCKED IN"; s.color="#34C759"; s.detail=""; s.heroDay=today; s.heroToday=true; }
+    s.hero = s.heroToday ? shiftCalc(today, m, true) : effShift(s.heroDay, zb);
+    s.dayPaidMin = sp.work ? fullShift(today).paid : 0;
+    { const hps=periodStart(s.heroDay); s.heroNet = split(s.hero.total, withholding(Math.max(periodGross(hps, null), periodGross(hps, zb)))); }   // v1.14: taxes include extra hours / OT
+    s.rate = (s.status==="CLOCKED IN" || (s.onBreak && s.breakPaid)) ? rateAt(today, m) : null;
+    const ws=periodStart(today); s.ws=ws; s.pe=ws+(PD-1)*DAY; s.pPay=s.pe+LAG*DAY;
+    s.weekCheck = withholding(periodGross(ws, null));
+    s.weekFull = periodGross(ws, zb); s.weekFullCheck = withholding(s.weekFull);
+    s.days=[]; let soFar=0;
+    for (let i=0;i<PD;i++){ const d=ws+i*DAY; let c, kind;
+      if (d<today){ c=effShift(d, zb); kind=(zb!=null && d<zb)?"reset":"past"; }
+      else if (d===today){ c=shiftCalc(d,m,true); kind="today"; }
+      else { c=effShift(d, zb); kind="future"; }
+      if (kind!=="future") soFar+=c.total;
+      s.days.push({ d, c, kind, net: split(c.total, s.weekCheck) }); }
+    s.soFar=soFar; s.soFarNet=split(soFar, s.weekCheck);
+    // DAILY MONEY MADE (v1.12): per-day net of the current period's projected check; today = so far (+ projected full day);
+    // week subtotals = sum of their days; period total = the approx. paycheck (weeks + a few cents of rounding)
+    { const chk=s.weekFullCheck, proj=[];
+      // each day = its own share of the check (same number the big hero shows); the few-cent difference vs the whole check is reported as s.rounding
+      for (let i=0;i<PD;i++){ const d=ws+i*DAY, c = d===today ? fullShift(d) : effShift(d, zb); proj.push({ d, g:c.total, n:split(c.total, chk).net, df:c.diff, ot:c.ot, om:c.otMin }); }
+      s.daily = s.days.map((w,i)=>({ d:w.d, kind:w.kind, work:w.c.work, off:!w.c.work, gross:w.c.total, net: w.kind==="today" ? split(w.c.total, chk).net : proj[i].n,
+                                     projNet: proj[i].n, projGross: proj[i].g, paid:w.c.paid, punched: !!(punchRec(utcToIso(w.d))),
+                                     diff:w.c.diff, ot:w.c.ot, otMin:w.c.otMin, projDiff:proj[i].df, projOT:proj[i].ot, projOTMin:proj[i].om }));
+      const sum=(a,f)=>a.reduce((t,x)=>t+x[f],0);
+      s.weeks=[]; for (let k=0;k<PD/7;k++){ const sl=proj.slice(k*7,k*7+7); s.weeks.push({ from:ws+k*7*DAY, to:ws+(k*7+6)*DAY, net:sum(sl,"n"), gross:sum(sl,"g"), diff:sum(sl,"df"), ot:sum(sl,"ot"), otMin:sum(sl,"om") }); }
+      s.periodDiff=sum(proj,"df"); s.periodOT=sum(proj,"ot"); s.periodOTMin=sum(proj,"om");
+      s.periodNet=chk.net; s.periodGross=chk.gross; s.rounding = chk.net - proj.reduce((a,x)=>a+x.n,0); }
+    s.payday=nextPayday(today); s.daysUntil=Math.round((s.payday-today)/DAY);
+    s.ppEnd=s.payday-LAG*DAY; s.ppStart=s.ppEnd-(PD-1)*DAY;
+    s.payCheck=withholding(periodGross(s.ppStart, zb));
+    s.tl = timeline(today, m);
+    return s;
+  }
+  function setPunches(o){ PUNCH = o || {}; STRAIGHT.clear(); }
+  function setPto(o){ PTO = o || {}; STRAIGHT.clear(); }
+  // ---- v1.14.2 punch editor: day model (seconds of day) <-> canonical punch log
+  // model = { in:{t,auto}, out:{t,auto}, segs:[{kind:"break"|"lunch"|"off", s, e (null = still open), auto (from the schedule), autoClosed, open}] }
+  function dayModel(iso){
+    const d=isoToUTC(iso), sp=spec(d,false), r=punchRec(iso), sec=m=>m*60;
+    const m={ in:{t: r && r.inS!=null ? r.inS : sec(sp.s0), auto: !(r && r.inS!=null)}, out:{t: r && r.outS!=null ? r.outS : sec(sp.e0), auto: !(r && r.outS!=null)}, segs:[] };
+    for (const b of sp.brs) if (!b.actual) m.segs.push({ kind: b.kind==="lunch"?"lunch":"break", s:sec(b.s), e:sec(b.e), auto:true, autoClosed:false, open:false, label:b.label });
+    if (r){
+      for (const g of r.gaps) m.segs.push({ kind: g[4]==="lunch"?"lunch":"off", s:g[2], e:g[3], auto:false, autoClosed:false, open:false });
+      if (r.loS!=null) m.segs.push({ kind:"lunch", s:r.loS, e:r.liS, auto:false, autoClosed:!!r.liAuto, open:r.liS==null });
+      for (const x of r.br) m.segs.push({ kind:"break", s:x[2], e:x[3], auto:false, autoClosed:!!x[4], open:x[3]==null });
+    }
+    // a zero-length actual lunch / break = "deleted" marker (overrides the scheduled one): hide it, remember the flag
+    const z = m.segs.filter(x=>!x.auto && x.e!=null && x.e===x.s);
+    m.noLunch = z.some(x=>x.kind==="lunch") && !m.segs.some(x=>x.kind==="lunch" && !(x.e!=null && x.e===x.s));
+    m.noBreaks = z.some(x=>x.kind==="break") && !m.segs.some(x=>x.kind==="break" && !(x.e!=null && x.e===x.s));
+    m.segs = m.segs.filter(x=>!z.includes(x));
+    m.segs.sort((a,b)=>a.s-b.s); return m;
+  }
+  function validateModel(m, allowOpen){
+    const ok=t=>t!=null && t>=0 && t<86400, segs=[...m.segs].sort((a,b)=>a.s-b.s), nm=x=>x.kind==="off"?"Off-the-clock time":x.kind==="lunch"?"Lunch":"Break";
+    if (!ok(m.in.t) || !ok(m.out.t)) return "Clock in and clock out need a time.";
+    if (m.out.t<=m.in.t) return "Clock out must be after clock in.";
+    for (let i=0;i<segs.length;i++){ const x=segs[i];
+      if (!ok(x.s)) return nm(x)+" needs a start time.";
+      if (x.e==null){ if (!(allowOpen && i===segs.length-1 && m.out.auto)) return nm(x)+" at "+fmtS(x.s)+" needs an end time."; }
+      else if (x.e<=x.s) return nm(x)+" must end after it starts ("+fmtS(x.s)+").";
+      if (x.s<m.in.t) return nm(x)+" at "+fmtS(x.s)+" starts before clock in ("+fmtS(m.in.t)+").";
+      if (x.e!=null && x.e>m.out.t) return nm(x)+" ends after clock out ("+fmtS(m.out.t)+").";
+      if (i>0 && segs[i-1].e!=null && x.s<segs[i-1].e) return nm(x)+" at "+fmtS(x.s)+" overlaps the "+nm(segs[i-1]).toLowerCase()+" before it.";
+    }
+    return null;
+  }
+  function buildLog(m){
+    const ev=[]; if (!m.in.auto) ev.push(["in",m.in.t,0]);
+    for (const x of m.segs){ const [a,b] = x.kind==="lunch" ? ["lo","li"] : x.kind==="break" ? ["bs","be"] : ["out","in"];
+      ev.push([a,x.s,2]); if (x.e!=null) ev.push([b,x.e,1]); }
+    if (!m.out.auto) ev.push(["out",m.out.t,3]);
+    // deleted scheduled lunch / breaks -> zero-length marker at clock-in so the schedule's one is not used
+    const t0 = m.in.t;
+    if (!m.segs.some(x=>x.kind==="lunch") && (m.noLunch || hasSchedLunch())) ev.push(["lo",t0,0.5],["li",t0,0.6]);
+    if (!m.segs.some(x=>x.kind==="break") && (m.noBreaks || hasSchedBreaks())) ev.push(["bs",t0,0.7],["be",t0,0.8]);
+    ev.sort((p,q)=>p[1]-q[1] || p[2]-q[2]); return ev.map(e=>[e[0],Math.round(e[1])]);
+  }
+  const hasSchedLunch = () => !!LUNCH, hasSchedBreaks = () => R.breaks.some(b=>b!==LUNCH);
+  const fmtS = t => { const h=Math.floor(t/3600)%24, mm=Math.floor(t/60)%60; return ((h%12)||12)+":"+String(mm).padStart(2,"0")+(h>=12?" PM":" AM"); };
+  return { P, R, OT, dayModel, validateModel, buildLog, getPunches:()=>PUNCH, setPto, getPto:()=>PTO, ptoMinOf, PD, N, LAG, PAID_MIN, LUNCH, spec, punchRec, setPunches, isWork, shiftCalc, fullShift, withholding, split, state, timeline, periodStart, nextPayday, streakStart, periodGross, prevWork, nextWork };
+}
+
+const PRESET = null;                // personal build: Van's profile; hosted build: null (profile comes from the link / setup)
+// ---------------------------------------------------------------- profile: localStorage > #fragment preset > legacy v1.9 link > first-run setup
+const ls = { get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }, set(k,v){ try { localStorage.setItem(k,v); } catch(e){} } };
+if (PREVIEW) { try { Object.keys(localStorage).filter(k=>k.startsWith("preview.")).forEach(k=>localStorage.removeItem(k)); } catch(e){} }
+const HASH = new URLSearchParams((location.hash||"").replace(/^#/,""));
+for (const k of ["fs","st","oka","k401","stock","rate","preset"]) { if (!HASH.has(k) && Q.has(k)) HASH.set(k, Q.get(k)); if (!HASH.has(k) && INJ[k]!=null && INJ[k]!=="") HASH.set(k, INJ[k]); }
+function presetFromHash(){
+  if (!HASH.has("fs") && !HASH.has("preset")) return null;
+  const p = JSON.parse(JSON.stringify(HASH.get("preset")==="van" || HASH.has("fs") ? VAN_PRESET : BLANK_PROFILE)); p.name="";
+  if (HASH.has("fs")) p.fs = HASH.get("fs"); if (HASH.has("st")) p.st = HASH.get("st")==="ok" ? "ok" : HASH.get("st")||"none";
+  if (HASH.has("oka")) p.oka = +HASH.get("oka");
+  if (HASH.has("k401")) p.pretax = +HASH.get("k401") ? [{label:"401(k)", type:"pct", value:+HASH.get("k401"), fica:false}] : [];
+  if (HASH.has("stock")) p.aftertax = +HASH.get("stock") ? [{label:"Stock purchase", type:"amt", value:+HASH.get("stock")}] : [];
+  if (HASH.has("rate")) p.rate = +HASH.get("rate");
+  return p;
+}
+function legacyPreset(){ // v1.9.0 phone links stored only the tax profile (k401=7); those were Van's links -> Van's corrected profile
+  try { const j=JSON.parse(ls.get(LEGACY_KEY)||"null"); if (j && j.fs){ const p=JSON.parse(JSON.stringify(VAN_PRESET)); p.name=""; p.fs=j.fs; p.st=j.st==="ok"?"ok":"none"; p.oka=+j.oka||0; return p; } } catch(e){}
+  return null;
+}
+let PROFILE = null; try { PROFILE = JSON.parse(ls.get(PROFILE_KEY)||"null"); } catch(e){}
+if (!PROFILE && INJ.prof) { try { PROFILE = JSON.parse(decodeURIComponent(escape(atob(String(INJ.prof))))); ls.set(PROFILE_KEY, JSON.stringify(PROFILE)); } catch(e){ PROFILE=null; } }
+if (!PROFILE && Q.get("prof")) { try { PROFILE = JSON.parse(decodeURIComponent(escape(atob(Q.get("prof"))))); ls.set(PROFILE_KEY, JSON.stringify(PROFILE)); } catch(e){} }
+const HASH_PRESET = presetFromHash();
+const FIRST_RUN = !PROFILE || !PROFILE.name;
+// v2.0.13: a shared copy (Share link -> /get -> phone page with no #settings) starts completely blank
+const SHARE_BLANK = Object.assign(JSON.parse(JSON.stringify(BLANK_PROFILE)), { rate:"", days:[], start:"", end:"", breaks:[], nextPayday:"", perDay:{} });
+const PREFILL = PREVIEW ? JSON.parse(JSON.stringify(BLANK_PROFILE)) : (PROFILE || HASH_PRESET || PRESET || legacyPreset() || SHARE_BLANK);
+let PUNCHES = {}; try { PUNCHES = JSON.parse(ls.get(PUNCH_KEY)||"{}")||{}; } catch(e){}
+const PTO_KEY = KP+"paycheckPto."+MODE+".v1";   // v2.0.11 {iso:[[fromMin,toMin],...]}
+let PTOD = {}; try { PTOD = JSON.parse(ls.get(PTO_KEY)||"{}")||{}; } catch(e){}
+// v2.0.14: moving to the permanent home carries profile, punches and PTO in the link; imported once, only into an empty copy
+if (!Object.keys(PUNCHES).length && Q.get("pun")) { try { PUNCHES = JSON.parse(decodeURIComponent(escape(atob(Q.get("pun")))))||{}; ls.set(PUNCH_KEY, JSON.stringify(PUNCHES)); } catch(e){} }
+if (!Object.keys(PTOD).length && Q.get("pto")) { try { PTOD = JSON.parse(decodeURIComponent(escape(atob(Q.get("pto")))))||{}; ls.set(PTO_KEY, JSON.stringify(PTOD)); } catch(e){} }
+if (Q.has("prof") || Q.has("pun")) { try { const cu=new URL(location.href); ["prof","pun","pto","cid","nm","ia","fromv"].forEach(k=>cu.searchParams.delete(k)); history.replaceState(null,"",cu.toString()); } catch(e){} }
+function newEngine(p){ const e=makeEngine(p); e.setPunches(PUNCHES); e.setPto(PTOD); return e; }
+let E = newEngine(PROFILE || (PREFILL===SHARE_BLANK ? BLANK_PROFILE : PREFILL));
+
+// ---------------------------------------------------------------- formatting
+const DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], DNL=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const dname = d => DN[new Date(d).getUTCDay()], dnameLong = d => DNL[new Date(d).getUTCDay()];
+const md = d => { const x=new Date(d); return (x.getUTCMonth()+1)+"/"+x.getUTCDate(); };
+const mon = d => { const x=new Date(d); return MN[x.getUTCMonth()]+" "+x.getUTCDate(); };
+function money(c){ const neg=c<0; c=Math.abs(c); const s=Math.floor(c/100).toLocaleString("en-US")+"."+String(c%100).padStart(2,"0"); return (neg?"-":"")+"$"+s; }
+const hrs = min => (min/60).toFixed(2)+" h";
+function clock(min, sec){ let h=Math.floor(min/60)%24, mm=min%60, ap=h>=12?"PM":"AM"; h=h%12||12;
+  return h+":"+String(mm).padStart(2,"0")+(sec!=null?":"+String(sec).padStart(2,"0"):"")+" "+ap; }
+const dur = m => m>=60 ? Math.floor(m/60)+"h "+String(m%60).padStart(2,"0")+"m" : m+"m";
+const DOT=" \u00B7 ", MINUS="\u2212", EM="\u2014", EN="\u2013";
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const stLabel = () => E.P.st==="ok" ? "OK" : "State";
+const taxOnly = t => "Fed "+money(t.fed)+DOT+"SS "+money(t.ss)+DOT+"Med "+money(t.med)+(E.P.st!=="none" ? DOT+stLabel()+" "+money(t.ok) : "");
+const dedLabel = x => x.label+" "+(x.type==="pct" ? (+x.value)+"%" : "$"+(+x.value).toFixed(2).replace(/\.00$/,""));
+
+// ---------------------------------------------------------------- clocks
+var centralNow = function(ms){
+  const p = new Intl.DateTimeFormat("en-US",{ timeZone:"America/Chicago", year:"numeric", month:"numeric", day:"numeric", hour:"numeric", minute:"numeric", second:"numeric", hourCycle:"h23" })
+            .formatToParts(new Date(ms)).reduce((a,x)=>(a[x.type]=x.value,a),{});
+  return { day: Date.UTC(+p.year, +p.month-1, +p.day), min: (+p.hour)*60 + (+p.minute), sec: +p.second };
+};
+let T = { state:"idle", click:0, frozen:0, testDay:null };
+function loadT(){ try { const j=JSON.parse(ls.get(STORE_KEY)||"null"); if (j && j.state) T=j; } catch(e){} }
+function saveT(){ ls.set(STORE_KEY, JSON.stringify(T)); }
+const testDayFor = ms => E.streakStart(centralNow(ms).day);        // first day of the work streak (Van: Tuesday)
+function simNow(realMs){
+  if (T.testDay==null) T.testDay=testDayFor(realMs);
+  const el = T.state==="running" ? Math.max(0, realMs-T.click) : T.state==="stopped" ? T.frozen : 0;
+  const t = T.testDay + E.spec(T.testDay,false).s0*60000 + el;
+  const day = Math.floor(t/DAY)*DAY, rem=t-day;
+  return { day, min: Math.floor(rem/60000), sec: Math.floor((rem%60000)/1000) };
+}
+function doStart(){ const n=Date.now(); T={ state:"running", click:n, frozen:0, testDay:testDayFor(n) }; saveT(); PUNCHES={}; savePunches(); render(true); }   // TEST: each START begins with no punches
+function doFfwd(min){ if (T.state==="running") T.click -= min*60000; else if (T.state==="stopped") T.frozen += min*60000; saveT(); render(true); tickPunch(); }   // v1.13 TEST fast-forward
+function doStop(){ if (T.state==="running"){ T.frozen=Date.now()-T.click; T.state="stopped"; saveT(); } render(true); }
+
+// ---------------------------------------------------------------- render
+const $ = id => document.getElementById(id);
+let lastKey="";
+function render(force){
+  const real=Date.now();
+  const now = MODE==="test" ? simNow(real) : centralNow(real);
+  const key = now.day+":"+now.min+":"+T.state;
+  if (MODE==="test") $("dateLabel").textContent = "SIM "+dname(now.day)+" "+md(now.day)+" "+clock(now.min, now.sec);
+  if (!force && key===lastKey) return;
+  lastKey=key;
+  const zb = MODE==="test" ? T.testDay : null;
+  const st = E.state(now, zb), h=st.hero, hn=st.heroNet, P=E.P;
+  const idle = MODE==="test" && T.state==="idle";
+  if (MODE==="test"){
+    $("btns").style.display="flex";
+    $("tag").textContent = T.state==="running" ? "TEST \u25CF RUNNING" : T.state==="stopped" ? "TEST \u25A0 STOPPED" : "TEST "+EM+" READY";
+    $("tag").style.color = T.state==="running" ? "#34C759" : T.state==="stopped" ? "#E82127" : "#FFB020";
+    $("dateLabel").className="sim";
+  } else $("dateLabel").textContent = dnameLong(now.day)+", "+mon(now.day)+DOT+clock(now.min);
+  $("heroLabel").textContent = st.heroToday ? "TODAY"+DOT+"APPROX. NET" : "LAST SHIFT"+DOT+(dname(st.heroDay)+" "+mon(st.heroDay)).toUpperCase()+DOT+"APPROX. NET";
+  const hero=$("hero"), sub=$("heroSub"); sub.className="herosub";
+  hero.textContent = money(hn.net);
+  hero.style.color = st.status==="CLOCKED IN" ? "#FFFFFF" : hn.net>0 ? "#E6E6E6" : "#888888";
+  let s = "gross "+money(h.total) + (st.rate!=null ? DOT+"earning "+money(st.rate)+"/hr gross" : DOT+"est. from schedule");
+  if (idle) s = "gross $0.00"+DOT+"press START";
+  sub.textContent = s;
+  if (st.dayOff && !idle){ $("heroLabel").textContent = "TODAY"+DOT+mon(now.day).toUpperCase();
+    hero.textContent = dnameLong(now.day).toUpperCase(); hero.style.color="#FFFFFF"; sub.textContent = "DAY OFF"; sub.className="herosub dayoff"; }
+  { // v1.14 today's GROSS breakdown: regular + shift diff (evening + weekend stack) + overtime = total gross (live)
+    const z = idle || st.dayOff, b = z ? {reg:0,diff:0,diffEve:0,diffWknd:0,ot:0,otMin:0,regMin:0,paid:0,total:0,prior:0} : h;
+    const H = m => (Math.round(m/60*100)/100).toFixed(m%60===0||m%30===0?1:2).replace(/(\.\d)0$/,"$1")+"h";
+    $("hbReg").textContent=money(b.reg); $("hbDiff").textContent=money(b.diff); $("hbOT").textContent=money(b.ot); $("hbTot").textContent=money(b.total);
+    $("hbDiff").className="v df"+(b.diff>0?"":" dim"); $("hbOT").className="v ot"+(b.otMin>0?"":" dim");
+    $("hbRegH").textContent=H(b.regMin||0)+" @ "+money(E.R.base);
+    $("hbDiffH").textContent = (b.diffEve>0 && b.diffWknd>0) ? "eve + wknd stack" : b.diffWknd>0 ? "weekend" : b.diffEve>0 ? "evening" : "none yet";
+    $("hbOTH").textContent = !E.OT.on ? "OT off" : b.otMin>0 ? H(b.otMin)+" @ "+(E.OT.mult/100)+"x" : "wk "+H((b.prior||0)+(b.paid||0))+" / "+H(E.OT.after);
+    $("hbTotH").textContent=H(b.paid||0)+" paid";
+    { const pe=$("hbPto"); if (!z && b.ptoMin>0){ pe.style.display=""; pe.textContent="PTO "+H(b.ptoMin)+" @ "+money(E.R.base)+" = "+money(b.pto)+" (base rate, in TOTAL GROSS)"; } else pe.style.display="none"; }
+    const parts=[]; if (E.R.diffs.length===1) parts.push("after "+clock(E.R.diffs[0].after).replace(":00 "," ")+" "+money(b.diffEve)); else if (E.R.diffs.length>1) parts.push("time diffs "+money(b.diffEve));
+    if (E.R.wknd) parts.push("weekend "+money(b.diffWknd));
+    $("hbNote").textContent = (st.heroToday||z ? "TODAY" : "LAST SHIFT")+" GROSS, before tax"+DOT+"diff: "+(parts.join(DOT)||"no differentials set");
+  }
+  hero.style.fontSize="50px"; const maxW = hero.parentElement.clientWidth - 4;
+  if (hero.scrollWidth > maxW) hero.style.fontSize = Math.floor(50*maxW/hero.scrollWidth)+"px";
+
+  let status=st.status, detail=st.detail, color=st.color;
+  const sp = st.spec;
+  if (st.status==="OFF DAY") detail += dname(st.next)+" "+clock(st.nextStart);
+  else if (detail==="Shift starts ") detail += clock(sp.s);
+  else if (st.onBreak) detail = st.backAt!=null ? "Back at "+clock(st.backAt)+(st.breakPaid?" (paid)":" (unpaid)") : (st.breakPaid?"paid":"unpaid")+DOT+"press "+(st.br.kind==="lunch"?"BACK FROM LUNCH":"END BREAK");
+  else if (st.status==="CLOCKED IN") detail = "Until "+clock(sp.e)+(sp.sOut?"":"");
+  if (st.status==="CLOCKED OUT" && sp.sOut && now.min>=sp.e) detail = "Clocked out "+clock(sp.e);
+  if (idle){ status="READY"; detail="Press START (sim "+dname(T.testDay||now.day)+" "+clock(E.spec(T.testDay||now.day,false).s0)+")"; color="#FFB020"; }
+  else if (MODE==="test" && T.state==="stopped") detail="Frozen"+DOT+detail;
+  $("status").textContent=status; $("dot").style.background=color;
+  $("status").style.color = status==="CLOCKED IN" ? "#34C759" : (st.onBreak||status==="READY") ? "#FFB020" : "#CCCCCC";
+  $("statusDetail").textContent=detail;
+  $("prog").style.width = (st.dayPaidMin ? Math.min(100, 100*h.paid/st.dayPaidMin) : 0).toFixed(1)+"%";
+  $("prog").style.background = st.heroToday ? "#E82127" : "#444444";
+
+  // ---- SCHEDULE panel (replaces the shift breakdown): timeline that keeps pace with the day
+  const tl = st.tl, m = now.min;
+  $("schedHead").textContent = "TODAY'S SCHEDULE"+DOT+(dname(now.day)+" "+md(now.day)).toUpperCase();
+  $("schedHours").textContent = tl.work ? hrs(st.heroToday ? h.paid : 0)+" / "+hrs(st.dayPaidMin) : "";
+  let nl;
+  if (idle) nl = "Press START to run the simulated day";
+  else if (!tl.work) nl = "Day off"+DOT+"next shift <b>"+dname(st.next)+" "+clock(st.nextStart)+"</b>";
+  else if (tl.seg.kind==="done") nl = "Shift complete"+DOT+"clocked out "+clock(sp.e);
+  else if (tl.seg.kind==="break" && tl.seg.b.open) nl = esc(tl.seg.label)+DOT+'<b id="nlLive">'+mmss(nowSec(now)-tl.seg.b.sS)+'</b> so far';
+  else if (tl.next) nl = esc(tl.seg.label)+DOT+"<b>"+dur(tl.next.t-m)+"</b> until "+esc(tl.next.label.toLowerCase());
+  else nl = esc(tl.seg.label);
+  $("nextLine").innerHTML = nl;
+  let th="";
+  if (tl.work || idle) tl.ev.forEach((e,i)=>{
+    let cls="ev";
+    const segEnd = (i+1<tl.ev.length) ? tl.ev[i+1].t : e.t;
+    if (!idle){ if (e.t<=m && (i===tl.ev.length-1 || m>=segEnd)) cls+=" done";
+      if (e.t<=m && m<segEnd && e.kind!=="out") cls+=" cur"+(e.kind==="bs" && !e.b.paid ? " brk" : "");
+      if (tl.next && e===tl.next) cls+=" nxt"; }
+    const t = e.kind==="bs" ? (isFinite(e.end) ? clock(e.t).replace(" PM","").replace(" AM","")+EN+clock(e.end) : clock(e.t)+EN+"now") : clock(e.t);
+    let x = e.kind==="bs" ? (e.b.open ? '<span class="live" data-from="'+e.b.sS+'">'+mmss(nowSec(now)-e.b.sS)+'</span>' : dur(e.end-e.t))+DOT+(e.b.paid?"paid":"unpaid") : "";
+    if (e.actual && !(e.kind==="bs" && e.b.open)) x = (x ? x+DOT : "")+"\u2713";
+    if (e.kind==="be") {                 // break end is shown inside the break row; while working after a break, show a live "now" row
+      if (cls.includes(" cur")) th += '<div class="ev cur"><span class="b"></span><span class="t">'+clock(m)+'</span><span class="lab">Now'+DOT+'working'+(tl.next ? DOT+dur(tl.next.t-m)+" left" : "")+'</span><span class="x"></span></div>';
+      return; }
+    th += '<div class="'+cls+'"><span class="b"></span><span class="t">'+t+'</span><span class="lab">'+esc(e.label)+'</span><span class="x"'+(e.actual?' title="your punch"':'')+'>'+x+'</span></div>';
+  });
+  else th = '<div class="ev"><span class="b"></span><span class="t">'+EM+'</span><span class="lab">No shift today</span><span class="x"></span></div>';
+  $("tl").innerHTML = th;
+
+  // v2.0.8: DAILY MONEY MADE list removed (Van)
+  paintPunch(now, st);
+}
+
+// ---------------------------------------------------------------- v1.12 manual clock punches (per date, override the automatic times)
+const nowSec = n => n.min*60 + (n.sec||0);
+const mmss = s => { s=Math.max(0,Math.floor(s)); const h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60; return (h? h+":"+String(m).padStart(2,"0") : String(m).padStart(2,"0"))+":"+String(x).padStart(2,"0"); };
+const clockS = t => clock(Math.floor(t/60));
+function curNow(){ const real=Date.now(); return MODE==="test" ? simNow(real) : centralNow(real); }
+function savePunches(){ ls.set(PUNCH_KEY, JSON.stringify(PUNCHES)); E.setPunches(PUNCHES); }
+function punch(kind){
+  const n=curNow(), iso=utcToIso(n.day), t=nowSec(n);
+  if (MODE==="test" && T.state==="idle") return;
+  const log = PUNCHES[iso] || (PUNCHES[iso]=[]);
+  const r=E.punchRec(iso), openBr = r && r.br.length && r.br[r.br.length-1][1]==null;
+  { const nb = r ? r.br.length : 0;   // v1.15.0 BREAK 1 / BREAK 2
+    if (kind==="bs1"){ if (nb>0 || openBr) return; kind="bs"; } else if (kind==="bs2"){ if (nb<1 || openBr) return; kind="bs"; }
+    else if (kind==="be1"){ if (!(openBr && nb===1)) return; kind="be"; } else if (kind==="be2"){ if (!(openBr && nb>=2)) return; kind="be"; } }
+  if (kind==="be" && !openBr) return; if (kind==="bs" && openBr) return; if (kind==="li" && !(r && r.lo!=null)) return;
+  log.push([kind, t]); savePunches(); render(true);
+}
+// ---- v1.14.2 EDIT PUNCHES: fix / add / delete breaks + lunches, change clock in / out, for today or earlier days this pay period
+const ED = { iso:null, m:null, sel:null };
+const t2hm = t => { const h=Math.floor(t/3600)%24, m=Math.floor(t/60)%60; return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0"); };
+// v2.0.1: accepts "15:05" (type=time) and typed text "3:05 PM", "3:05p", "1505", "305", "3 pm"
+const parseHM = (v, ref) => { const raw=String(v||"").trim(), x=/^\s*(\d{1,2})(?:\s*[:.h]?\s*(\d{2}))?\s*(?:([ap])\.?\s*m?\.?)?\s*$/i.exec(raw); if (!x) return null;
+  let h=+x[1]; const mi=x[2]==null?0:+x[2], ap=(x[3]||"").toLowerCase(); if (ap){ if (h<1||h>12) return null; if (ap==="p"&&h<12) h+=12; if (ap==="a"&&h===12) h=0; }
+  else if (ref!=null && h>=1 && h<=12 && !/^0/.test(x[1]) && !(x[1].length===2 && x[2]!=null && /^\d{4}$/.test(raw))) {   // v2.0.6: "4" / "4:00" -> AM or PM, whichever is nearer the old time
+    const a=(h%12)*60+mi, b=a+720, d=z=>{ const q=Math.abs(z-ref)%1440; return Math.min(q,1440-q); }; h = (d(b)<d(a) ? b : a); return h<1440 && mi<60 ? h : null; }
+  return (h<24 && mi<60) ? h*60+mi : null; };
+const hm2t = (v, old) => { const mm=parseHM(v, (!TIME_OK && old!=null) ? Math.floor(old/60) : (!TIME_OK && ED && ED.m && ED.m.in ? Math.floor(ED.m.in.t/60) : undefined)); if (mm==null) return null; const t=mm*60; return (old!=null && Math.floor(old/60)*60===t) ? old : t; };
+const TIME_OK = (()=>{ try { const i=document.createElement("input"); i.setAttribute("type","time"); i.value="x"; return i.type==="time" && i.value!=="x" && !/[?&]tfb=1/.test(location.search); } catch(e){ return false; } })();   // ?tfb=1 = test the text fallback
+const tval = t => TIME_OK ? t2hm(t) : fmtT(t);   // value shown in the time box
+const tinput = (id, t) => TIME_OK ? '<input type="time" step="60" id="'+id+'" enterkeyhint="done" value="'+(t==null?"":t2hm(t))+'">'
+  : '<input class="tfb" type="text" inputmode="text" autocomplete="off" autocapitalize="off" enterkeyhint="done" placeholder="e.g. 3:05 PM" id="'+id+'" value="'+(t==null?"":fmtT(t))+'">';
+const fmtT = t => clock(Math.floor(t/60));
+const durS = s => { s=Math.max(0,Math.round(s)); const h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60; return h ? h+"h "+String(m).padStart(2,"0")+"m" : m+":"+String(x).padStart(2,"0"); };
+const brkNo = (x, m) => { const L=((m||ED.m)||{segs:[]}).segs.filter(y=>y.kind==="break"); const i=L.indexOf(x); return i<0 ? L.filter(y=>y.s<x.s).length+1 : i+1; };
+const segName = (x, m) => x.kind==="lunch" ? "LUNCH" : x.kind==="break" ? "BREAK "+brkNo(x, m) : "OFF CLOCK";   // v1.15.0: BREAK 1 / BREAK 2
+const lunchLen = () => E.LUNCH ? (E.LUNCH.e-E.LUNCH.s) : 60;
+function edBounds(){ const n=curNow(), zb = MODE==="test" ? T.testDay : null, st=E.state(n, zb); return { lo: zb!=null ? Math.max(st.ws, zb) : st.ws, hi: n.day }; }
+function edOpen(iso, sel){ ED.iso = iso || utcToIso(curNow().day); ED.m = E.dayModel(ED.iso); ED.sel = sel==null ? null : sel; $("edErr").textContent=""; $("edOk").textContent=""; edPaint(); $("edBg").classList.add("show"); edFit(); }
+function edSave(m, msg){
+  const isToday = ED.iso===utcToIso(curNow().day), err = E.validateModel(m, isToday);
+  if (err){ $("edErr").textContent = err; $("edOk").textContent=""; return false; }
+  PUNCHES[ED.iso] = E.buildLog(m); if (!PUNCHES[ED.iso].length) delete PUNCHES[ED.iso];
+  savePunches(); render(true); ED.m = E.dayModel(ED.iso); $("edErr").textContent=""; $("edOk").textContent = "\u2713 "+(msg || "Saved"); edPaint(); edToast(); return true;
+}
+function edToast(){ const t=$("edToast"); t.classList.add("show"); clearTimeout(edToast.h); edToast.h=setTimeout(()=>t.classList.remove("show"), 1600); }
+// v2.0.1: keep the sheet (and its sticky SAVE) inside the visible area when the Android keyboard opens
+function edFit(){ const vv=window.visualViewport, bg=$("edBg"); if (!vv || !bg) return;
+  document.documentElement.style.setProperty("--vvh", vv.height+"px");
+  if (bg.classList.contains("show")) { bg.style.top=vv.offsetTop+"px"; bg.style.height=vv.height+"px"; bg.style.bottom="auto"; } }
+if (window.visualViewport) { visualViewport.addEventListener("resize", edFit); visualViewport.addEventListener("scroll", edFit); }
+function edPaint(){
+  if (ED.sel==null) edPaint.last=null;   // v2.0.1: after a save closes a line, one tap reopens it
+  const m=ED.m, d=isoToUTC(ED.iso), b=edBounds(), isToday = d===b.hi;
+  $("edDate").textContent = dnameLong(d)+", "+mon(d)+(isToday?" (today)":"");
+  $("edPrev").disabled = d<=b.lo; $("edNext").disabled = d>=b.hi;
+  const items = [{sel:"in"}, ...m.segs.map((x,i)=>({sel:i})), {sel:"out"}];
+  let h="";
+  for (const it of items){
+    const isSel = ED.sel===it.sel; let k, kc, t, dd="", w="", au="", cls="edrow";
+    if (it.sel==="in" || it.sel==="out"){ const c=m[it.sel]; k = it.sel==="in"?"CLOCK IN":"CLOCK OUT"; kc="cl"; t=fmtT(c.t); if (c.auto) au=' <span class="au">(schedule)</span>'; }
+    else { const x=m.segs[it.sel]; k=segName(x); kc = x.kind==="off"?"of":x.kind==="lunch"?"lu":"br";
+      t = fmtT(x.s)+" "+EN+" "+(x.e==null ? "now" : fmtT(x.e)); dd = x.e==null ? (isToday ? durS(nowSec(curNow())-x.s)+" so far" : "") : durS(x.e-x.s);
+      if (x.e!=null && x.kind!=="off" && !x.autoClosed){ const lim=(x.kind==="lunch"?lunchLen():E.P.breakLen)*60, over=(x.e-x.s)-lim; dd += over>0 ? '<br><span style="color:#ff6b6b">late +'+durS(over)+'</span>' : '<br><span style="color:#34C759">on time</span>'; }
+      if (x.auto) au=' <span class="au">(schedule)</span>';
+      if (x.autoClosed){ cls+=" warn"; w = "\u26A0 END "+(x.kind==="lunch"?"LUNCH":"BREAK")+" was not pressed "+EM+" it ran until your next punch. Tap to fix (e.g. "+(x.kind==="lunch"?"1 HOUR":E.P.breakLen+" MIN")+")."; }
+      else if (x.e==null && x.kind==="break") w = "On break now "+EM+" END BREAK not pressed yet."; }
+    if (isSel) cls+=" sel";
+    h += '<button class="'+cls+'" data-sel="'+it.sel+'"><span class="k '+kc+'">'+k+'</span><span>'+t+au+'</span><span class="d">'+dd+'</span>'+(w?'<span class="w">'+w+'</span>':'')+'</button>';
+    if (isSel) h += edForm(it.sel, isToday);
+  }
+  $("edList").innerHTML = h;
+  $("edFoot").classList.toggle("show", ED.sel!=null); ED.save = null;
+  $("edClose").style.display = ED.sel!=null ? "none" : "";   // while a line is open the only green button is SAVE
+  $("edList").querySelectorAll(".edrow").forEach(el=>el.onclick=()=>{ const v=el.dataset.sel; ED.sel = (v==="in"||v==="out") ? v : +v; if (String(ED.sel)===String(edPaint.last)) { ED.sel=null; } edPaint.last=ED.sel; $("edErr").textContent=""; edPaint(); });
+  edWire(isToday);
+  // day summary (recalculated right away)
+  const c = isToday ? E.shiftCalc(d, curNow().min, true) : E.fullShift(d), sp=E.spec(d,false);
+  const brS = m.segs.filter(x=>x.kind==="break" && x.e!=null).reduce((a,x)=>a+(x.e-x.s),0), luS = m.segs.filter(x=>x.kind==="lunch" && x.e!=null).reduce((a,x)=>a+(x.e-x.s),0);
+  $("edSum").innerHTML = (isToday?"Today so far: ":"Day total: ")+"<b>"+money(c.total)+"</b> gross"+DOT+hrs(c.paid)+" paid"+(c.otMin?DOT+"OT "+money(c.ot):"")+"<br>Breaks "+durS(brS)+" ("+(E.P.breakPaid?"paid":"unpaid")+")"+DOT+"Lunch "+durS(luS)+" ("+(E.LUNCH && E.LUNCH.paid?"paid":"unpaid")+")";
+}
+function edForm(sel, isToday){
+  const m=ED.m;
+  if (sel==="in" || sel==="out"){ const c=m[sel];
+    return '<div class="edf"><label>'+(sel==="in"?"CLOCK IN":"CLOCK OUT")+' TIME</label>'+tinput("edT1", c.t)+
+      '<div class="edq4 edq6"><button id="edC15m">&minus;15</button><button id="edC5m">&minus;5</button><button id="edC1m">&minus;1</button><button id="edC1p">+1</button><button id="edC5p">+5</button><button id="edC15p">+15</button></div>'+
+      '<div class="edq2"><button id="edAuto">USE SCHEDULE</button>'+(isToday?'<button id="edNow1">NOW</button>':'')+'</div></div>'; }
+  const x=m.segs[sel], qn = x.kind==="lunch" ? (lunchLen()===60 ? "1 HOUR" : lunchLen()+" MIN") : x.kind==="break" ? E.P.breakLen+" MIN" : null;
+  return '<div class="edf"><label>'+segName(x)+' START</label>'+tinput("edT1", x.s)+
+    '<label>'+segName(x)+' END</label>'+tinput("edT2", x.e)+
+    '<div class="edq">'+(qn?'<button class="hl" id="edQuick">'+qn+'</button>':'<span></span>')+'<button id="edM5">&minus;5 MIN</button><button id="edP5">+5 MIN</button></div>'+
+    '<div class="edq2">'+(isToday?'<button id="edNow2">END = NOW</button>':'')+'<button class="red" id="edDel">'+(x.kind==="lunch"?"NO LUNCH":"DELETE")+'</button></div></div>';
+}
+function edWire(isToday){
+  const m=ED.m, sel=ED.sel; if (sel==null) return;
+  const on=(id,f)=>{ const el=$(id); if (el) el.onclick=f; };
+  const keep = () => { ED.sel=sel; edPaint.last=sel; edPaint(); };   // one-tap saves keep the line open for more taps
+  // Enter / Go on the keyboard = SAVE; focused box scrolls into view above the keyboard
+  ["edT1","edT2"].forEach(id=>{ const el=$(id); if (!el) return;
+    el.addEventListener("keydown", ev=>{ if (ev.key==="Enter"){ ev.preventDefault(); el.blur(); if (ED.save) ED.save(); } });
+    el.addEventListener("focus", ()=>setTimeout(()=>{ try { el.scrollIntoView({block:"center"}); } catch(e){} }, 300)); });
+  const copy = () => JSON.parse(JSON.stringify(m));
+  // v2.0.7: moving clock in / out past a schedule-only lunch or break drops that projected line instead of blocking the save (late start = no lunch)
+  const fitAuto = n => { const lost=n.segs.filter(y=>y.auto && (y.s<n.in.t || (y.e!=null && y.e>n.out.t))); if (!lost.length) return "";
+    n.segs=n.segs.filter(y=>lost.indexOf(y)<0); return lost.some(y=>y.kind==="lunch") ? " \u00b7 no lunch (schedule lunch was outside the shift)" : " \u00b7 schedule break skipped"; };
+  on("edCancel", ()=>{ ED.sel=null; edPaint(); });
+  if (sel==="in" || sel==="out"){
+    ED.save = ()=>{ const n=copy(), t=hm2t($("edT1").value, m[sel].t); if (t==null){ $("edErr").textContent="Pick a time (e.g. 3:05 PM)."; return; } n[sel]={t, auto:false}; const fa=fitAuto(n); if (edSave(n, (sel==="in"?"Clock in":"Clock out")+" set to "+fmtT(t)+fa)) ED.sel=null, edPaint(); };
+    on("edAuto", ()=>{ const n=copy(), sp=E.spec(isoToUTC(ED.iso),false); n[sel]={t:(sel==="in"?sp.s0:sp.e0)*60, auto:true}; if (edSave(n, "Back to the schedule")) ED.sel=null, edPaint(); });
+    const cn = dm => { const cur=hm2t($("edT1").value, m[sel].t); if (cur==null){ $("edErr").textContent="Pick a time (e.g. 3:05 PM)."; return; } const t=Math.min(86340, Math.max(0, cur+dm*60)), n=copy(); n[sel]={t, auto:false}; const fa=fitAuto(n);
+      $("edT1").value=tval(t); if (edSave(n, (sel==="in"?"Clock in":"Clock out")+" set to "+fmtT(t)+fa)) keep(); };   // v2.0.6 one tap = set + save
+    on("edC15m", ()=>cn(-15)); on("edC5m", ()=>cn(-5)); on("edC1m", ()=>cn(-1)); on("edC1p", ()=>cn(1)); on("edC5p", ()=>cn(5)); on("edC15p", ()=>cn(15));   // v2.0.8: -1 / +1
+    on("edNow1", ()=>{ const n=copy(), t=Math.floor(nowSec(curNow())/60)*60; n[sel]={t, auto:false}; const fa=fitAuto(n); if (edSave(n, (sel==="in"?"Clock in":"Clock out")+" set to "+fmtT(t)+fa)) ED.sel=null, edPaint(); });   // one tap = set + save
+    return; }
+  const x=m.segs[sel];
+  const setEnd = (t, save, stay) => { $("edT2").value = tval(t); if (save){ const n=copy(); n.segs[sel].s = hm2t($("edT1").value, x.s); n.segs[sel].e = t; n.segs[sel].auto=false; n.segs[sel].autoClosed=false;
+      if (n.segs[sel].s==null){ $("edErr").textContent="Pick a start time (e.g. 3:05 PM)."; return; }
+      if (edSave(n, segName(x).charAt(0)+segName(x).slice(1).toLowerCase()+" "+fmtT(n.segs[sel].s)+" "+EN+" "+fmtT(t)+" ("+durS(t-n.segs[sel].s)+")")) { if (stay) keep(); else { ED.sel=null; edPaint(); } } } };
+  on("edQuick", ()=>{ const s0=hm2t($("edT1").value, x.s); setEnd(s0 + (x.kind==="lunch" ? lunchLen() : E.P.breakLen)*60, true); });   // one tap = set + save
+  on("edM5", ()=>{ const e0=hm2t($("edT2").value, x.e) ?? hm2t($("edT1").value, x.s); setEnd(Math.max(0, e0-300), true, true); });   // v2.0.1: one tap = set + save
+  on("edP5", ()=>{ const e0=hm2t($("edT2").value, x.e) ?? hm2t($("edT1").value, x.s); setEnd(Math.min(86340, e0+300), true, true); });
+  on("edNow2", ()=>{ setEnd(Math.floor(nowSec(curNow())/60)*60, true, true); });
+  ED.save = ()=>{ const n=copy(), s0=hm2t($("edT1").value, x.s), e0=$("edT2").value.trim() ? hm2t($("edT2").value, x.e) : null;
+    if (s0==null || ($("edT2").value.trim() && e0==null)){ $("edErr").textContent="Pick a time (e.g. 3:05 PM)."; return; }
+    n.segs[sel] = Object.assign(n.segs[sel], { s:s0, e:e0, auto:false, autoClosed:false }); if (edSave(n, segName(x).charAt(0)+segName(x).slice(1).toLowerCase()+" saved")) ED.sel=null, edPaint(); };
+  on("edDel", ()=>{ if (!confirm(x.kind==="lunch" ? "No lunch on this day? (removes the lunch)" : "Delete this "+segName(x).toLowerCase()+"?")) return; const n=copy(); n.segs.splice(sel,1);
+    if (x.kind==="lunch" && !n.segs.some(y=>y.kind==="lunch")) n.noLunch=true; if (x.kind==="break" && !n.segs.some(y=>y.kind==="break")) n.noBreaks=true;
+    if (edSave(n, x.kind==="lunch" ? "No lunch" : segName(x).toLowerCase()+" deleted")) ED.sel=null, edPaint(); });
+}
+function edAdd(kind){
+  const m=ED.m, isToday = isoToUTC(ED.iso)===curNow().day, len = (kind==="lunch" ? lunchLen() : E.P.breakLen)*60;
+  // first free slot: after the last segment / clock in, or "now" for today
+  let s0 = isToday ? Math.floor(nowSec(curNow())/60)*60 - len : m.in.t + 2*3600;
+  s0 = Math.max(m.in.t, Math.min(s0, m.out.t - len));
+  const n=JSON.parse(JSON.stringify(m)); n.segs.push({ kind, s:s0, e:s0+len, auto:false }); n.segs.sort((a,b)=>a.s-b.s);
+  if (kind==="lunch") n.noLunch=false; else n.noBreaks=false;
+  ED.m = n; ED.sel = n.segs.findIndex(x=>x.s===s0 && x.kind===kind); edPaint.last=ED.sel;
+  $("edOk").textContent = "New "+kind+" "+EM+" set its times, then tap the green SAVE"; $("edErr").textContent=""; edPaint();
+}
+function punchUndo(){ const iso=utcToIso(curNow().day); const log=PUNCHES[iso]; if (log && log.length){ log.pop(); if (!log.length) delete PUNCHES[iso]; savePunches(); render(true); } }
+function punchReset(){ const iso=utcToIso(curNow().day); if (PUNCHES[iso] && confirm("Reset today's punches to the automatic schedule?")){ delete PUNCHES[iso]; savePunches(); render(true); } }
+function paintPunch(now, st){
+  const sp=st.spec, r=sp.pr, P=E.P, idle = MODE==="test" && T.state==="idle";
+  { // v1.14.2: a forgotten END BREAK / END LUNCH (auto-closed at the next punch) -> one-tap fix banner
+    const fm = idle ? null : E.dayModel(utcToIso(now.day)), f = fm && fm.segs.find(x=>x.autoClosed);
+    $("edWarn").style.display = f ? "" : "none"; $("edOpen").style.display = idle ? "none" : "";
+    if (f) $("edWarn").textContent = "\u26A0 "+(f.kind==="lunch"?"Lunch":"Break")+" at "+clock(Math.floor(f.s/60))+": END "+(f.kind==="lunch"?"LUNCH":"BREAK")+" was not pressed. Tap to fix it.";
+  }
+  const lb = sp.brs.find(b=>b.kind==="lunch");
+  const set=(k,txt,on)=>{ const el=$("pt-"+k); el.textContent=txt; el.parentElement.classList.toggle("set", !!on); };
+  set("in",  r&&r.in!=null ? clockS(r.inS) : "auto "+clock(sp.s0), r&&r.in!=null);
+  set("lo",  r&&r.lo!=null ? clockS(r.loS) : (lb ? "auto "+clock(lb.s) : EM), r&&r.lo!=null);
+  set("li",  r&&r.li!=null ? clockS(r.liS) : (r&&r.lo!=null ? "tap when back" : lb && !lb.actual ? "auto "+clock(lb.e) : EM), r&&r.li!=null);
+  set("out", r&&r.out!=null ? clockS(r.outS) : "auto "+clock(sp.e0), r&&r.out!=null);
+  const ob = r && r.br.length && r.br[r.br.length-1][1]==null ? r.br[r.br.length-1] : null;
+  const nbr = r ? r.br.length : 0;
+  // v1.15.0 BREAK 1 / BREAK 2: r.br[0] = Break 1, r.br[1..] = Break 2 (a 3rd+ break shows on the Break 2 card)
+  const B1 = r && r.br[0], B2 = r && nbr>1 ? r.br[nbr-1] : null, brLen0 = E.P.breakLen || 15;
+  set("bs1", B1 ? clockS(B1[2]) : "15 min".replace("15", brLen0), !!B1);
+  set("be1", B1 && B1[1]!=null ? clockS(B1[3]) : (B1 ? "tap when back" : ""), B1 && B1[1]!=null);
+  set("bs2", B2 ? clockS(B2[2]) : (B1 ? brLen0+" min" : ""), !!B2);
+  set("be2", B2 && B2[1]!=null ? clockS(B2[3]) : (B2 ? "tap when back" : ""), B2 && B2[1]!=null);
+  const q = c => document.querySelector('.pb[data-p='+c+']');
+  q("bs1").disabled = idle || nbr>0; q("be1").disabled = idle || !(ob && nbr===1);
+  q("bs2").disabled = idle || nbr<1 || !!ob; q("be2").disabled = idle || !(ob && nbr>=2);
+  document.querySelector('.pb.li').disabled = !(r && r.lo!=null) || idle;
+  ["in","lo","out"].forEach(k=>document.querySelector('.pb.'+k).disabled=idle);
+  const lunchOpen = r && r.lo!=null && r.li==null;
+  document.querySelector('.pb.lo').classList.toggle("live", !!lunchOpen);
+  q("bs1").classList.toggle("live", !!ob && nbr===1); q("bs2").classList.toggle("live", !!ob && nbr>=2);
+  q("be1").classList.toggle("act", !!ob && nbr===1 && !idle); q("be2").classList.toggle("act", !!ob && nbr>=2 && !idle);
+  document.querySelector('.pb.li').classList.toggle("act", !!lunchOpen && !idle);   // v1.15.0: the button to press next stands out
+  const lunLen = E.LUNCH ? (E.LUNCH.e-E.LUNCH.s) : 60, brLen = E.P.breakLen || 15;
+  const away = idle ? null : ob ? { kind:"break", no: nbr>1 ? 2 : 1, left:ob[2], due:ob[2]+brLen*60, warn:300 } : lunchOpen ? { kind:"lunch", left:r.loS, due:r.loS+lunLen*60, warn:900 } : null;
+  PL_AWAY = away;
+  PL = { ob, lunchOpen, r, brClosed: r ? r.br.filter(x=>x[1]!=null).reduce((a,x)=>a+(x[3]-x[2]),0) : 0 };
+  $("pUndo").disabled = $("pReset").disabled = !r;
+  $("punchNote").textContent = idle ? "Press START first" : r ? "Actual times for "+dname(now.day)+" "+md(now.day) : "Auto schedule"+DOT+"tap to record actual times";
+  if (away){ const tn=nowSec(now); $("statusDetail").textContent = tn>away.due ? "LATE"+DOT+"was due "+clockS(away.due) : "back by "+clockS(away.due)+DOT+"left "+clockS(away.left); }
+  else if (r && !idle){ const c=[]; r.br.forEach((x,i)=>{ if (x[1]!=null) c.push(["Break "+Math.min(i+1,2),x[2],x[3],brLen*60]); }); if (r.lo!=null && r.li!=null) c.push(["Lunch",r.loS,r.liS,lunLen*60]);
+    if (c.length){ c.sort((a,b)=>a[2]-b[2]); const L=c[c.length-1], late=L[2]-(L[1]+L[3]);
+      $("punchNote").textContent = L[0]+": left "+clockS(L[1])+DOT+"back "+clockS(L[2])+DOT+(late>59 ? lateFmt(late)+" late" : "on time"); } }
+  paintToday(now, st, idle, lunLen, brLen);
+  tickPunch(now);
+}
+// v1.15.0 FOCUS: clock-in time in the status pill + today's punch times as a big, tappable list (tap = edit)
+function paintToday(now, st, idle, lunLen, brLen){
+  const sp=st.spec, r=sp.pr, el=$("todayList"), si=$("statusIn");
+  const hide = idle || (st.dayOff && !r);
+  si.textContent = hide ? "" : (r && r.in!=null ? "IN "+clockS(r.inS) : "IN "+clock(sp.s0)+" (auto)");
+  if (hide){ el.style.display="none"; el.innerHTML=""; return; }
+  const m = E.dayModel(utcToIso(now.day)), t = nowSec(now);
+  const dur = x => x>=3600 ? Math.floor(x/3600)+"h "+String(Math.floor(x%3600/60)).padStart(2,"0")+"m" : lateFmt(x);
+  const esc = x => String(x).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+  const row = (sel, cls, k, kc, tx, d, dc) => '<button data-sel="'+sel+'" class="'+cls+'"><span class="k '+kc+'">'+k+'</span><span class="t">'+tx+'</span><span class="d '+(dc||"")+'">'+d+'</span></button>';
+  let h = '<div class="th2">TODAY\u2019S PUNCHES'+DOT+'TAP TO EDIT</div>';
+  h += row("in", m.in.auto?"auto":"", "CLOCK IN", "in", clockS(m.in.t)+(m.in.auto?'<small>auto</small>':''), m.in.auto ? "" : "\u2713", "ok");
+  m.segs.forEach((x,i)=>{
+    const nm = segName(x, m), kc = x.kind==="lunch" ? "lu" : x.kind==="off" ? "off" : "br";
+    const len = (x.kind==="lunch" ? lunLen : brLen)*60;
+    let tx = clockS(x.s).replace(/ [AP]M$/, m=>"") + " \u2013 " + (x.e==null ? "now" : clockS(x.e));
+    if (x.e!=null && (x.s<43200) !== (x.e<43200)) tx = clockS(x.s)+" \u2013 "+clockS(x.e);
+    let d, dc="", cls = x.auto ? "auto" : "";
+    if (x.autoClosed){ d = "\u26A0 END not pressed"; cls += " warn"; }
+    else if (x.e==null){ d = "\u25CF running"; dc="run"; }
+    else if (x.auto){ d = dur(x.e-x.s)+'<small style="color:#777"> auto</small>'; }
+    else { const late=(x.e-x.s)-len; d = dur(x.e-x.s)+(x.kind==="off" ? "" : late>59 ? " late" : " \u2713"); dc = x.kind==="off" ? "" : late>59 ? "late" : "ok"; }
+    h += row(i, cls, nm, kc, tx, d, dc);
+  });
+  h += row("out", m.out.auto?"auto":"", "CLOCK OUT", "out", clockS(m.out.t)+(m.out.auto?'<small>auto</small>':''), m.out.auto ? "" : "\u2713", "ok");
+  el.innerHTML = h; el.style.display = "";
+  el.querySelectorAll("button[data-sel]").forEach(b=>b.onclick=()=>{ const v=b.dataset.sel; edOpen(null, (v==="in"||v==="out") ? v : +v); });
+}
+let PL = { ob:null, lunchOpen:false, r:null, brClosed:0 }, PL_AWAY = null;
+const FLASH_FORCE = /[?&]flash=1/.test(location.search);   // renders: freeze the flash on its strong phase
+const lateFmt = s => { s=Math.max(0,Math.floor(s)); return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); };
+function tickPunch(now){
+  now = now || curNow(); const t=nowSec(now), r=PL.r;
+  const brTot = PL.brClosed + (PL.ob ? t-PL.ob[2] : 0);
+  const nb = r ? r.br.length : 0, brLen = (E.P.breakLen || 15)*60, paidTxt = (PROFILE && PROFILE.breakPaid===false ? 'unpaid' : 'paid');
+  // v1.15.0 BREAK 1 / BREAK 2 cards: own stopwatch, LEFT / BACK BY, on time / late
+  const card = (id, b, no) => {
+    const live=$(id+"Live"), sub=$(id+"Sub"), foot=$(id+"Foot"), box=$(id+"Box");
+    box.classList.toggle("on", !!(b && b[1]==null)); box.classList.toggle("idle", !b);
+    if (!b){ live.textContent="--:--"; sub.textContent=(brLen/60)+" min"; foot.textContent = no===2 && nb<1 ? "after break 1" : "not taken yet"; }
+    else if (b[1]==null){ live.textContent=mmss(t-b[2]); sub.textContent="\u25CF running"; foot.innerHTML="<div>LEFT <b>"+clockS(b[2])+"</b></div><div>BACK BY <b>"+clockS(b[2]+brLen)+"</b></div>"; }
+    else { const d=b[3]-b[2], late=d-brLen; live.textContent=mmss(d); sub.textContent = late>59 ? "+"+lateFmt(late)+" late" : "on time"; sub.className = late>59 ? "late" : "ok";
+           if (b[4]){ sub.textContent="\u26A0 END not pressed"; sub.className="late"; }
+           foot.textContent = clockS(b[2]).replace(/ [AP]M$/,"")+EN+clockS(b[3])+(no===2 && nb>2 ? DOT+(nb-1)+" breaks" : ""); }
+    if (!b || b[1]==null) sub.className = "";
+    live.classList.toggle("long", live.textContent.length>5);
+  };
+  card("brk", r && r.br[0], 1); card("brk2", r && nb>1 ? r.br[nb-1] : null, 2);
+  const lDone = r && r.lo!=null && r.li!=null, lunLen = E.LUNCH ? (E.LUNCH.e-E.LUNCH.s)*60 : 3600;
+  // v2.0.4 today's totals: Break 1 + Break 2 (+ more), lunch, combined
+  const lunTot = PL.lunchOpen ? t-r.loS : (lDone ? r.liS-r.loS : 0);
+  $("dtBrk").textContent=mmss(brTot); $("dtLun").textContent=mmss(lunTot); $("dtAll").textContent=mmss(brTot);   // v2.0.11: TOTAL TODAY = breaks only, lunch has its own box
+  $("dtB").classList.toggle("on", !!PL.ob); $("dtL").classList.toggle("on", !!PL.lunchOpen);
+  $("brkTotal").innerHTML = (nb ? nb+" break"+(nb>1?"s":"") : "no breaks yet")+" ("+paidTxt+")"+DOT+(lDone||PL.lunchOpen ? "lunch "+(PL.lunchOpen?"running":"done") : "no lunch yet");
+  $("lunLive").textContent = PL.lunchOpen ? mmss(t-r.loS) : (lDone ? mmss(r.liS-r.loS) : "--:--");
+  $("lunLive").classList.toggle("long", $("lunLive").textContent.length>5);
+  $("lunBox").classList.toggle("on", !!PL.lunchOpen); $("lunBox").classList.toggle("idle", !PL.lunchOpen && !lDone);
+  $("lunSub").className="";
+  if (PL.lunchOpen){ $("lunSub").textContent='\u25CF running'; $("lunFoot").innerHTML="LEFT <b>"+clockS(r.loS)+"</b>"+DOT+"BACK BY <b>"+clockS(r.loS+lunLen)+"</b>"; }
+  else if (lDone){ const late=(r.liS-r.loS)-lunLen; $("lunSub").textContent = late>59 ? "+"+lateFmt(late)+" late" : "on time"; $("lunSub").className = late>59 ? "late" : "ok"; $("lunFoot").textContent=clockS(r.loS).replace(/ [AP]M$/,"")+EN+clockS(r.liS); }
+  else { $("lunSub").textContent=Math.round(lunLen/60)+" min"; $("lunFoot").textContent = E.LUNCH ? "scheduled "+clock(E.LUNCH.s) : "not taken yet"; }
+  const aw = PL_AWAY, box=$("awayBox");
+  ["brkBox","brk2Box","lunBox"].forEach(id=>$(id).classList.remove("warn","ph","late"));
+  if (!aw){ box.style.display="none"; }
+  else { box.style.display=""; const rem=aw.due-t, ph = FLASH_FORCE || t%2===0, run=$(aw.kind==="break"?(aw.no===2?"brk2Box":"brkBox"):"lunBox"), awName = aw.kind==="break" ? "Break "+aw.no : "Lunch";
+    box.classList.toggle("late", rem<0); box.classList.toggle("warn", rem>=0 && rem<=aw.warn); box.classList.toggle("ph", ph);
+    run.classList.toggle("late", rem<0); run.classList.toggle("warn", rem>=0 && rem<=aw.warn); run.classList.toggle("ph", ph);
+    if (rem<0){ $("awLab").textContent=(aw.kind==="break"?"BREAK "+aw.no:"LUNCH")+DOT+"LATE"; $("awLeft").textContent="due "+clockS(aw.due); $("awTime").textContent="+"+lateFmt(-rem); $("awSub").textContent=awName+DOT+"left "+clockS(aw.left)+DOT+"press "+(aw.kind==="break"?"END BREAK "+aw.no:"BACK FROM LUNCH"); }
+    else { const d=clockS(aw.due); $("awLab").textContent=(aw.kind==="break"?"BREAK "+aw.no:"LUNCH")+DOT+"TIME LEFT"; $("awLeft").textContent="LEFT "+clockS(aw.left); $("awTime").textContent=mmss(rem);   // v2.0.12: countdown = biggest number on screen
+      $("awSub").textContent=awName+DOT+"be back by "+d+(rem<=aw.warn?DOT+"almost time":""); }
+    (aw.kind==="break"?$(aw.no===2?"brk2Sub":"brkSub"):$("lunSub")).textContent = rem<0 ? "LATE" : mmss(rem)+" left"; }
+  document.querySelectorAll("#tl .live").forEach(el=>el.textContent=mmss(t-(+el.dataset.from)));
+  const nl=$("nlLive"); if (nl && (PL.ob||PL.lunchOpen)) nl.textContent = mmss(t-(PL.ob ? PL.ob[2] : r.loS));
+}
+document.querySelectorAll(".pb[data-p]").forEach(b=>b.onclick=()=>punch(b.dataset.p));
+$("pUndo").onclick=punchUndo; $("pReset").onclick=punchReset;
+
+// ---- v2.0.11 PTO
+function ptoPaint(){ try {
+  const n=curNow(), st=E.state(n, MODE==="test"?T.testDay:null), ws=st.ws; let pm=0; for (let i=0;i<E.PD;i++) pm+=E.ptoMinOf(utcToIso(ws+i*DAY),1440);
+  $("ptoRate").textContent = money(E.R.base)+"/hr"+DOT+"no diffs";
+  $("ptoSum").textContent = "This pay period ("+md(ws)+" "+EN+" "+md(ws+(E.PD-1)*DAY)+"): PTO "+(pm/60).toFixed(2).replace(/0$/,"")+" h = "+money(div(E.R.base*pm,60))+DOT+"period gross "+money(st.periodGross);
+  let h=""; Object.keys(PTOD).sort().reverse().forEach(k=>PTOD[k].forEach((x,j)=>{ const d=isoToUTC(k), m=x[1]-x[0];
+    h+='<div class="ptor"><span>'+dname(d)+" "+md(d)+"/"+k.slice(0,4)+DOT+clock(x[0])+" "+EN+" "+clock(x[1])+DOT+(m/60).toFixed(2).replace(/0$/,"")+" h "+money(div(E.R.base*m,60))+'</span><button data-k="'+k+'" data-j="'+j+'">REMOVE</button></div>'; }));
+  $("ptoList").innerHTML = h || '<div class="xs" style="color:#777;margin-top:4px">No PTO yet.</div>';
+} catch(e){} }
+function ptoSave(msg, ok){ ls.set(PTO_KEY, JSON.stringify(PTOD)); E.setPto(PTOD); render(true); ptoPaint(); const m=$("ptoMsg"); m.textContent=msg; m.style.color = ok ? "#34C759" : "#FFB020"; }
+function ptoAdd(){ const m=$("ptoMsg"); m.style.color="#FF6B6B"; const k=$("ptoDay").value;
+  if (!/^\d{4}-\d\d-\d\d$/.test(k)){ m.textContent="Pick a day."; return; }
+  const a=parseHM($("ptoFrom").value, 690), b=a==null?null:parseHM($("ptoTo").value, a+240);
+  if (a==null || b==null){ m.textContent="Type times like 11:30 AM and 4:00 PM."; return; } if (b<=a){ m.textContent="TO must be after FROM."; return; }
+  const L=PTOD[k]||(PTOD[k]=[]); if (L.some(x=>a<x[1] && b>x[0])){ m.textContent="Overlaps PTO already on that day."; return; }
+  L.push([a,b]); L.sort((x,y)=>x[0]-y[0]); ptoSave("SAVED \u2713 PTO "+dname(isoToUTC(k))+" "+md(isoToUTC(k))+" "+clock(a)+" "+EN+" "+clock(b)+" ("+((b-a)/60).toFixed(2).replace(/0$/,"")+" h = "+money(div(E.R.base*(b-a),60))+")", true); }
+$("ptoAdd").onclick=ptoAdd; ["ptoFrom","ptoTo"].forEach(id=>$(id).addEventListener("keydown",ev=>{ if (ev.key==="Enter"){ ev.preventDefault(); $(id).blur(); ptoAdd(); } }));
+$("ptoList").addEventListener("click", ev=>{ const b=ev.target.closest("button[data-k]"); if (!b) return; const L=PTOD[b.dataset.k]; if (!L) return; L.splice(+b.dataset.j,1); if (!L.length) delete PTOD[b.dataset.k]; ptoSave("PTO removed.", false); });
+$("ptoDay").value = utcToIso(curNow().day); $("ptoFrom").value="11:30 AM"; $("ptoTo").value="4:00 PM"; ptoPaint();
+$("edOpen").onclick=()=>edOpen(); $("edWarn").onclick=()=>{ const m=E.dayModel(utcToIso(curNow().day)); edOpen(null, m.segs.findIndex(x=>x.autoClosed)); };
+$("edClose").onclick=()=>$("edBg").classList.remove("show");
+$("edFootSave").onclick=()=>{ if (ED.save) ED.save(); };
+$("edFootCancel").onclick=()=>{ ED.sel=null; edPaint.last=null; ED.m=E.dayModel(ED.iso); $("edErr").textContent=""; $("edOk").textContent=""; edPaint(); };
+$("edPrev").onclick=()=>edOpen(utcToIso(isoToUTC(ED.iso)-DAY)); $("edNext").onclick=()=>edOpen(utcToIso(isoToUTC(ED.iso)+DAY));
+$("edAddB").onclick=()=>edAdd("break"); $("edAddL").onclick=()=>edAdd("lunch");
+
+
+// ---------------------------------------------------------------- setup wizard / settings (gear)
+const DAYCH = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+let W = null;   // working copy
+function wizOpen(first){
+  W = JSON.parse(JSON.stringify(PROFILE || PREFILL));
+  if (first && !W.name && INST.name) W.name = INST.name;
+  wizPaint(first); $("wizBg").classList.add("show");
+}
+function chipRow(key, sel){ return '<div class="chips" data-k="'+key+'">'+DAYCH.map((d,i)=>'<button type="button" class="chip'+(sel.includes(i)?" on":"")+'" data-i="'+i+'">'+d+'</button>').join("")+'</div>'; }
+const inp = (k,v,t,extra) => '<input data-k="'+k+'" type="'+(t||"text")+'" value="'+esc(v)+'" '+(extra||"")+'>';
+function wizPaint(first){
+  const w=W;
+  let h = '<h3>'+(first ? "Welcome "+EM+" set up Paycheck Live" : "Settings "+DOT+" profile")+'</h3>';
+  if (first) h += '<div class="xs" style="color:#888">Everything the math needs. You can change any of it later with the '+"\u2699"+' button. Your profile stays on this device.</div>';
+  h += '<div class="f"><label>Your name</label>'+inp("name",w.name,"text",'autocomplete="given-name" placeholder="First name"')+'</div>';
+  h += '<div class="wsec">PAY &amp; SCHEDULE</div>';
+  h += '<div class="f"><label>Hourly rate ($/hr)</label>'+inp("rate",w.rate,"number",'step="0.01" min="0" inputmode="decimal"')+'</div>';
+  w.perDay = w.perDay || {};
+  h += '<div class="f"><label>Weekly schedule (tap a day to turn it on / off)</label>'+[0,1,2,3,4,5,6].map(i=>{ const on=w.days.includes(i), pd=w.perDay[i]||{start:w.start,end:w.end};
+       return '<div class="wkg"><button type="button" class="chip'+(on?" on":"")+'" data-wd="'+i+'">'+DAYCH[i]+'</button>'+(on ? inp("perDay."+i+".start",pd.start,"time")+inp("perDay."+i+".end",pd.end,"time") : '<span class="offl">Day off</span>')+'</div>'; }).join("")+
+       '<div class="hint" id="wizOff">Days off: '+([0,1,2,3,4,5,6].filter(i=>!w.days.includes(i)).map(i=>DAYCH[i]).join(", ")||"none")+'</div></div>';
+  h += '<div class="f"><label>Lunch &amp; breaks</label><div class="lst">'+w.breaks.map((b,i)=>'<div class="it"><div class="g3">'+inp("breaks."+i+".label",b.label)+inp("breaks."+i+".start",b.start,"time")+inp("breaks."+i+".end",b.end,"time")+'</div>'+
+       '<div class="row"><label class="chk"><input type="checkbox" data-k="breaks.'+i+'.paid"'+(b.paid?" checked":"")+'> paid</label><button type="button" class="lnk" data-del="breaks.'+i+'">remove</button></div></div>').join("")+
+       '</div><button type="button" class="lnk" data-add="breaks">+ add lunch / break</button></div>';
+  h += '<div class="f"><label>Extra breaks you clock with START / END BREAK are</label><select data-k="breakPaid"><option value="1"'+(w.breakPaid!==false?" selected":"")+'>Paid (keep earning)</option><option value="0"'+(w.breakPaid===false?" selected":"")+'>Unpaid (pay stops)</option></select></div>';
+  h += '<div class="f"><label>Break length (min)</label>'+inp("breakLen", w.breakLen||15, "number", 'min="1" max="240" step="1"')+'<div class="hint">Used for BE BACK BY after START BREAK. Lunch uses your lunch length above.</div></div>';
+  h += '<div class="f"><label>Overtime</label><div class="g3"><select data-k="otOn"><option value="1"'+(w.otOn!==false?" selected":"")+'>On: after</option><option value="0"'+(w.otOn===false?" selected":"")+'>Off</option></select>'+inp("otAfter", w.otAfter||40, "number", 'min="1" max="168" step="0.5" title="hrs/week"')+inp("otMult", w.otMult||1.5, "number", 'min="1" max="4" step="0.05" title="multiplier"')+'</div><div class="hint">Overtime: after [hrs/week] at [x]. Paid hours past the limit in each workweek (starts on your pay-week start day) pay that multiple of base + shift diff. Default 40 hrs at 1.5x (federal FLSA).</div></div>';
+  h += '<div class="f"><label>Shift differentials</label><div class="lst">'+w.diffs.map((d,i)=>'<div class="it"><div class="g3">'+inp("diffs."+i+".label",d.label)+inp("diffs."+i+".amount",d.amount,"number",'step="0.01" placeholder="$/hr"')+inp("diffs."+i+".after",d.after,"time")+'</div>'+
+       '<div class="row"><span class="hint" style="color:#666;font-size:11px">+$/hr for every minute worked after that time</span><button type="button" class="lnk" data-del="diffs.'+i+'">remove</button></div></div>').join("")+
+       '</div><button type="button" class="lnk" data-add="diffs">+ add differential</button></div>';
+  h += '<div class="g2"><div class="f"><label>Weekend differential ($/hr)</label>'+inp("wkndDiff",w.wkndDiff,"number",'step="0.01" min="0"')+'</div><div class="f"><label>Weekend days</label>'+chipRow("wkndDays", w.wkndDays)+'</div></div>';
+  h += '<div class="wsec">PAYDAY</div>';
+  h += '<div class="g2"><div class="f"><label>Pay frequency</label><select data-k="freq"><option value="weekly"'+(w.freq==="weekly"?" selected":"")+'>Weekly</option><option value="biweekly"'+(w.freq==="biweekly"?" selected":"")+'>Every 2 weeks</option></select></div>'+
+       '<div class="f"><label>Pay week starts</label><select data-k="weekStart">'+DNL.map((d,i)=>'<option value="'+i+'"'+(+w.weekStart===i?" selected":"")+'>'+d+'</option>').join("")+'</select></div></div>';
+  h += '<div class="f"><label>Next payday</label>'+inp("nextPayday",w.nextPayday,"date")+'<div class="hint" id="wizCover"></div></div>';
+  h += '<div class="wsec">TAXES &amp; DEDUCTIONS</div>';
+  h += '<div class="g2"><div class="f"><label>Federal filing status</label><select data-k="fs"><option value="single"'+(w.fs==="single"?" selected":"")+'>Single</option><option value="hoh"'+(w.fs==="hoh"?" selected":"")+'>Head of household</option><option value="mfj"'+(w.fs==="mfj"?" selected":"")+'>Married filing jointly</option></select></div>'+
+       '<div class="f"><label>State</label><select data-k="st"><option value="ok"'+(w.st==="ok"?" selected":"")+'>Oklahoma</option><option value="none"'+(w.st==="none"?" selected":"")+'>No state income tax</option><option value="flat"'+(w.st==="flat"?" selected":"")+'>Other state (flat %)</option></select></div></div>';
+  if (w.st==="ok") h += '<div class="f"><label>OK-W-4 allowances</label>'+inp("oka",w.oka,"number",'min="0" step="1"')+'</div>';
+  if (w.st==="flat") h += '<div class="f"><label>State withholding (% of taxable wages)</label>'+inp("stPct",w.stPct,"number",'min="0" step="0.01"')+'</div>';
+  const dl = (key, fica) => '<div class="lst">'+w[key].map((d,i)=>'<div class="it"><div class="g3">'+inp(key+"."+i+".label",d.label)+'<select data-k="'+key+'.'+i+'.type"><option value="pct"'+(d.type==="pct"?" selected":"")+'>% of gross</option><option value="amt"'+(d.type==="amt"?" selected":"")+'>$ per check</option></select>'+inp(key+"."+i+".value",d.value,"number",'step="0.01" min="0"')+'</div>'+
+       '<div class="row">'+(fica?'<label class="chk"><input type="checkbox" data-k="'+key+'.'+i+'.fica"'+(d.fica?" checked":"")+'> also lowers SS/Medicare (e.g. health ins.)</label>':'<span></span>')+'<button type="button" class="lnk" data-del="'+key+'.'+i+'">remove</button></div></div>').join("")+'</div>';
+  h += '<div class="f"><label>Pre-tax deductions (e.g. 401(k), health insurance)</label>'+dl("pretax",true)+'<button type="button" class="lnk" data-add="pretax">+ add pre-tax deduction</button></div>';
+  h += '<div class="f"><label>After-tax deductions (e.g. stock purchase, Roth)</label>'+dl("aftertax",false)+'<button type="button" class="lnk" data-add="aftertax">+ add after-tax deduction</button></div>';
+  h += '<div class="err" id="wizErr"></div><button class="mbtn go" id="wizSave">'+(first?"Save & start":"Save")+'</button>';
+  if (!first) h += '<button class="mbtn" id="wizCancel">Cancel</button>';
+  if (!first) h += '<div class="wsec">SHARE</div><button class="mbtn" id="wizShare">Share Paycheck Live with a friend</button>';
+  if (!first && donateLinks().length) h += '<div class="wsec" id="supportSec">SUPPORT THE CREATOR</div><div class="sm" style="color:#aaa;line-height:1.45">Paycheck Live is free. If it helps you, a <b style="color:#fff">$1</b> tip is appreciated '+EM+' totally optional.</div>'+
+       '<div class="dbtns">'+donateLinks().map(d=>'<a class="dbtn '+d.cls+'" href="'+esc(d.url)+'" target="_blank" rel="noopener">'+esc(d.label)+'<span>'+esc(d.sub)+'</span></a>').join("")+'</div>';
+  if (!first) h += '<button class="mbtn red" id="wizReset">Reset everything</button>';
+  $("wiz").innerHTML = h; wizCover();
+  const wz=$("wiz");
+  wz.querySelectorAll("[data-k]").forEach(el=>{ if (el.classList.contains("chips")) return;
+    el.addEventListener(el.tagName==="SELECT"||el.type==="checkbox" ? "change" : "input", ()=>{ setK(el.dataset.k, el.type==="checkbox" ? el.checked : el.value); if (el.dataset.k==="st") wizPaint(first); else wizCover(); }); });
+  wz.querySelectorAll(".chips").forEach(c=>c.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{ const k=c.dataset.k, i=+b.dataset.i; const a=W[k]; const j=a.indexOf(i); if (j>=0) a.splice(j,1); else a.push(i); a.sort(); b.classList.toggle("on"); wizCover(); }));
+  wz.querySelectorAll("[data-wd]").forEach(b=>b.onclick=()=>{ const i=+b.dataset.wd, j=W.days.indexOf(i);
+    if (j>=0) W.days.splice(j,1); else { W.days.push(i); W.days.sort(); if (!W.perDay[i]) { const f=W.days.find(x=>x!==i && W.perDay[x]); W.perDay[i] = f!=null ? Object.assign({},W.perDay[f]) : {start:W.start,end:W.end}; } }
+    wizPaint(first); });
+  wz.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{ const k=b.dataset.add;
+    W[k].push(k==="breaks"?{label:"Break",start:"",end:"",paid:true}:k==="diffs"?{label:"Evening",amount:1,after:"18:00"}:k==="pretax"?{label:"401(k)",type:"pct",value:5,fica:false}:{label:"Stock purchase",type:"amt",value:25}); wizPaint(first); });
+  wz.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{ const [k,i]=b.dataset.del.split("."); W[k].splice(+i,1); wizPaint(first); });
+  $("wizSave").onclick = () => wizSave(first);
+  if (!first){ $("wizCancel").onclick=()=>$("wizBg").classList.remove("show"); $("wizShare").onclick=()=>{ $("wizBg").classList.remove("show"); shareApp(); };
+    $("wizReset").onclick=()=>{ if (confirm("Erase your profile and start over?")){ [PROFILE_KEY,STORE_KEY,LEGACY_KEY,PUNCH_KEY].forEach(k=>{ try{localStorage.removeItem(k);}catch(e){} }); location.reload(); } }; }
+}
+function setK(path, v){ const p=path.split("."); let o=W; while (p.length>1){ const q=p.shift(); if (o[q]==null) o[q]={}; o=o[q]; } const k=p[0];
+  if (o==null) return;
+  const numK=["rate","wkndDiff","oka","stPct","amount","value","weekStart","breakLen","otAfter","otMult"]; o[k] = (k==="breakPaid" || k==="otOn") ? v==="1" : (typeof v==="string" && numK.includes(k)) ? (v===""?"":+v) : v; }
+function wizCover(){ const el=$("wizCover"); if (!el) return; const d=isoToUTC(W.nextPayday); if (d==null){ el.textContent="Pick the date of your next paycheck"; return; }
+  try { const e=makeEngine(W); const pe=d-e.LAG*DAY, ps=pe-(e.PD-1)*DAY; el.textContent = "That check covers "+dname(ps)+" "+md(ps)+" "+EN+" "+dname(pe)+" "+md(pe)+" (then every "+(e.PD===14?"2 weeks":"week")+")"; } catch(e){ el.textContent=""; } }
+function wizValidate(w){
+  if (!String(w.name||"").trim()) return "Enter your name.";
+  if (!(+w.rate>0)) return "Enter your hourly rate.";
+  if (!w.days.length) return "Pick at least one work day.";
+  for (const i of w.days){ const pd=(w.perDay||{})[i]||{start:w.start,end:w.end}; if (hm(pd.start)==null || hm(pd.end)==null || hm(pd.end)<=hm(pd.start)) return DNL[i]+": shift end must be after shift start (same day)."; }
+  for (const b of w.breaks){ if (hm(b.start)==null || hm(b.end)==null || hm(b.end)<=hm(b.start)) return "Each break needs a start and a later end time."; }
+  if (isoToUTC(w.nextPayday)==null) return "Pick your next payday.";
+  return "";
+}
+function wizSave(first){
+  const w=W; w.name=String(w.name||"").trim(); const err=wizValidate(w); $("wizErr").textContent=err; if (err) return;
+  const pd={}; for (const i of w.days) pd[i]=(w.perDay||{})[i]||{start:w.start,end:w.end}; w.perDay=pd;
+  if (w.days.length){ w.start=pd[w.days[0]].start; w.end=pd[w.days[0]].end; }
+  PROFILE=w; ls.set(PROFILE_KEY, JSON.stringify(w)); E=newEngine(w);
+  const renamed = INST.name && INST.name!==w.name; INST.name = w.name; saveInst();
+  $("wizBg").classList.remove("show"); if (MODE==="test") { T.testDay=null; } render(true);
+  if (first) afterSetup(); else if (renamed) sendLog("profile");
+}
+
+// ---------------------------------------------------------------- v1.10.x update channel + install registration (name comes from setup)
+const IK = KP+"pclInstall."+MODE+".v1";
+let INST = {}; try { INST = JSON.parse(localStorage.getItem(IK)||"{}")||{}; } catch(e){}
+const saveInst = () => { try { localStorage.setItem(IK, JSON.stringify(INST)); } catch(e){} };
+if (ON_GAS && INJ.cid && !INST.id) { INST = { id:String(INJ.cid), name:String(INJ.nm||""), installedAt:String(INJ.ia||""), logged:true, ver:String(INJ.fromv||"") }; saveInst(); }   // arriving from the old host: same Users-sheet row
+if (!INST.name && PROFILE && PROFILE.name) INST.name = PROFILE.name;
+const API_OK = /^https?:/.test(UPDATE_API);
+const NOREG = PREVIEW || Q.has("noreg") || Q.has("at") || Q.has("simAgoMin");
+let LAST_CHECK = 0; let LATEST = null, PROMPTED = false, MOVE_URL = "";   // MOVE_URL: permanent-host page announced by the manifest (tunnel -> Apps Script)
+function cmpVer(a,b){ const x=String(a).replace(/^v/,"").split(".").map(n=>parseInt(n)||0), y=String(b).replace(/^v/,"").split(".").map(n=>parseInt(n)||0);
+  for (let i=0;i<Math.max(x.length,y.length);i++){ const d=(x[i]||0)-(y[i]||0); if (d) return Math.sign(d); } return 0; }
+function apiUrl(q){ if (/\/$/.test(UPDATE_API)) return UPDATE_API + "version.json?" + q;   // v2.0.14 static permanent host
+  return UPDATE_API + (UPDATE_API.includes("?")?"&":"?") + q; }
+function sendLog(ev){
+  if (!API_OK || NOREG || !INST.name || !INST.id || /\/$/.test(UPDATE_API)) return;
+  const body = JSON.stringify({ action:"log", event:ev, clientId:INST.id, name:INST.name, platform:"Phone", channel:MODE, version:APP_VERSION,
+    latestSeen: LATEST ? LATEST.version : "", installedAt: INST.installedAt, ua: navigator.userAgent.slice(0,120) });
+  try { fetch(UPDATE_API, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body, keepalive:true })
+        .then(()=>{ if (ev==="install" || ev==="update") { INST.logged=true; INST.ver=APP_VERSION; saveInst(); } }).catch(()=>{}); } catch(e){}
+}
+const isNewer = () => LATEST && (cmpVer(LATEST.version, APP_VERSION)>0 || MOVE_URL);
+function setUpd(){
+  const b=$("updBtn"), av=isNewer();
+  b.classList.toggle("lit", !!av); b.style.display = av ? "" : "none";   // v2.0.13: UPDATE only shows when a newer version exists
+  b.textContent = av ? (cmpVer(LATEST.version, APP_VERSION)>0 ? "UPDATE v"+LATEST.version : "UPDATE: NEW HOME") : (LATEST ? "UP TO DATE" : "UPDATE");
+  // v2.0.0 TessDesk-style banner: "New version, tap to refresh" (same refresh as the Update now pop-up)
+  const nb=$("updBanner"); if (nb) { nb.style.display = av ? "" : "none";
+    if (av) { nb.querySelector("b").textContent = MOVE_URL && !(cmpVer(LATEST.version, APP_VERSION)>0) ? "New home, tap to move" : "New version, tap to refresh";
+      $("updBannerSub").textContent = "v"+LATEST.version+" is out "+DOT+" you have v"+APP_VERSION; } }
+}
+function showUpd(){
+  if (!LATEST) return;
+  $("updTitle").textContent = "Paycheck Live v"+LATEST.version+" is ready";
+  $("updSub").textContent = "You have v"+APP_VERSION+(LATEST.date ? DOT+"published "+LATEST.date : "");
+  const cl = Array.isArray(LATEST.changelog) ? LATEST.changelog.slice() : String(LATEST.changelog||"").split(/\n+/).filter(Boolean);
+  if (MOVE_URL) cl.unshift("Paycheck Live has a permanent new home. After updating, add the new page to your home screen (Share \u2192 Add to Home Screen).");
+  $("updLog").innerHTML = cl.map(x=>"<li>"+esc(x)+"</li>").join("");
+  $("updNow").style.display=""; $("updLater").textContent="Later";
+  $("updBg").classList.add("show");
+}
+function showUpdMsg(title, msg){ $("updTitle").textContent=title; $("updSub").textContent=""; $("updLog").innerHTML='<li style="list-style:none;margin-left:0">'+esc(msg)+'</li>';
+  $("updNow").style.display="none"; $("updLater").textContent="Close"; $("updBg").classList.add("show"); }
+async function doUpdate(){
+  // v2.0.0: like TessDesk - clear this app's offline cache (paycheck-v*), let the service worker fetch the new version, reload.
+  // Punches, settings and profile live in localStorage and are never touched here.
+  $("updNow").textContent = "Updating\u2026"; const nb=$("updBanner"); if (nb) nb.querySelector("b").textContent = "Refreshing\u2026";
+  const clear = (async () => {
+    try { if (window.caches) { const ks = await caches.keys(); await Promise.all(ks.filter(k=>k.indexOf("paycheck-v")===0).map(k=>caches.delete(k))); } } catch(e){}
+    try { if ("serviceWorker" in navigator && navigator.serviceWorker.getRegistration) { const r = await navigator.serviceWorker.getRegistration(); if (r) await r.update(); } } catch(e){}
+  })();
+  await Promise.race([clear, new Promise(r=>setTimeout(r,4000))]);
+  if (MOVE_URL) { const u = new URL(MOVE_URL);
+    try { if (PROFILE) u.searchParams.set("prof", btoa(unescape(encodeURIComponent(JSON.stringify(PROFILE))))); } catch(e){}
+    try { u.searchParams.set("pun", btoa(unescape(encodeURIComponent(JSON.stringify(PUNCHES||{}))))); u.searchParams.set("pto", btoa(unescape(encodeURIComponent(JSON.stringify(PTOD||{}))))); } catch(e){}   // v2.0.14: punches + PTO move too
+    u.searchParams.set("cid", INST.id||""); u.searchParams.set("nm", INST.name||""); u.searchParams.set("ia", INST.installedAt||""); u.searchParams.set("fromv", APP_VERSION);
+    window.open(u.toString(), "_top"); return; }
+  if (ON_GAS) { window.open(window.__PCL_EXEC__ + "?page=" + MODE + "&v=" + encodeURIComponent(LATEST.version) + (window.__PCL_QS__||""), "_top"); return; }
+  const u = new URL(location.href); u.searchParams.set("v", LATEST.version+"-"+Date.now()); location.replace(u.toString());
+}
+function checkUpd(manual){
+  if (PREVIEW) { setUpd(); if (manual===true) showUpdMsg("Installer preview", "Updates are off in the installer preview."); return; }
+  if (!API_OK || Q.has("noupd")) { setUpd(); if (manual===true) showUpdMsg("Updates not available", "No update server is configured for this copy."); return; }
+  LAST_CHECK = Date.now();
+  const vj = (!ON_GAS && /^https?:$/.test(location.protocol)) ? fetch("version.json?t="+Date.now(), { cache:"no-store" }).then(r=>r.ok?r.json():null).catch(()=>null) : Promise.resolve(null);
+  const ap = fetch(apiUrl("api=version&c="+MODE+"&t="+Date.now()), { cache:"no-store" }).then(r=>r.json()).catch(()=>null);
+  Promise.all([vj, ap]).then(([a, b])=>{
+    const pv = x => x && ((x.phone && x.phone.version) || x.version);
+    let v = b && b.version ? b : null;
+    if (pv(a) && (!v || cmpVer(pv(a), v.version)>0)) v = Object.assign({}, v||{}, a, { version: pv(a), pages: v && v.pages });
+    if (!v || !v.version) throw new Error("no version");
+    const first = !LATEST; LATEST = v;
+    const PG = v.pages2 || v.pages;   // v2.0.14: pages2 = permanent home (older copies ignore it, refresh first, then move with punches)
+    MOVE_URL = (!ON_GAS && PG && PG[MODE] && !Q.has("nomove") && (()=>{ try { const m=new URL(String(PG[MODE]), location.href); return m.origin+m.pathname !== location.origin+location.pathname; } catch(e){ return false; } })()) ? String(PG[MODE]) : "";   // v2.0.14: never "move" to the page we are already on
+    setUpd();
+    if (first) sendLog("open");
+    const key = v.version+(MOVE_URL?"+move":"");
+    if (isNewer() && (manual===true || (!PROMPTED && INST.dismissed!==key && !$("wizBg").classList.contains("show")))) { PROMPTED=true; showUpd(); }
+    else if (manual===true) showUpdMsg("You're up to date", "Paycheck Live v"+APP_VERSION+" is the latest version.");
+  }).catch(()=>{ setUpd(); if (manual===true) showUpdMsg("Can't check right now", "No connection to the update server. Try again later."); });
+}
+// after setup (or on every later open): make sure this install has an id, log install/update, then check for updates
+function afterSetup(){
+  if (!INST.id) { INST.id = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random().toString(16).slice(2)); }
+  if (!INST.installedAt) INST.installedAt = new Date().toISOString();
+  if (!INST.name && PROFILE && PROFILE.name) INST.name = PROFILE.name;
+  saveInst();
+  if (!INST.logged) sendLog("install"); else if (INST.ver && INST.ver!==APP_VERSION) sendLog("update");
+  checkUpd();
+}
+$("updBtn").onclick = () => { if (isNewer()) doUpdate(); else checkUpd(true); };   // v2.0.13: tap = install/refresh now
+setInterval(() => { if (!document.hidden) checkUpd(); }, 30*60*1000);
+$("updNow").onclick = doUpdate;
+$("updBanner").onclick = doUpdate;
+$("updLater").onclick = () => { if (LATEST && isNewer()) { INST.dismissed = LATEST.version+(MOVE_URL?"+move":""); saveInst(); } $("updBg").classList.remove("show"); };
+
+// ---------------------------------------------------------------- donate links (Venmo / PayPal; Cash App only once a cashtag exists; never an email)
+function donateLinks(){ const d=DONATE||{}, out=[];
+  if (d.venmo) out.push({ cls:"venmo", label:"Venmo", sub:"suggested $1", url:d.venmo });
+  if (d.paypal) out.push({ cls:"paypal", label:"PayPal", sub:"$1", url:d.paypal });
+  if (d.cashapp) out.push({ cls:"cash", label:"Cash App", sub:"$1", url:"https://cash.app/$"+String(d.cashapp).replace(/^\$/,"") });
+  return out; }
+(function(){ const L=donateLinks();
+  $("donate").innerHTML = L.length ? '<span class="tipl">\u2665 Support the creator ($1):</span>'+L.map(d=>'<a href="'+esc(d.url)+'" target="_blank" rel="noopener">'+esc(d.label)+'</a>').join("") : ""; })();
+
+// ---------------------------------------------------------------- wiring
+window.PAYCHECK = { get E(){ return E; }, APP_VERSION, checkUpd, sendLog, get INST(){ return INST; }, get LATEST(){ return LATEST; } };
+if (MODE==="test"){ loadT(); $("startBtn").onclick=doStart; $("stopBtn").onclick=doStop; $("ffwdBtn").onclick=()=>doFfwd(5); $("ffwdH").onclick=()=>doFfwd(60); $("ffwdD").onclick=()=>doFfwd(1440);
+  if (Q.has("simAgoMin")) { const n=Date.now(); T={ state:"running", click:n-(+Q.get("simAgoMin"))*60000, frozen:0, testDay:testDayFor(n) }; } }
+if (MODE==="live" && Q.has("at")) { const m=/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)$/.exec(Q.get("at"));
+  if (m) { const fixed={ day:Date.UTC(+m[1],+m[2]-1,+m[3]), min:(+m[4])*60+(+m[5]), sec:0 }; centralNow = () => fixed;
+    window.PAYCHECK.setNow = (h,mi,se) => { fixed.min=h*60+mi; fixed.sec=se||0; render(true); tickPunch(); }; } }
+const DISPLAY_KEY = KP+"paycheckDisplay."+MODE+".v1";
+let DISPLAY_ON = true;
+function loadDisp(){ DISPLAY_ON = ls.get(DISPLAY_KEY)!=="off"; }
+function applyDisp(){ const b=$("togBtn"); $("card").classList.toggle("off", !DISPLAY_ON); b.textContent = DISPLAY_ON ? "ON" : "OFF"; b.classList.toggle("on", DISPLAY_ON); $("body").setAttribute("aria-hidden", DISPLAY_ON ? "false" : "true"); }
+$("togBtn").onclick = () => { DISPLAY_ON=!DISPLAY_ON; ls.set(DISPLAY_KEY, DISPLAY_ON?"on":"off"); applyDisp(); };
+// v2.0.0 share: native share sheet on phones (navigator.share), fallback sheet with Messenger / Text / Email / Copy / QR
+const SHARE_URL = "https://spoo.me/QrYfV9" || (location.origin + "/get");
+const SHARE_TEXT = "Paycheck Live - see your paycheck grow live while you work. Free for PC and phone: ";
+let INSTALL_EVT = null;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); INSTALL_EVT = e; });
+function shareSheet(){
+  const u = SHARE_URL, msg = SHARE_TEXT + u;
+  $("shMsg").href = /Android|iPhone|iPad/i.test(navigator.userAgent) ? "fb-messenger://share?link=" + encodeURIComponent(u) : "https://www.messenger.com/new";
+  $("shMsg").onclick = () => { try { navigator.clipboard.writeText(msg); } catch(e){} };   // desktop: message copied, paste it into the chat
+  $("shSms").href = (/iPhone|iPad/i.test(navigator.userAgent) ? "sms:&body=" : "sms:?body=") + encodeURIComponent(msg);
+  $("shMail").href = "mailto:?subject=" + encodeURIComponent("Paycheck Live (free paycheck tracker)") + "&body=" + encodeURIComponent(msg + "\n\nPC: download and run the Setup. Phone: open the link and add it to your home screen.");
+  $("shCopy").onclick = async () => { try { await navigator.clipboard.writeText(u); } catch(e){ const t=document.createElement("textarea"); t.value=u; document.body.appendChild(t); t.select(); try{document.execCommand("copy");}catch(_){} t.remove(); } $("shCopy").lastChild.textContent = "Copied!"; setTimeout(()=>{ $("shCopy").lastChild.textContent = "Copy link"; }, 1600); };
+  let site = ""; try { site = new URL(UPDATE_API, location.href).origin; } catch(e){}
+  if (!site || /script\.google/.test(site)) site = location.origin;
+  $("shQr").src = site + "/qr.png?d=" + encodeURIComponent(u);
+  $("shQr").onerror = () => { $("shQr").style.display = "none"; };
+  $("shLink").textContent = u.replace(/^https?:\/\//, "");
+  $("shInstall").style.display = INSTALL_EVT ? "" : "none";
+  $("shInstall").onclick = async () => { if (!INSTALL_EVT) return; INSTALL_EVT.prompt(); try { await INSTALL_EVT.userChoice; } catch(e){} INSTALL_EVT = null; $("shInstall").style.display = "none"; };
+  $("shClose").onclick = () => $("shBg").classList.remove("show");
+  $("shBg").classList.add("show");
+}
+async function shareApp(){
+  if (navigator.share && /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)) {
+    try { await navigator.share({ title: "Paycheck Live", text: SHARE_TEXT, url: SHARE_URL }); return; } catch(e){ if (e && e.name === "AbortError") return; }
+  }
+  shareSheet();
+}
+$("shareBtn").onclick = shareApp;
+$("gearBtn").onclick = () => wizOpen(false);
+loadDisp(); applyDisp();
+$("verBtn").onclick=()=>$("logBg").classList.add("show"); $("logClose").onclick=()=>$("logBg").classList.remove("show");
+["logBg","edBg"].forEach(id=>$(id).addEventListener("click", ev=>{ if (ev.target.id===id) $(id).classList.remove("show"); }));
+window.addEventListener("storage", e => { if (e.key===STORE_KEY){ loadT(); render(true); } if (e.key===DISPLAY_KEY){ loadDisp(); applyDisp(); } });
+document.addEventListener("visibilitychange", () => { if (!document.hidden){ render(true); checkUpd(); } });
+if (PREVIEW) { $("tag").textContent="PREVIEW"; $("tag").style.color="#FFB020";
+  const pv=document.createElement("div"); pv.className="pv"; pv.innerHTML='<span><b>INSTALLER PREVIEW</b>'+DOT+'fresh install every time, nothing saved to your real profile</span><button id="pvRestart">Restart</button>';
+  $("body").insertBefore(pv, $("body").firstChild); $("pvRestart").onclick=()=>location.reload(); }
+render(true);
+setInterval(() => { render(false); tickPunch(); }, 1000);
+if (Q.has("v")) { const u=new URL(location.href); u.searchParams.delete("v"); try { history.replaceState(null,"",u.toString()); } catch(e){} }
+if (Q.has("fakeLatest")) { LATEST = { version:Q.get("fakeLatest"), date:APP_DATE, changelog:["Preview of the update pop-up"] }; setUpd(); if (Q.has("showUpd")) showUpd(); }
+if (Q.has("settings")) wizOpen(false);
+else if ((FIRST_RUN || PREVIEW) && !Q.has("noWizard")) wizOpen(true);
+else if (!Q.has("fakeLatest")) afterSetup();
+setInterval(checkUpd, 30*60*1000);
+// hosted build only: offline cache so the home-screen icon keeps working without network
+if (false && !ON_GAS && "serviceWorker" in navigator && location.protocol==="https:") { navigator.serviceWorker.register("sw.js").catch(()=>{}); }
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Get Paycheck Live · DESIGN BY VAN</title>
+<meta name="description" content="Paycheck Live: watch your paycheck grow in real time. Free for Windows and phones.">
+<meta property="og:title" content="Paycheck Live: see your paycheck grow in real time"><meta property="og:description" content="Track clock in/out, breaks and lunch, and your take-home pay, live. Free from DESIGN BY VAN.">
+<meta property="og:image" content="https://vanwidick.github.io/paycheck-live/icon-live-512.png"><meta name="theme-color" content="#0B0B0B">
+<link rel="icon" href="https://vanwidick.github.io/paycheck-live/icon-live-192.png"><link rel="manifest" href="https://vanwidick.github.io/paycheck-live/manifest-live.json">
+<style>
+ @font-face{font-family:Bebas;src:url(/BebasNeue.woff2) format("woff2")}
+ *{box-sizing:border-box} body{margin:0;background:#0B0B0B;color:#eee;font:16px/1.45 Roboto,"Segoe UI",system-ui,sans-serif}
+ .w{max-width:560px;margin:0 auto;padding:28px 18px 40px}
+ .top{display:flex;align-items:center;gap:14px} .top img{width:64px;height:64px;border-radius:16px;box-shadow:0 0 0 1px #333}
+ h1{margin:0;font-size:28px;font-weight:900;letter-spacing:.3px} h1 span{color:#E82127} .by{font-family:Bebas,Impact,sans-serif;letter-spacing:2px;color:#bbb;font-size:15px}
+ .pitch{color:#bbb;margin:16px 0 18px}
+ .card{background:#141414;border:1px solid #2a2a2a;border-radius:16px;padding:18px;margin-top:14px}
+ .card h2{margin:0 0 6px;font-size:18px} .muted{color:#999;font-size:14px}
+ .btn{display:block;text-align:center;text-decoration:none;font-weight:900;font-size:18px;letter-spacing:.4px;padding:16px;border-radius:14px;margin-top:12px;color:#fff;background:#E82127}
+ .btn.alt{background:#222;border:1px solid #3a3a3a;font-size:16px} .btn small{display:block;font-weight:600;font-size:12.5px;opacity:.85;margin-top:2px}
+ ol{padding-left:22px;margin:10px 0 0} li{margin:6px 0} b{color:#fff}
+ .hide{display:none} .note{font-size:13px;color:#888;margin-top:10px} .ver{margin-top:26px;text-align:center;color:#777;font-size:12.5px}
+ .feat{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px} .feat div{background:#101010;border:1px solid #232323;border-radius:10px;padding:9px 10px;font-size:13.5px;color:#ccc}
+</style></head>
+<body><div class="w">
+ <div class="top"><img src="/icon-live-192.png" alt=""><div><h1>PAYCHECK <span>LIVE</span></h1><div class="by">DESIGN BY VAN</div></div></div>
+ <p class="pitch">Watch your take-home pay grow in real time while you work. Clock in/out, breaks and lunch with big buttons and timers. Free.</p>
+ <div class="feat"><div>💵 Live net &amp; gross pay</div><div>⏱ Break &amp; lunch timers</div><div>📅 Daily money made</div><div>✎ Fix punches anytime</div></div>
+
+ <div class="card" id="pc">
+  <h2>🖥 Windows PC</h2><div class="muted">Windows 10 / 11 · no admin needed · 1.4 MB</div>
+  <a class="btn" id="dl" href="https://vanwidick.github.io/paycheck-live/get/PaycheckLive-Setup-2.0.0.exe">DOWNLOAD FOR WINDOWS<small>PaycheckLive-Setup-2.0.0.exe · v2.0.14</small></a>
+  <ol><li>Open the downloaded <b>PaycheckLive-Setup-2.0.0.exe</b>.</li><li>If Windows shows <b>“Windows protected your PC”</b>, click <b>More info</b> → <b>Run anyway</b> (the app is new and not code-signed yet).</li><li>Click <b>Install</b>. Paycheck Live opens and walks you through a 1-minute setup.</li></ol>
+  <div class="note">Uninstall any time: Settings → Apps → Paycheck Live. Updates arrive inside the app (UPDATE button).</div>
+ </div>
+
+ <div class="card" id="ph">
+  <h2>📱 Phone (Android / iPhone)</h2><div class="muted">Works in the browser and installs like an app</div>
+  <a class="btn" href="https://vanwidick.github.io/paycheck-live/paycheck-live.html">OPEN PAYCHECK LIVE<small>then install it to your home screen</small></a>
+  <button class="btn alt hide" id="inst">⬇ INSTALL APP</button>
+  <ol><li><b>Android (Chrome):</b> tap <b>Install app</b>, or menu <b>⋮</b> → <b>Add to Home screen</b> → <b>Install</b>.</li>
+      <li><b>iPhone (Safari):</b> tap <b>Share</b> → <b>Add to Home Screen</b> → <b>Add</b>.</li>
+      <li>Open <b>Paycheck Live</b> from your home screen and enter your pay and schedule.</li></ol>
+ </div>
+ <div class="ver">v2.0.14 · updated OCT 16, 2026 2:25 PM · <a href="https://vanwidick.github.io/paycheck-live/paycheck-live.html" style="color:#999">phone version</a> · <a href="https://vanwidick.github.io/paycheck-live/get/PaycheckLive-Setup-2.0.0.exe" style="color:#999">Windows setup</a></div>
+</div>
+<script>
+ const phone=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+ const pc=document.getElementById('pc'), ph=document.getElementById('ph');
+ if (phone) pc.parentNode.insertBefore(ph, pc);   // phone first on phones, PC first on PCs
+ let dp=null; addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;document.getElementById('inst').classList.remove('hide');});
+ document.getElementById('inst').onclick=async()=>{ if(!dp) return; dp.prompt(); await dp.userChoice; dp=null; };
+ if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+</script>
+</body></html>

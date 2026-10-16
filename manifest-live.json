@@ -1,0 +1,36 @@
+{
+ "id": "/paycheck-live",
+ "name": "Paycheck Live",
+ "short_name": "Paycheck Live",
+ "start_url": "paycheck-live.html",
+ "scope": "paycheck-live",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#0B0B0B",
+ "theme_color": "#0B0B0B",
+ "description": "See your paycheck grow live while you work. DESIGN BY VAN.",
+ "categories": [
+  "finance",
+  "productivity"
+ ],
+ "icons": [
+  {
+   "src": "icon-live-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icon-live-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icon-live-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

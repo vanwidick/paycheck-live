@@ -1,0 +1,38 @@
+{
+ "app": "Paycheck Live",
+ "channel": "live",
+ "source": "LIVE (PaycheckWidget.ps1 / paycheck-live.html)",
+ "version": "2.0.14",
+ "date": "2026-10-16",
+ "publishedAt": "2026-10-16 02:25 PM CT",
+ "updatedLabel": "OCT 16, 2026 2:25 PM",
+ "changelog": [
+  "Paycheck Live now lives at a permanent address (vanwidick.github.io/paycheck-live): the phone app and PC updates never change address again.",
+  "Phones move over automatically with their profile, punches and PTO; the UPDATE button keeps working."
+ ],
+ "files": {
+  "pcLive": "PaycheckWidget.ps1",
+  "pcTest": "PaycheckWidgetTest.ps1",
+  "phoneLive": "paycheck-live.html",
+  "phoneTest": "paycheck-test.html",
+  "phonePreview": "paycheck-installer-preview.html",
+  "pcSetup": "PaycheckLive-Setup-2.0.0.exe",
+  "pcPortable": "PaycheckLive.exe"
+ },
+ "pcPreview": {
+  "file": "PaycheckWidget.ps1",
+  "args": "-InstallerPreview",
+  "shortcut": "Paycheck Live Installer Preview",
+  "startup": false
+ },
+ "hostVersion": "2.0.0",
+ "setup": "PaycheckLive-Setup-2.0.0.exe",
+ "portable": "PaycheckLive.exe",
+ "shareUrl": "https://spoo.me/QrYfV9",
+ "phoneUrl": "https://spoo.me/QrYfV9",
+ "pages2": {
+  "live": "https://vanwidick.github.io/paycheck-live/paycheck-live.html",
+  "test": "https://vanwidick.github.io/paycheck-live/paycheck-test.html"
+ },
+ "permUrl": "https://vanwidick.github.io/paycheck-live"
+}

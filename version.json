@@ -1,0 +1,15 @@
+{
+ "app": "Paycheck Live",
+ "version": "2.0.14",
+ "date": "2026-10-16",
+ "updatedLabel": "OCT 16, 2026 2:25 PM",
+ "changelog": [
+  "Paycheck Live now lives at a permanent address (vanwidick.github.io/paycheck-live): the phone app and PC updates never change address again.",
+  "Phones move over automatically with their profile, punches and PTO; the UPDATE button keeps working."
+ ],
+ "phone": {
+  "version": "2.0.14",
+  "cache": "paycheck-v2.0.14"
+ },
+ "get": "https://spoo.me/QrYfV9"
+}
