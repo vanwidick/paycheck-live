@@ -4,8 +4,8 @@
  "source": "LIVE (PaycheckWidget.ps1 / paycheck-live.html)",
  "version": "2.0.15",
  "date": "2026-10-22",
- "publishedAt": "2026-10-22 10:46 PM CT",
- "updatedLabel": "OCT 22, 2026 10:46 PM",
+ "publishedAt": "2026-10-22 10:49 PM CT",
+ "updatedLabel": "OCT 22, 2026 10:49 PM",
  "changelog": [
   "2-week Daily money made list removed",
   "UPDATE works like TessDesk: green YES UPDATE (pulsing, tap installs) / red NO UPDATE (tap checks now)",
@@ -17,7 +17,7 @@
   "phoneLive": "paycheck-live.html",
   "phoneTest": "paycheck-test.html",
   "phonePreview": "paycheck-installer-preview.html",
-  "pcSetup": "PaycheckLive-Setup-2.0.0.exe",
+  "pcSetup": "PaycheckLive-Setup-2.0.15.exe",
   "pcPortable": "PaycheckLive.exe"
  },
  "pcPreview": {
@@ -27,7 +27,7 @@
   "startup": false
  },
  "hostVersion": "2.0.0",
- "setup": "PaycheckLive-Setup-2.0.0.exe",
+ "setup": "PaycheckLive-Setup-2.0.15.exe",
  "portable": "PaycheckLive.exe",
  "shareUrl": "https://spoo.me/QrYfV9",
  "phoneUrl": "https://spoo.me/QrYfV9",

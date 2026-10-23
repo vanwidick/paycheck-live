@@ -70,7 +70,7 @@ $settingsPath = Join-Path $cfgDir 'tax-settings.json'
 $displayPath  = Join-Path $dataDir $(if ($TestMode) { 'display-state-test.json' } else { 'display-state.json' })   # v1.6.0 ON/OFF
 $ShareUrlDefault = 'https://spoo.me/QrYfV9'    # v2.0.0: short link to the download / landing page (set by publish.py; the version manifest's shareUrl wins)
 $UpdateApiDefault = 'https://vanwidick.github.io/paycheck-live/api/'   # v1.10.0: version manifest / release endpoint (set by publish.py; update-config.json overrides)
-$AppVersion = '2.0.15'; $AppVersionDate = '2026-10-22'; $AppUpdated = 'OCT 22, 2026 10:46 PM'   # v1.14.1: footer UPDATED stamp (set by publish.py)
+$AppVersion = '2.0.15'; $AppVersionDate = '2026-10-22'; $AppUpdated = 'OCT 22, 2026 10:49 PM'   # v1.14.1: footer UPDATED stamp (set by publish.py)
 
 # Tesla widget is 288 x 480 DIPs. Same width, 50% taller.
 $winW = 288
