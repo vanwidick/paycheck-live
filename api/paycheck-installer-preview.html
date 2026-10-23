@@ -78,7 +78,9 @@
   .verrow { display:flex; justify-content:center; align-items:center; gap:8px; margin-top:6px; }
   .ver { background:none; border:0; color:#A8A8A8; font:700 12.5px "Segoe UI",Roboto,sans-serif; letter-spacing:.5px; text-decoration:underline dotted #444; padding:4px 6px; }
   .upd { border:1px solid #3a3a3a; background:#1a1a1a; color:#777; font:800 10.5px "Segoe UI",Roboto,sans-serif; letter-spacing:.6px; border-radius:10px; padding:4px 10px; }
-  .upd.lit { color:#fff; background:#1F9D45; border-color:#34C759; animation:glow 1.6s ease-in-out infinite; }
+  .upd.lit { color:#06210f; background:#49df93; border-color:#49df93; animation:tdpulse 1.6s ease-in-out infinite; }
+  .upd.no { color:#fff; background:#E82127; border-color:#E82127; }
+  @keyframes tdpulse { 0%,100% { opacity:1 } 50% { opacity:.45 } }
   @keyframes glow { 0%,100% { box-shadow:0 0 4px 1px rgba(52,199,89,.55); } 50% { box-shadow:0 0 16px 5px rgba(52,199,89,.95); } }
   .donate { display:flex; justify-content:center; gap:6px; margin-top:8px; flex-wrap:wrap; }
   .donate a { color:#999; font-size:10.5px; font-weight:700; text-decoration:none; border:1px solid #2c2c2c; border-radius:9px; padding:3px 9px; }
@@ -380,7 +382,7 @@
     <!-- v2.0.8: DAILY MONEY MADE (2-week daily list + period total) removed at Van's request; earlier days are still editable with the < > arrows in EDIT PUNCHES -->
   </div>
   <div class="brandbox"><div class="brand">DESIGN BY VAN</div>
-    <div class="verrow"><button class="ver" id="verBtn" title="Paycheck Live v2.0.14 - version history">v2.0.14 &middot; UPDATED OCT 16, 2026 2:25 PM</button><button class="upd" id="updBtn" title="Check for updates">UPDATE</button></div>
+    <div class="verrow"><button class="ver" id="verBtn" title="Paycheck Live v2.0.15 - version history">v2.0.15 &middot; UPDATED OCT 22, 2026 10:46 PM</button><button class="upd" id="updBtn" title="Check for updates">UPDATE</button></div>
     <div class="donate" id="donate"></div>
   </div>
 </div>
@@ -397,7 +399,12 @@
   <div class="edfoot" id="edFoot"><button id="edFootCancel" type="button">CANCEL</button><button class="save" id="edFootSave" type="button">&#10003; SAVE</button></div>
 </div></div>
 <div class="edtoast" id="edToast">SAVED &#10003;</div>
-<div class="modalbg" id="logBg"><div class="modal"><h3>Paycheck Live &middot; version history</h3><div id="logBody"><h4>v2.0.14 <span style="color:#777;font-weight:400">2026-10-16 14:25 CT</span></h4><ul>
+<div class="modalbg" id="logBg"><div class="modal"><h3>Paycheck Live &middot; version history</h3><div id="logBody"><h4>v2.0.15 <span style="color:#777;font-weight:400">2026-10-22 22:46 CT</span></h4><ul>
+<li>2-week Daily money made list removed</li>
+<li>UPDATE works like TessDesk: green YES UPDATE (pulsing, tap installs) / red NO UPDATE (tap checks now)</li>
+<li>Android app (APK) and fresh Windows Setup on the download page; phone app works offline</li>
+</ul>
+<h4>v2.0.14 <span style="color:#777;font-weight:400">2026-10-16 14:25 CT</span></h4><ul>
 <li>Paycheck Live now lives at a permanent address (vanwidick.github.io/paycheck-live): the phone app and PC updates never change address again.</li>
 <li>Phones move over automatically with their profile, punches and PTO; the UPDATE button keeps working.</li>
 </ul>
@@ -573,7 +580,7 @@
 <script>
 "use strict";
 const MODE = "live";                 // "live" | "test"
-const APP_VERSION = "2.0.14", APP_DATE = "2026-10-16";
+const APP_VERSION = "2.0.15", APP_DATE = "2026-10-22";
 const UPDATE_API = window.__PCL_EXEC__ || "https://vanwidick.github.io/paycheck-live/api/";   // version manifest + install log endpoint (Apps Script web app or box server)
 const ON_GAS = !!window.__PCL_EXEC__;
 const DONATE = {"venmo": "https://venmo.com/u/VanWidick", "paypal": "https://paypal.me/VanWidick/1", "cashapp": ""};               // tip jar (Venmo / PayPal; Cash App hidden until a cashtag exists; never an email)
@@ -1454,8 +1461,10 @@ function sendLog(ev){
 const isNewer = () => LATEST && (cmpVer(LATEST.version, APP_VERSION)>0 || MOVE_URL);
 function setUpd(){
   const b=$("updBtn"), av=isNewer();
-  b.classList.toggle("lit", !!av); b.style.display = av ? "" : "none";   // v2.0.13: UPDATE only shows when a newer version exists
-  b.textContent = av ? (cmpVer(LATEST.version, APP_VERSION)>0 ? "UPDATE v"+LATEST.version : "UPDATE: NEW HOME") : (LATEST ? "UP TO DATE" : "UPDATE");
+  // v2.0.15 TessDesk-style: always visible; green YES UPDATE (pulsing, tap installs) / red NO UPDATE (tap checks now)
+  b.classList.toggle("lit", !!av); b.classList.toggle("no", !av); b.style.display = "";
+  b.textContent = av ? (cmpVer(LATEST.version, APP_VERSION)>0 ? "YES UPDATE" : "YES UPDATE: NEW HOME") : "NO UPDATE";
+  b.title = av ? "YES UPDATE v"+LATEST.version+" is out \u00b7 tap to install" : (LATEST ? "NO UPDATE \u00b7 already on v"+APP_VERSION+" \u00b7 tap to check now" : "NO UPDATE \u00b7 tap to check now");
   // v2.0.0 TessDesk-style banner: "New version, tap to refresh" (same refresh as the Update now pop-up)
   const nb=$("updBanner"); if (nb) { nb.style.display = av ? "" : "none";
     if (av) { nb.querySelector("b").textContent = MOVE_URL && !(cmpVer(LATEST.version, APP_VERSION)>0) ? "New home, tap to move" : "New version, tap to refresh";

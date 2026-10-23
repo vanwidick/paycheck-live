@@ -70,7 +70,7 @@ $settingsPath = Join-Path $cfgDir 'tax-settings.json'
 $displayPath  = Join-Path $dataDir $(if ($TestMode) { 'display-state-test.json' } else { 'display-state.json' })   # v1.6.0 ON/OFF
 $ShareUrlDefault = 'https://spoo.me/QrYfV9'    # v2.0.0: short link to the download / landing page (set by publish.py; the version manifest's shareUrl wins)
 $UpdateApiDefault = 'https://vanwidick.github.io/paycheck-live/api/'   # v1.10.0: version manifest / release endpoint (set by publish.py; update-config.json overrides)
-$AppVersion = '2.0.14'; $AppVersionDate = '2026-10-16'; $AppUpdated = 'OCT 16, 2026 2:25 PM'   # v1.14.1: footer UPDATED stamp (set by publish.py)
+$AppVersion = '2.0.15'; $AppVersionDate = '2026-10-22'; $AppUpdated = 'OCT 22, 2026 10:46 PM'   # v1.14.1: footer UPDATED stamp (set by publish.py)
 
 # Tesla widget is 288 x 480 DIPs. Same width, 50% taller.
 $winW = 288
@@ -1540,9 +1540,10 @@ $xamlText = @'
 
         <!-- 1. Hero: live running total (approx. net) -->
         <StackPanel Grid.Row="1" Margin="0,4,0,0">
-          <Button x:Name="UpdBig" Visibility="Collapsed" Template="{StaticResource PillBtn}" Background="#FFE82127" Height="30" Margin="0,0,0,4" Cursor="Hand" ToolTip="Install the new version now">
-            <TextBlock x:Name="UpdBigTxt" Text="UPDATE" Foreground="#FFFFFFFF" FontFamily="Segoe UI" FontSize="13" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-          </Button>
+          <!-- v2.0.15: TessDesk-style UPDATE tab (always visible): red NO UPDATE = current (tap checks now); green YES UPDATE = newer version out (tap installs + restarts) -->
+          <Border x:Name="UpdBig" CornerRadius="0,9,9,0" HorizontalAlignment="Left" MinWidth="118" MaxWidth="160" Background="#FFE82127" BorderBrush="#FFE82127" BorderThickness="1,1.5,1.5,1.5" Padding="7,2,10,3" Margin="-16,0,0,4" Cursor="Hand" ToolTip="NO UPDATE · tap to check now">
+            <TextBlock x:Name="UpdBigTxt" Text="NO UPDATE" Foreground="#FFFFFFFF" FontFamily="Segoe UI" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center"/>
+          </Border>
           <TextBlock x:Name="HeroLabel" Text="" Foreground="#FF777777" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold" HorizontalAlignment="Center"/>
           <Viewbox StretchDirection="DownOnly" Stretch="Uniform" HorizontalAlignment="Center" Height="48" Margin="0,-3,0,0">
             <TextBlock x:Name="HeroAmt" Text="-" Foreground="#FFFFFFFF" FontFamily="Segoe UI" FontSize="37" FontWeight="Bold"/>
@@ -1710,31 +1711,7 @@ __TLROWS__          </StackPanel>
 
         <Border Grid.Row="6" Height="1" Background="#FF2A2A2A" Margin="0,3,0,2" Visibility="Collapsed"/>
 
-        <!-- v1.12.0 DAILY MONEY MADE (replaces pay period / next paycheck / pay history)
-             v2.0.8: removed from view at Van's request (kept collapsed so the update code has no null references); v2.0.9: window stays full height, footer at the bottom -->
-        <DockPanel x:Name="DailySection" Grid.Row="7" Grid.RowSpan="5" LastChildFill="True" Visibility="Collapsed">
-          <Grid DockPanel.Dock="Top" Margin="0,0,0,1">
-            <TextBlock x:Name="DailyHead" Text="DAILY MONEY MADE" Foreground="#FFE82127" FontFamily="Segoe UI" FontSize="10" FontWeight="Bold"/>
-            <TextBlock x:Name="DailyRange" Text="" Foreground="#FF666666" FontFamily="Segoe UI" FontSize="8.5" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-          </Grid>
-          <Grid DockPanel.Dock="Top" Margin="3,0,3,0"><Grid.ColumnDefinitions><ColumnDefinition Width="58"/><ColumnDefinition Width="44"/><ColumnDefinition Width="74"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-            <TextBlock Text="DAY" Foreground="#FF5A5A5A" FontFamily="Segoe UI" FontSize="7.5" FontWeight="Bold"/>
-            <TextBlock Grid.Column="1" Text="SHIFT DIFF" Foreground="#FF7A6230" FontFamily="Segoe UI" FontSize="7.5" FontWeight="Bold" HorizontalAlignment="Right"/>
-            <TextBlock Grid.Column="2" Text="OT hrs &#183; OT $" Foreground="#FF7A4A35" FontFamily="Segoe UI" FontSize="7.5" FontWeight="Bold" HorizontalAlignment="Right"/>
-            <TextBlock Grid.Column="3" Text="NET (approx.)" Foreground="#FF5A5A5A" FontFamily="Segoe UI" FontSize="7.5" FontWeight="Bold" HorizontalAlignment="Right"/>
-          </Grid>
-          <StackPanel DockPanel.Dock="Bottom">
-            <Border Height="1" Background="#FF3A3A3A" Margin="0,1,0,2"/>
-            <Grid><TextBlock Text="Period total &#183; approx. paycheck" Foreground="#FFDDDDDD" FontFamily="Segoe UI" FontSize="10.5" FontWeight="Bold" VerticalAlignment="Center"/>
-              <TextBlock x:Name="PeriodNet" Text="-" Foreground="#FF34C759" FontFamily="Segoe UI" FontSize="14" FontWeight="Bold" HorizontalAlignment="Right"/></Grid>
-            <TextBlock x:Name="PeriodBrk" Text="" Foreground="#FFAAAAAA" FontFamily="Segoe UI" FontSize="8" HorizontalAlignment="Right" Margin="0,-2,0,0" TextTrimming="CharacterEllipsis"/>
-            <TextBlock x:Name="PeriodGross" Text="" Foreground="#FF666666" FontFamily="Segoe UI" FontSize="8" HorizontalAlignment="Right" Margin="0,-1,0,0"/>
-          </StackPanel>
-          <ScrollViewer x:Name="DailyScroll" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" Focusable="False">
-            <StackPanel>
-__DAYROWS__            </StackPanel>
-          </ScrollViewer>
-        </DockPanel>
+        <!-- v2.0.15: 2-week DAILY MONEY MADE section removed (Van) -->
       </Grid>
     </DockPanel>
   </Border>
@@ -1864,51 +1841,7 @@ function Update-Ui {
         $ui["TL${i}Time"].Foreground = Brush $fg; $ui["TL${i}Lab"].Foreground = Brush $fg; $ui["TL${i}Dot"].Fill = Brush $df; $ui["TL${i}Dot"].Stroke = Brush $ds; $bd.Background = Brush $bg
     }
 
-    # v1.12.0 DAILY MONEY MADE: every day of the current pay period (days off "Day off - $0.00"), week subtotals, period total = approx. paycheck
-    $two = ($PeriodDays -eq 14)
-    $ui.DailyHead.Text = 'DAILY MONEY MADE'
-    $ui.DailyRange.Text = $st.WeekStart.ToString('M/d', $inv) + $enDash + $st.PeriodEnd.ToString('M/d', $inv) + $dot + 'paid ' + $st.PeriodPayday.ToString('ddd M/d', $inv)
-    $ck = [string][char]0x2713; $todayRow = $null
-    for ($i = 0; $i -lt 14; $i++) {
-        $row = $ui["DL$i"]
-        if ($i -ge $PeriodDays) { $row.Visibility = [System.Windows.Visibility]::Collapsed; continue }
-        $row.Visibility = [System.Windows.Visibility]::Visible
-        $x = $st.Daily[$i]; $nameC = '#FFAAAAAA'; $amtC = '#FFFFFFFF'; $note = ''; $bg = '#00000000'
-        # v1.14.0 columns: DAY | SHIFT DIFF $ | OT hrs . OT $ | NET (today = so far, future = projected & dimmed)
-        $dfT = ''; $otT = ''; $dfC = '#FFFFB020'; $otC = '#FFFF7A45'; $dash = [string][char]0x2013
-        $xd = $x.Diff; $xo = $x.OT; $xom = $x.OTMin
-        if ($x.Off) { $amt = 'Day off - ' + (Format-Money 0); $nameC = '#FF4A4A4A'; $amtC = '#FF4A4A4A' }
-        elseif ($x.Kind -eq 'reset') { $amt = Format-Money 0; $note = 'test reset'; $amtC = '#FF555555' }
-        else {
-            if ($x.Kind -eq 'today') { $amt = Format-Money $(if ($idle) { 0 } else { $x.Net }); $nameC = '#FFFFFFFF'; $amtC = '#FF34C759'; $bg = '#2434C759'; $todayRow = $row; if ($idle) { $xd = 0; $xo = 0; $xom = 0 } }
-            elseif ($x.Kind -eq 'future') { $amt = Format-Money $x.Net; $nameC = '#FF777777'; $amtC = '#FF666666'; $dfC = '#FF7A6230'; $otC = '#FF7A4A35' }
-            else { $amt = Format-Money $x.Net }
-            $dfT = $(if ($xd -gt 0) { Format-Money $xd } else { $dash }); $otT = Format-OTCell $xom $xo
-            if ($xd -le 0) { $dfC = '#FF4A4A4A' }; if ($xom -le 0) { $otC = '#FF4A4A4A' }
-        }
-        $nm2 = $x.Date.ToString('ddd M/d', $inv); if ($x.Punched -and -not $x.Off) { $nm2 += $ck }
-        $ui["DL${i}Diff"].Text = $dfT; $ui["DL${i}OT"].Text = $otT; $ui["DL${i}Diff"].Foreground = Brush $dfC; $ui["DL${i}OT"].Foreground = Brush $otC
-        $ui["DL${i}Name"].Text = $nm2; $ui["DL${i}Note"].Text = $note; $ui["DL${i}Amt"].Text = $amt
-        $ui["DL${i}Name"].Foreground = Brush $nameC; $ui["DL${i}Amt"].Foreground = Brush $amtC; $row.Background = Brush $bg
-        $ui["DL${i}Name"].FontWeight = $(if ($x.Kind -eq 'today') { [System.Windows.FontWeights]::Bold } else { [System.Windows.FontWeights]::Normal })
-    }
-    for ($k = 0; $k -lt 2; $k++) {
-        if ($k -ge @($st.Weeks).Count) { $ui["WS$k"].Visibility = [System.Windows.Visibility]::Collapsed; continue }
-        $wk = $st.Weeks[$k]; $ui["WS$k"].Visibility = [System.Windows.Visibility]::Visible
-        $ui["WS${k}Lab"].Text = 'Week ' + ($k + 1)
-        $ui["WS${k}Lab"].ToolTip = $wk.From.ToString('ddd M/d', $inv) + $enDash + $wk.To.ToString('ddd M/d', $inv) + $dot + 'gross ' + (Format-Money $wk.Gross)
-        $ui["WS${k}Diff"].Text = Format-Money $wk.Diff; $ui["WS${k}OT"].Text = Format-OTCell $wk.OTMin $wk.OT
-        $ui["WS${k}OT"].Foreground = Brush $(if ($wk.OTMin -gt 0) { '#FFFF7A45' } else { '#FF4A4A4A' })
-        $ui["WS${k}Amt"].Text = Format-Money $wk.Net
-    }
-    $ui.PeriodNet.Text = Format-Money $st.PeriodNet
-    $ui.PeriodBrk.Text = 'gross ' + (Format-Money $st.PeriodGross) + $dot + 'shift diff ' + (Format-Money $st.PeriodDiff) + $dot + 'OT ' + (Format-Money $st.PeriodOT) + ' (' + (Format-H $st.PeriodOTMin) + ')'
-    $ui.PeriodGross.Text = 'diff & OT are gross' + $dot + 'future days projected' + $(if ($st.Rounding -ne 0) { $dot + 'incl. ' + $(if ($st.Rounding -lt 0) { [string][char]0x2212 } else { '' }) + (Format-Money ([math]::Abs($st.Rounding))) + ' rounding' } else { '' })
-    # v1.12.2 fit: if a busy day's timeline leaves too little room, shrink the daily rows slightly instead of hiding any
-    try { $rh = 11.25; for ($i = 0; $i -lt 14; $i++) { $ui["DL$i"].Height = $rh }; $ui.Root.UpdateLayout()
-          $over = $ui.DailyScroll.ExtentHeight - $ui.DailyScroll.ViewportHeight
-          if ($over -gt 0.5) { $rh = [math]::Max(9.5, $rh - ($over + 0.5) / [math]::Max(1, $PeriodDays)); for ($i = 0; $i -lt 14; $i++) { $ui["DL$i"].Height = $rh } } } catch {}
-    if ($todayRow -and $script:LastScrollDay -ne $now.Date) { $script:LastScrollDay = $now.Date; try { $ui.DailyScroll.UpdateLayout(); $todayRow.BringIntoView() } catch {} }
+    # v2.0.15: 2-week DAILY MONEY MADE list removed (Van)
     Update-PunchUi $now $st
     $script:LastKey = $now.ToString('yyyyMMddHHmm') + $script:TestState
 }
@@ -2108,6 +2041,11 @@ $ui.ToggleBtn.Add_Click({
     Set-DisplayUi
 })
 $Changelog = @'
+v2.0.15  (2026-10-22 22:46 CT)
+  * 2-week Daily money made list removed
+  * UPDATE works like TessDesk: green YES UPDATE (pulsing, tap installs) / red NO UPDATE (tap checks now)
+  * Android app (APK) and fresh Windows Setup on the download page; phone app works offline
+
 v2.0.14  (2026-10-16 14:25 CT)
   * Paycheck Live now lives at a permanent address (vanwidick.github.io/paycheck-live): the phone app and PC updates never change address again.
   * Phones move over automatically with their profile, punches and PTO; the UPDATE button keeps working.
@@ -2616,8 +2554,14 @@ function Send-Log([string]$event) {
 function Set-UpdateUi {
     $b = $ui.UpdateBtn; $t = $ui.UpdateTxt
     $isAv = ($script:UpdState -eq 'available')   # v2.0.13: big UPDATE button only while a newer version exists; footer pill hidden when up to date
-    $ui.UpdBig.Visibility = $(if ($isAv) { 'Visible' } else { 'Collapsed' }); if ($isAv) { $ui.UpdBigTxt.Text = 'UPDATE TO v' + $script:Latest.version + '  ' + [char]0x00B7 + '  TAP TO INSTALL' }
-    $b.Visibility = $(if ($script:UpdState -eq 'current') { 'Collapsed' } else { 'Visible' })
+    # v2.0.15 TessDesk-style tab (TessDesk v4.3.38 Render-Update): always visible; YES UPDATE green + pulse when newer, NO UPDATE red otherwise
+    $ub = $ui.UpdBig; $ut = $ui.UpdBigTxt; $ub.Visibility = 'Visible'
+    if ($isAv) { $ut.Text = 'YES UPDATE'; $ut.Foreground = Brush '#FF06210F'; $ub.Background = Brush '#FF49DF93'; $ub.BorderBrush = Brush '#FF49DF93'; $ub.ToolTip = 'YES UPDATE v' + $script:Latest.version + ' is out ' + [char]0x00B7 + ' tap to install'
+        if (-not $script:UpdPulse) { $pa = New-Object System.Windows.Media.Animation.DoubleAnimation(1.0, 0.45, (New-Object System.Windows.Duration([TimeSpan]::FromSeconds(0.8)))); $pa.AutoReverse = $true; $pa.RepeatBehavior = [System.Windows.Media.Animation.RepeatBehavior]::Forever; $ub.BeginAnimation([System.Windows.UIElement]::OpacityProperty, $pa); $script:UpdPulse = $true } }
+    else { if ($script:UpdPulse) { $ub.BeginAnimation([System.Windows.UIElement]::OpacityProperty, $null); $ub.Opacity = 1; $script:UpdPulse = $false }
+        $ut.Text = 'NO UPDATE'; $ut.Foreground = Brush '#FFFFFFFF'; $ub.Background = Brush '#FFE82127'; $ub.BorderBrush = Brush '#FFE82127'
+        $ub.ToolTip = $(switch ($script:UpdState) { 'current' { 'NO UPDATE ' + [char]0x00B7 + ' already on v' + $AppVersion + ' ' + [char]0x00B7 + ' tap to check now' } 'checking' { 'NO UPDATE ' + [char]0x00B7 + ' checking' + [char]0x2026 } 'offline' { 'NO UPDATE ' + [char]0x00B7 + ' check failed ' + [char]0x00B7 + ' tap to retry' } default { 'NO UPDATE ' + [char]0x00B7 + ' tap to check now' } }) }
+    $b.Visibility = 'Collapsed'   # one UPDATE control, like TessDesk
     if ($script:UpdState -eq 'available') {
         $t.Text = 'UPDATE v' + $script:Latest.version; $t.Foreground = Brush '#FFFFFFFF'; $b.Background = Brush '#FFE82127'
         $b.ToolTip = 'New version v' + $script:Latest.version + ' is published - click to update'
@@ -2737,7 +2681,7 @@ function Poll-Update {
     }
     if ((Get-Date) -ge $script:NextCheck -and $null -eq $script:VerTask) { Start-UpdateCheck }
 }
-$ui.UpdBig.Add_Click({ if ($script:UpdState -eq 'available') { $ui.UpdBigTxt.Text = 'UPDATING' + [char]0x2026; Invoke-SelfUpdate } })
+$ui.UpdBig.Add_MouseLeftButtonUp({ if ($script:UpdState -eq 'available') { $ui.UpdBigTxt.Text = 'UPDATING'; $ui.UpdBig.Cursor = [System.Windows.Input.Cursors]::Wait; Invoke-SelfUpdate } else { Start-UpdateCheck } })   # v2.0.15: YES UPDATE installs, NO UPDATE checks at once
 $ui.UpdateBtn.Add_Click({
     if ($script:UpdState -eq 'available') { Show-UpdateDialog } else { Start-UpdateCheck }
 })
