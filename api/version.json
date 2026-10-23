@@ -4,8 +4,8 @@
  "source": "LIVE (PaycheckWidget.ps1 / paycheck-live.html)",
  "version": "2.0.15",
  "date": "2026-10-22",
- "publishedAt": "2026-10-22 10:49 PM CT",
- "updatedLabel": "OCT 22, 2026 10:49 PM",
+ "publishedAt": "2026-10-22 10:52 PM CT",
+ "updatedLabel": "OCT 22, 2026 10:52 PM",
  "changelog": [
   "2-week Daily money made list removed",
   "UPDATE works like TessDesk: green YES UPDATE (pulsing, tap installs) / red NO UPDATE (tap checks now)",
